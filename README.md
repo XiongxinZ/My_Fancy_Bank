@@ -12,4 +12,4 @@
 
 ---
 
-## Classes of the project (Recommended Viewing Order)
+## Classes of the project
