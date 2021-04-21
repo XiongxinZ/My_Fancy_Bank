@@ -1,8 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Banker {
+public class Banker extends User{
     private List<Order> orderList = new ArrayList<Order>();
+
+    public Banker(String name) {
+        super(name);
+    }
 
     public void takeOrder(Order order){
         orderList.add(order);
