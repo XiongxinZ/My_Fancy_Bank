@@ -1,11 +1,11 @@
 public class BuyStock implements Order {
-    private Stock abcStock;
+    private Stock stock;
 
-    public BuyStock(Stock abcStock){
-        this.abcStock = abcStock;
+    public BuyStock(Stock stock){
+        this.stock = stock;
     }
 
     public void execute() {
-        abcStock.buy();
+        stock.buy();
     }
 }
