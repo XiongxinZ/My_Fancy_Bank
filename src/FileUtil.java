@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class fileUtil {
+public class FileUtil {
     public static Object getData(String filename){
         File f = new File(filename);
         if (!f.exists()){
