@@ -10,6 +10,15 @@ public class SavingAccount extends Account{
         super(customer, "Saving");
     }
 
+    public String deposit(double val){
+        addCurrency(val);
+        return "Deposit $" + val + ", amount $" + getAmount();
+    }
+
+    public String deposit(double val,String currency){
+        addCurrency(val, currency);
+        return "Deposit $" + val + ", amount $" + getAmount();
+    }
 
     public static String createAccount(Customer customer){
         // 开户收费？

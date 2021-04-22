@@ -1,15 +1,22 @@
 import java.io.Serializable;
 import java.util.Currency;
+import java.util.HashMap;
 
 public class Account implements Serializable {
-    private double amount = 0.0;
+    private HashMap<String, Double> amount = new HashMap<>();
     private Customer customer;
     private String accountType;
 
-    public Account(Customer customer, double amount, String accountType) {
-        this.amount = amount;
+    public Account(Customer customer, String currency, double amount, String accountType) {
         this.customer = customer;
         this.accountType = accountType;
+        addCurrency(amount, currency);
+    }
+
+    public Account(Customer customer, double amount, String accountType) {
+        this.customer = customer;
+        this.accountType = accountType;
+        addCurrency(amount);
     }
 
     public Account(Customer customer, String accountType) {
@@ -36,8 +43,20 @@ public class Account implements Serializable {
     }
 
     public void consume(double val){
-        assert  amount >= val;
-        amount -= val;
+        assert  amount.containsKey("USD") && amount.get("USD") >= val;
+        amount.put("USD", amount.get("USD")- val);
+    }
+
+    protected void addCurrency(double val){
+        addCurrency(val, "USD");
+    }
+
+    protected void addCurrency(double val, String currency){
+        if (amount.containsKey(currency)){
+            amount.put(currency, amount.get(currency) + val);
+        }else{
+            amount.put(currency, val);
+        }
     }
 
     public Customer getCustomer() {
@@ -49,7 +68,11 @@ public class Account implements Serializable {
     }
 
     public double getAmount() {
-        return amount;
+        return amount.get("USD");
+    }
+
+    public void setAmount(double amount) {
+        this.amount.put("USD", this.amount.get("USD")+amount);
     }
 
     @Override
