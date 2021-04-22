@@ -1,6 +1,10 @@
+import java.io.Serial;
+
 public class LoanAccount extends Account{
 
     public static final String TYPE = "Loan";
+    @Serial
+    private static final long serialVersionUID = -864260430747385621L;
 
     static int temp = 10;
 

@@ -1,5 +1,10 @@
-public class Stock {
+import java.io.Serial;
+import java.io.Serializable;
 
+public class Stock implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2200435301494082440L;
     private String name = "Tesla";
     private int quantity = 10;
 

@@ -1,8 +1,11 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Currency;
 import java.util.HashMap;
 
 public class Account implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 4155194950008766436L;
     private HashMap<String, Double> amount = new HashMap<>();
     private Customer customer;
     private String accountType;
