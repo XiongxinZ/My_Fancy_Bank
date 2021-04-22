@@ -1,5 +1,9 @@
+import java.io.Serial;
+
 public class TakeLoan implements Order{
 
+    @Serial
+    private static final long serialVersionUID = -6531033077785053223L;
     private Customer customer;
     private Object collateral;
     public TakeLoan(Customer customer, Object collateral) {

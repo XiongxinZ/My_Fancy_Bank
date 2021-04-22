@@ -1,6 +1,9 @@
+import java.io.Serial;
 import java.util.HashMap;
 
 public class Customer extends User{
+    @Serial
+    private static final long serialVersionUID = 6699128377666927421L;
     private HashMap<String, Account> accountList = new HashMap<>();
     public Customer(String name, String pwd) {
         super(name, pwd);

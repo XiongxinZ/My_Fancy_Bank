@@ -1,6 +1,10 @@
+import java.io.Serial;
+
 public class SecurityAccount extends Account{
 
     public static final String TYPE = "Security";
+    @Serial
+    private static final long serialVersionUID = 637490753922657801L;
 
     static int temp = 5000;
 

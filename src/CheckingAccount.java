@@ -1,5 +1,9 @@
+import java.io.Serial;
+
 public class CheckingAccount extends Account{
 
+    @Serial
+    private static final long serialVersionUID = -5974937777045507260L;
     static int temp = 10;
     public static final String TYPE = "Checking";
 
