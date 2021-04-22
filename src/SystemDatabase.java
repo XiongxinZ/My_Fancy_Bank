@@ -22,7 +22,7 @@ public class SystemDatabase {
     public static HashSet<String> getCurrencyList() {
         String filename = "currency";
         if (_instance.get()._currencyList == null){
-            _instance.get()._currencyList =  (HashSet<String>) fileUtil.getData(filename + ".txt");
+            _instance.get()._currencyList =  (HashSet<String>) FileUtil.getData(filename + ".txt");
             if (_instance.get()._currencyList == null){
                 _instance.get()._currencyList = new HashSet<>();
             }
@@ -35,7 +35,7 @@ public class SystemDatabase {
     public static List<Customer> getCustomerList() {
         String filename = "customer";
         if (_instance.get()._customerList == null){
-            _instance.get()._customerList =  (ArrayList<Customer>) fileUtil.getData(filename + ".txt");
+            _instance.get()._customerList =  (ArrayList<Customer>) FileUtil.getData(filename + ".txt");
             if (_instance.get()._customerList == null){
                 _instance.get()._customerList = new ArrayList<>();
             }
@@ -47,7 +47,7 @@ public class SystemDatabase {
     public static List<Banker> getBankerList() {
         String filename = "banker";
         if (_instance.get()._bankerList == null){
-            _instance.get()._bankerList =  (ArrayList<Banker>) fileUtil.getData(filename + ".txt");
+            _instance.get()._bankerList =  (ArrayList<Banker>) FileUtil.getData(filename + ".txt");
             if (_instance.get()._bankerList == null){
                 _instance.get()._bankerList = new ArrayList<>();
             }
@@ -59,7 +59,7 @@ public class SystemDatabase {
     public static List<Order> getOrderList() {
         String filename = "order";
         if (_instance.get()._orderList == null){
-            _instance.get()._orderList =  (ArrayList<Order>) fileUtil.getData(filename + ".txt");
+            _instance.get()._orderList =  (ArrayList<Order>) FileUtil.getData(filename + ".txt");
             if (_instance.get()._orderList == null){
                 _instance.get()._orderList = new ArrayList<>();
             }
@@ -71,7 +71,7 @@ public class SystemDatabase {
     public static void writeAllDirtyData(){
         HashMap<String, Serializable> used = _instance.get()._used;
         for (Map.Entry<String, Serializable> data : used.entrySet()) {
-            fileUtil.writeData(data.getKey() + ".txt", data.getValue());
+            FileUtil.writeData(data.getKey() + ".txt", data.getValue());
         }
     }
 
