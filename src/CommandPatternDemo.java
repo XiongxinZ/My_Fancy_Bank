@@ -5,7 +5,7 @@ public class CommandPatternDemo {
         BuyStock buyStockOrder = new BuyStock(stock);
         SellStock sellStockOrder = new SellStock(stock);
 
-        Banker banker = new Banker("CPK");
+        Banker banker = new Banker("CPK", "123");
         banker.takeOrder(buyStockOrder);
         banker.takeOrder(sellStockOrder);
 

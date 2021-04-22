@@ -4,8 +4,8 @@ import java.util.List;
 public class Banker extends User{
     private List<Order> orderList = new ArrayList<Order>();
 
-    public Banker(String name) {
-        super(name);
+    public Banker(String name, String pwd) {
+        super(name, pwd);
     }
 
     public void takeOrder(Order order){
