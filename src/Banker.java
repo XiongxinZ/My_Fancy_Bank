@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Banker extends User{
-    private List<Order> orderList = new ArrayList<Order>();
+    private List<Order> orderList = SystemDatabase.getOrderList();
 
     public Banker(String name, String pwd) {
         super(name, pwd);
