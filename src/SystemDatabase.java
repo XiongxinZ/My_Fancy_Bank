@@ -1,0 +1,4 @@
+// singleton
+public class SystemDatabase {
+
+}
