@@ -20,6 +20,10 @@ public class Customer extends User{
         };
     }
 
+    public String deposit(double val){
+        return ((SavingAccount) accountList.get("Saving")).deposit(val);
+    }
+
     public boolean hasAccount(String accountType){
         return accountList.containsKey(accountType);
     }
