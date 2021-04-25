@@ -1,6 +1,6 @@
 import java.io.Serial;
 
-public class SecurityAccount extends Account{
+public class SecurityAccount extends Account implements CanTransfer, CanTransferTo{
 
     public static final String TYPE = "Security";
     @Serial
@@ -22,13 +22,14 @@ public class SecurityAccount extends Account{
         }else if (customer.getAccount("Saving").getAmount() > temp){
             customer.getAccount("Saving").removeCurrency(temp);
             customer.addAccount(TYPE, new LoanAccount(customer));
+            customer.markDirty(true);
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully. ";
         }else{
             return "Your Saving Account should have at least $5000";
         }
     }
 
-    private String transferIn(double val){
+    public String transferIn(double val){
         assert getCustomer().getAccount("Saving") != null;
         SavingAccount sa = (SavingAccount) getCustomer().getAccount("Saving");
         if (sa.getAmount() < 5000){
@@ -45,5 +46,27 @@ public class SecurityAccount extends Account{
             return "Transfer $" + val + "from Saving account to Security account.\n Saving account: $"
                     +sa.getAmount() + "\n Security account: $" + this.getAmount();
         }
+    }
+
+    public String transfer(double val, Account account, String currency){
+        if (val > getAmount(currency)){
+            return "Sorry you only have " + getAmount() + currency + " in your " + getAccountType() + "account";
+        }
+        account.addCurrency(val);
+        this.removeCurrency(val);
+        return "Transfer " + val + " from "+ toString() +" account to "+ account.toString()+"account.";
+    }
+
+    @Override
+    public String transfer(double val,String account){
+        if (getCustomer().getAccount(account) == null){
+            return "Sorry you don't have the " + account + " account";
+        }
+        return transfer(val, getCustomer().getAccount(account), "USD");
+    }
+
+    @Override
+    public String transfer(double val, Account account) {
+        return null;
     }
 }

@@ -5,12 +5,13 @@ import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Collateral implements Serializable {
+public class Collateral implements Serializable, Modifiable {
     @Serial
     private static final long serialVersionUID = -1636951387557509685L;
     private double price;
 
     private boolean used = false;
+    private boolean isDirty = false;
 
     public Collateral(double price) {
         this.price = price;
@@ -49,5 +50,21 @@ public class Collateral implements Serializable {
             flag = false;
         }
         return flag;
+    }
+
+    public void use(){
+        // ...
+
+
+    }
+
+    @Override
+    public void markDirty(boolean isDirty) {
+        this.isDirty = isDirty;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return isDirty;
     }
 }

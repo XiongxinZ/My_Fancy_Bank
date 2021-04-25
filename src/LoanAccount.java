@@ -21,6 +21,7 @@ public class LoanAccount extends Account{
         if (customer.hasAccount("Saving") && customer.getAccount("Saving").getAmount() > temp){
             customer.getAccount("Saving").removeCurrency(temp);
             customer.addAccount(TYPE, new LoanAccount(customer));
+            customer.markDirty(true);
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
         }else{
             return "You can't create Loan Account if you don't have $" + temp + " in your Saving Account";

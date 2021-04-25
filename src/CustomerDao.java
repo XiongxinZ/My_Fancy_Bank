@@ -6,15 +6,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 
- * @author NaiveKyo
- * 数据访问对象：银行客户
- */
 public class CustomerDao {
 	
 	@SuppressWarnings("finally")
-	public int insertCustomer(Customer customer) {
+	public static int insertCustomer(Customer customer) {
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -28,13 +23,17 @@ public class CustomerDao {
 			String c_name = customer.getName();
 			String c_pswd = customer.getPassword();
 			
-			String sql = "insert into customer(c_ID, c_Name, c_PSWD) "
-					+ "values(?,?,?)";
+			String sql = "insert into customer(c_ID, c_Name, c_PSWD, a_Saving, a_Checking, a_Loan, a_Security) "
+					+ "values(?,?,?,?,?,?,?)";
 			
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, c_id);
 			ps.setString(2, c_name);
 			ps.setString(3, c_pswd);
+			ps.setString(4, Boolean.toString(customer.hasAccount("Saving")));
+			ps.setString(5, Boolean.toString(customer.hasAccount("Checking")));
+			ps.setString(6, Boolean.toString(customer.hasAccount("Loan")));
+			ps.setString(7, Boolean.toString(customer.hasAccount("Security")));
 			flag = ps.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -47,7 +46,7 @@ public class CustomerDao {
 	}
 	
 	@SuppressWarnings("finally")
-	public int updateCustomer(Customer customer) {
+	public static int updateCustomer(Customer customer) {
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -84,35 +83,25 @@ public class CustomerDao {
 			return flag;
 		}
 	}
-	
-	@SuppressWarnings("finally")
-	public int updateCustomerPSW(Customer customer) {
-		
+
+	public static int updateCustomerPSW(String id, String pwd) {
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int flag = 0;
-		
+
 		try {
 			conn = JDBCUtil.getConnection();
-			
-			String c_id = customer.getId();
-//			String c_name = customer.getC_name();
-			String c_pswd = customer.getPassword();
-//			String c_identity = customer.getC_identity();
-//			double c_balance = customer.getC_balance();
-//			String c_status = customer.getC_status();
-//			String c_address = customer.getC_adress();
-//			String c_date = customer.getC_date();
-			
+
 			String sql = "update customer set c_pswd = ? where c_id = ?";
-			
+
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, c_pswd);
-			ps.setString(2, c_id);
-			
+			ps.setString(1, pwd);
+			ps.setString(2, id);
+
 			flag = ps.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -120,38 +109,48 @@ public class CustomerDao {
 			return flag;
 		}
 	}
-	
+
+
 	@SuppressWarnings("finally")
-	public int delCustomer(Customer customer) {
-		
+	public static int updateCustomerPSW(Customer customer) {
+		return updateCustomerPSW(customer.getId(), customer.getPassword());
+	}
+
+	public static int delCustomer(String id) {
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int flag = 0;
-		
+
 		try {
 			conn = JDBCUtil.getConnection();
-			
-			String c_id = customer.getId();
-			
+
+
 			String sql = "delete from customer where c_ID = ?";
-			
+
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, c_id);
-			
+			ps.setString(1, id);
+
 			System.out.println("delCustomer(Customer customer)" + ps.toString());
 			flag = ps.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			JDBCUtil.closeResource(conn, ps, rs);
 			return flag;
-		}	
+		}
+	}
+
+	@SuppressWarnings("finally")
+	public static int delCustomer(Customer customer) {
+
+		return delCustomer(customer.getId());
 	}
 	
 	@SuppressWarnings("finally")
-	public Customer selectCustomer(Customer customer) {
+	public static Customer selectCustomer(Customer customer) {
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -190,7 +189,7 @@ public class CustomerDao {
 	}
 	
 	@SuppressWarnings("finally")
-	public Customer selectCustomerWithCID(Customer customer) {
+	public static Customer selectCustomerWithCID(String id) {
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -200,15 +199,12 @@ public class CustomerDao {
 		try {
 			conn = JDBCUtil.getConnection();
 			
-			String c_id = customer.getId();
-//			String c_pswd = customer.getC_pswd();
-			
 			String sql = "select * from customer where c_ID = ?";
 			
 			System.out.println("selectCustomerWithCID(Customer customer)" + sql);
 			
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, c_id);
+			ps.setString(1, id);
 			
 			rs = ps.executeQuery();
 			
@@ -228,7 +224,7 @@ public class CustomerDao {
 	}
 	
 	@SuppressWarnings("finally")
-	public List<Customer> selectCustomerList(Customer customer){
+	public static List<Customer> selectCustomerList(Customer customer){
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
