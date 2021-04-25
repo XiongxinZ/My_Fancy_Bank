@@ -1,6 +1,6 @@
 public class MediatorPatternDemo {
     public static void main(String[] args) {
-        User client = new User("Xiongxin", "123");
+        User client = new Customer("Xiongxin", "123");
         User banker = new Banker("CPK","123");
 
         client.sendMessage("Hi! CPK!");

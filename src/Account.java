@@ -35,13 +35,22 @@ public class Account implements Serializable {
     }
 
     // Transfer to another account
-    public void transfer(Account account, double val){
-        System.out.printf("Transfer %.2f from %s account to %s account.\n", val, toString(), account.toString());
+    public String transfer(Account account, double val){
+        if (val > amount.get("USD")){
+            return "Sorry you only have $" + amount.get("USD") + " in your " + accountType + "account";
+        }
+        account.addCurrency(val);
+        this.removeCurrency(val);
+        return "Transfer " + val + " from "+ toString() +" account to "+ account.toString()+"account.";
     }
 
     // Transfer to customer's another account
-    public void transfer(String account, double val){
-        System.out.printf("Transfer %.2f from %s account to %s account.\n", val, toString(), account);
+    public String transfer(String account, double val){
+        if (customer.getAccount(account) == null){
+            return "Sorry you don't have the " + account + " account";
+        }
+        customer.getAccount(account).addCurrency(val);
+        return "Transfer " + val + " from "+ toString() +" account to "+ account +"account.";
     }
 
     public void consume(double val){

@@ -19,12 +19,17 @@ public class LoanAccount extends Account{
     public static String createAccount(Customer customer){
         // only pay from saving account
         if (customer.hasAccount("Saving") && customer.getAccount("Saving").getAmount() > temp){
-            customer.getAccount("Saving").consume(temp);
+            customer.getAccount("Saving").removeCurrency(temp);
             customer.addAccount(TYPE, new LoanAccount(customer));
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
         }else{
             return "You can't create Loan Account if you don't have $" + temp + " in your Saving Account";
         }
+    }
+
+    public String requestLoan(Collateral collateral){
+        SystemDatabase.getOrderList().add(new TakeLoan(getCustomer(), collateral));
+        return "Submit application! The collateral worth $"+ collateral.getPrice() +  ". Waiting manager to approve";
     }
 
 }
