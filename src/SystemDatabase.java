@@ -14,7 +14,6 @@ public class SystemDatabase {
 
     private HashMap<String, Serializable> _used;
 
-
     private SystemDatabase(){
         _used = new HashMap<>();
     }
@@ -73,6 +72,10 @@ public class SystemDatabase {
         for (Map.Entry<String, Serializable> data : used.entrySet()) {
             FileUtil.writeData(data.getKey() + ".txt", data.getValue());
         }
+    }
+
+    public static void main(String[] args) {
+        getCustomerList();
     }
 
 }
