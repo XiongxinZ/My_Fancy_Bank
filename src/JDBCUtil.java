@@ -17,12 +17,12 @@ public class JDBCUtil {
 	private static JDBCUtil instance = null;
 	
 	static {
-		ResourceBundle bundle = ResourceBundle.getBundle("lib.jdbc");
+//		ResourceBundle bundle = ResourceBundle.getBundle("lib.jdbc");
 		
-		DRIVERCLASS = bundle.getString("driverClass");
-		URL = bundle.getString("url");
-		USERNAME = bundle.getString("username");
-		PASSWORD = bundle.getString("password");
+		DRIVERCLASS = ConfigUtil.getConfig("driverClass");
+		URL = ConfigUtil.getConfig("url");
+		USERNAME = ConfigUtil.getConfig("username");
+		PASSWORD = ConfigUtil.getConfig("password");
 	}
 	
 	// test
