@@ -41,7 +41,6 @@ public class Account implements Serializable {
 
     // Transfer to customer's another account
     public void transfer(String account, double val){
-
         System.out.printf("Transfer %.2f from %s account to %s account.\n", val, toString(), account);
     }
 
@@ -59,6 +58,18 @@ public class Account implements Serializable {
             amount.put(currency, amount.get(currency) + val);
         }else{
             amount.put(currency, val);
+        }
+    }
+
+    protected void removeCurrency(double val){
+        removeCurrency(val, "USD");
+    }
+
+    protected void removeCurrency(double val, String currency){
+        assert amount.containsKey(currency);
+        assert  amount.get(currency) - val >= 0;
+        if (amount.containsKey(currency)){
+            amount.put(currency, amount.get(currency) - val);
         }
     }
 

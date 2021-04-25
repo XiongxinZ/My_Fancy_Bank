@@ -25,13 +25,17 @@ public class SavingAccount extends Account{
     }
 
     public static String createAccount(Customer customer){
-        // 开户收费？
 
-        // 付钱
-        // code
+        if (customer.hasAccount("Checking") && customer.getAccount("Checking").getAmount() > 10){
+            customer.getAccount("Checking").consume(10);
+            customer.addAccount(TYPE, new SavingAccount(customer));
+            return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
+        }else{
+            // 付钱
+            // code
 
-        customer.addAccount(TYPE, new SavingAccount(customer));
-        return "Create " + TYPE + " account successfully. Deposit %.2f, account fee cost %d. Put the remaining %.2f into the account. ";
-
+            customer.addAccount(TYPE, new SavingAccount(customer));
+            return "Create " + TYPE + " account successfully. Deposit %.2f, account fee cost %d. Put the remaining %.2f into the account. ";
+        }
     }
 }

@@ -16,16 +16,13 @@ public class CheckingAccount extends Account{
     }
 
     public static String createAccount(Customer customer){
-        if (customer.hasAccount("Saving") && customer.getAccount("Saving").getAmount() > temp){
-            customer.getAccount("Saving").consume(temp);
-            customer.addAccount(TYPE, new CheckingAccount(customer));
-            return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
-        }else{
-            // 付钱
-            // code
+        // 开户收费？
 
-            customer.addAccount(TYPE, new CheckingAccount(customer));
-            return "Create " + TYPE + " account successfully. Deposit %.2f, account fee cost %d. Put the remaining %.2f into the account. ";
-        }
+        // 付钱
+        // code
+
+        customer.addAccount(TYPE, new CheckingAccount(customer));
+        return "Create " + TYPE + " account successfully. Deposit %.2f, account fee cost %d. Put the remaining %.2f into the account. ";
+
     }
 }
