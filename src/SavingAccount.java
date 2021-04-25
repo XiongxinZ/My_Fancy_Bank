@@ -1,6 +1,6 @@
 import java.io.Serial;
 
-public class SavingAccount extends Account{
+public class SavingAccount extends Account implements CanDeposit, CanTransfer{
 
     public static final String TYPE = "Saving";
     @Serial
@@ -22,6 +22,29 @@ public class SavingAccount extends Account{
     public String deposit(double val,String currency){
         addCurrency(val, currency);
         return "Deposit $" + val + ", amount $" + getAmount();
+    }
+
+    // Transfer to customer's another account
+
+    public String transfer(double val, Account account, String currency){
+        if (val > getAmount(currency)){
+            return "Sorry you only have " + getAmount() + currency + " in your " + getAccountType() + "account";
+        }
+        account.addCurrency(val);
+        this.removeCurrency(val);
+        return "Transfer " + val + " from "+ toString() +" account to "+ account.toString()+"account.";
+    }
+
+    // Transfer to another account
+    public String transfer(double val,Account account){
+        return transfer(val, account, "USD");
+    }
+
+    public String transfer(double val,String account){
+        if (getCustomer().getAccount(account) == null){
+            return "Sorry you don't have the " + account + " account";
+        }
+        return transfer(val, getCustomer().getAccount(account), "USD");
     }
 
     public static String createAccount(Customer customer){

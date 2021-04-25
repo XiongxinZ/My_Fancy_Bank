@@ -14,9 +14,9 @@ public class FileUtil {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))){
             return ois.readObject();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("No such file. Create a new file");;
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Empty! Return null");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

@@ -9,17 +9,20 @@ public class Account implements Serializable {
     private HashMap<String, Double> amount = new HashMap<>();
     private Customer customer;
     private String accountType;
+    private String id;
 
     public Account(Customer customer, String currency, double amount, String accountType) {
         this.customer = customer;
         this.accountType = accountType;
         addCurrency(amount, currency);
+        id = Long.toString(Long.parseLong(customer.getId()) * 31L + accountType.hashCode());
     }
 
     public Account(Customer customer, double amount, String accountType) {
         this.customer = customer;
         this.accountType = accountType;
         addCurrency(amount);
+        id = Long.toString(Long.parseLong(customer.getId()) * 31L + accountType.hashCode());
     }
 
     public Account(Customer customer, String accountType) {
@@ -92,6 +95,10 @@ public class Account implements Serializable {
 
     public double getAmount() {
         return amount.get("USD");
+    }
+
+    public double getAmount(String currency) {
+        return amount.get(currency) == null ? 0:amount.get(currency);
     }
 
     public void setAmount(double amount) {

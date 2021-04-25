@@ -26,8 +26,28 @@ public class Customer extends User{
         };
     }
 
+    public String deposit(double val, String currency, String accountType){
+        return new Deposit(accountList.get(accountType), val, currency).execute();
+    }
+
+    public String deposit(double val, String currency){
+        return deposit(val, currency, "Saving");
+    }
+
     public String deposit(double val){
-        return ((SavingAccount) accountList.get("Saving")).deposit(val);
+        return deposit(val, "USD");
+    }
+
+    public String withdraw(double val, String currency, String accountType){
+        return new Withdraw(accountList.get(accountType), val, currency).execute();
+    }
+
+    public String withdraw(double val, String currency){
+        return withdraw(val, currency, "Checking");
+    }
+
+    public String withdraw(double val){
+        return withdraw(val, "USD");
     }
 
     public boolean hasAccount(String accountType){
