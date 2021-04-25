@@ -1,6 +1,6 @@
 import java.io.Serial;
 
-public class CheckingAccount extends Account{
+public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
 
     @Serial
     private static final long serialVersionUID = -5974937777045507260L;
@@ -13,6 +13,24 @@ public class CheckingAccount extends Account{
 
     private CheckingAccount(Customer customer) {
         super(customer, "Checking");
+    }
+
+    public String deposit(double val){
+        return deposit(val, "USD");
+    }
+
+    public String deposit(double val,String currency){
+        addCurrency(val, currency);
+        return "Deposit $" + val + ", amount $" + getAmount();
+    }
+
+    public String withdraw(double val){
+        return withdraw(val, "currency");
+    }
+
+    public String withdraw(double val,String currency){
+        removeCurrency(val, currency);
+        return "Withdraw $" + val + ", amount $" + getAmount();
     }
 
     public static String createAccount(Customer customer){
