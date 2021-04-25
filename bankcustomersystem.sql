@@ -167,9 +167,8 @@ INSERT INTO `withdrawal` VALUES ('测试管理员1', '167821', '2020-06-12', 500
 -- ----------------------------
 -- Table structure for transaction
 -- ----------------------------
-DROP TABLE IF EXISTS `transaction`;
-CREATE TABLE `transfer`  (
---  `BMS_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '操作员ID',
+DROP TABLE IF EXISTS `transactionLog`;
+CREATE TABLE `transactionLog`  (
   `c_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'FromCustomer',
   `c_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'FromAccount',
   `t_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ToCustomer',
@@ -178,11 +177,7 @@ CREATE TABLE `transfer`  (
   `t_Date` date NOT NULL COMMENT 'Transaction Time',
   `t_Money` decimal(8, 2) NOT NULL COMMENT 'Amount',
   `c_Balance` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'Balance',
---  INDEX `BMS_ID`(`BMS_ID`) USING BTREE,
   INDEX `c_ID`(`c_ID`) USING BTREE,
---  CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`BMS_ID`) REFERENCES `admin` (`BMS_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
---  CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`t_ID`) REFERENCES `customer` (`t_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
---  CONSTRAINT `transfer_ibfk_2` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -197,28 +192,31 @@ CREATE TABLE `transfer`  (
 -- Table structure for transfer
 -- ----------------------------
 DROP TABLE IF EXISTS `account`;
-CREATE TABLE `account`  (
---  `BMS_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '操作员ID',
+CREATE TABLE `single`  (
   `c_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
   `c_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account Type',
   `c_Balance` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'Balance',
---  INDEX `BMS_ID`(`BMS_ID`) USING BTREE,
   INDEX `c_ID`(`c_ID`) USING BTREE,
   INDEX `c_account`(`c_account`) USING BTREE,
   PRIMARY KEY (`c_ID`, `c_account`) USING BTREE,
---  CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`BMS_ID`) REFERENCES `admin` (`BMS_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
---  CONSTRAINT `account_ibfk_1` FOREIGN KEY (`c`) REFERENCES `customer` (`t_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `single_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of transfer
+-- Table structure for account
 -- ----------------------------
---INSERT INTO `transfer` VALUES ('176542', '110220', '2020-06-12', 2000.00, 4800.00);
---INSERT INTO `transfer` VALUES ('测试管理员1', '354126', '512468', '2020-06-12', 100.00, 5900.00);
---INSERT INTO `transfer` VALUES ('测试管理员1', '512468', '110220', '2020-06-12', 3000.00, 6700.00);
-
-
+DROP TABLE IF EXISTS `multi_cur_account`;
+CREATE TABLE `multi_cur_account`  (
+  `c_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `c_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account Type',
+  `c_Balance_USD` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'USD',
+  `c_Balance_CNY` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'CNY',
+  `c_Balance_JPY` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'JPY',
+  INDEX `c_ID`(`c_ID`) USING BTREE,
+  INDEX `c_account`(`c_account`) USING BTREE,
+  PRIMARY KEY (`c_ID`, `c_account`) USING BTREE,
+  CONSTRAINT `multi_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Table structure for transfer
 -- ----------------------------
@@ -231,9 +229,7 @@ CREATE TABLE `orders`  (
   INDEX `c_ID`(`c_ID`) USING BTREE,
   INDEX `c_account`(`c_account`) USING BTREE,
   PRIMARY KEY (`c_ID`, `c_account`) USING BTREE,
---  CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`BMS_ID`) REFERENCES `admin` (`BMS_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
---  CONSTRAINT `account_ibfk_1` FOREIGN KEY (`c`) REFERENCES `customer` (`t_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `order_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

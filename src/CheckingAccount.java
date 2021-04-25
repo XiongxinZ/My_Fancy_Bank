@@ -40,6 +40,7 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
         // code
 
         customer.addAccount(TYPE, new CheckingAccount(customer));
+        customer.markDirty(true);
         return "Create " + TYPE + " account successfully. Deposit %.2f, account fee cost %d. Put the remaining %.2f into the account. ";
     }
 }

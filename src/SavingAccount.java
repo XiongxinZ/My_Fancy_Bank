@@ -52,11 +52,12 @@ public class SavingAccount extends Account implements CanDeposit, CanTransfer{
         if (customer.hasAccount("Checking") && customer.getAccount("Checking").getAmount() > 10){
             customer.getAccount("Checking").removeCurrency(10);
             customer.addAccount(TYPE, new SavingAccount(customer));
+            customer.markDirty(true);
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
         }else{
             // 付钱
             // code
-
+            customer.markDirty(true);
             customer.addAccount(TYPE, new SavingAccount(customer));
             return "Create " + TYPE + " account successfully. Deposit %.2f, account fee cost %d. Put the remaining %.2f into the account. ";
         }

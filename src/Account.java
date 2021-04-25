@@ -3,13 +3,15 @@ import java.io.Serializable;
 import java.util.Currency;
 import java.util.HashMap;
 
-public class Account implements Serializable {
+public class Account implements Serializable, Modifiable {
     @Serial
     private static final long serialVersionUID = 4155194950008766436L;
     private HashMap<String, Double> amount = new HashMap<>();
     private Customer customer;
     private String accountType;
     private String id;
+
+    private boolean isDirty = false;
 
     public Account(Customer customer, String currency, double amount, String accountType) {
         this.customer = customer;
@@ -108,5 +110,15 @@ public class Account implements Serializable {
     @Override
     public String toString() {
         return customer.getName() + "'s " + accountType + " Account";
+    }
+
+    @Override
+    public void markDirty(boolean isDirty) {
+        this.isDirty = isDirty;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return isDirty;
     }
 }

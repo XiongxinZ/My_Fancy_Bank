@@ -1,10 +1,13 @@
 import java.io.Serial;
 import java.util.HashMap;
 
-public class Customer extends User{
+public class Customer extends User implements Modifiable{
     @Serial
     private static final long serialVersionUID = 6699128377666927421L;
     private HashMap<String, Account> accountList = new HashMap<>();
+
+    private boolean isDirty = false;
+
     public Customer(String name, String pwd) {
         super(name, pwd, "Customer");
 //        setId(getId() * 31 + "Customer".hashCode());
@@ -66,4 +69,13 @@ public class Customer extends User{
         accountList.put(accountType, account);
     }
 
+    @Override
+    public void markDirty(boolean isDirty) {
+        this.isDirty = isDirty;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return isDirty;
+    }
 }
