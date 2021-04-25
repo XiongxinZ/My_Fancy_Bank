@@ -20,7 +20,7 @@ public class SecurityAccount extends Account{
         if (!customer.hasAccount("Saving")){
             return "You should create a Saving Account and put at least $5000 into the account";
         }else if (customer.getAccount("Saving").getAmount() > temp){
-            customer.getAccount("Saving").consume(temp);
+            customer.getAccount("Saving").removeCurrency(temp);
             customer.addAccount(TYPE, new LoanAccount(customer));
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully. ";
         }else{

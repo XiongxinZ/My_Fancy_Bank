@@ -8,7 +8,7 @@ public class Banker extends User{
     private List<Order> orderList = SystemDatabase.getOrderList();
 
     public Banker(String name, String pwd) {
-        super(name, pwd);
+        super(name, pwd, "Banker");
     }
 
     public void takeOrder(Order order){

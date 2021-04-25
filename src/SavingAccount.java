@@ -27,7 +27,7 @@ public class SavingAccount extends Account{
     public static String createAccount(Customer customer){
 
         if (customer.hasAccount("Checking") && customer.getAccount("Checking").getAmount() > 10){
-            customer.getAccount("Checking").consume(10);
+            customer.getAccount("Checking").removeCurrency(10);
             customer.addAccount(TYPE, new SavingAccount(customer));
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
         }else{

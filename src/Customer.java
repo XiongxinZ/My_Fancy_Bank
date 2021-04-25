@@ -6,8 +6,11 @@ public class Customer extends User{
     private static final long serialVersionUID = 6699128377666927421L;
     private HashMap<String, Account> accountList = new HashMap<>();
     public Customer(String name, String pwd) {
-        super(name, pwd);
+        super(name, pwd, "Customer");
+//        setId(getId() * 31 + "Customer".hashCode());
     }
+
+    public Customer() {}
 
     public String createAccountAndReturnMessage(String accountType){
         if (accountList.containsKey(accountType)){
