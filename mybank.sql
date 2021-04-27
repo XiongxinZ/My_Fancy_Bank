@@ -39,7 +39,7 @@ CREATE TABLE `transactionLog`  (
 -- Records of transfer
 -- ----------------------------
 
-INSERT INTO `transactionLog` VALUES ('2020-06-12', 'transfer', '123', 'Saving', '333', 'Saving', 2000.00, 4800.00);
-INSERT INTO `transactionLog` VALUES ('2020-06-12', 'withdraw', '123', 'Saving', '', '', 100.00, 4700.00);
-INSERT INTO `transactionLog` VALUES ('2020-06-13', 'deposit', '', '', '333', 'Saving', 2000.00, 4800.00);
+INSERT INTO `transactionLog` VALUES ('2020-06-12', 'Transfer', '123', 'Saving', '333', 'Saving', 2000.00, 4800.00);
+INSERT INTO `transactionLog` VALUES ('2020-06-12', 'Withdraw', '123', 'Saving', '', '', 100.00, 4700.00);
+INSERT INTO `transactionLog` VALUES ('2020-06-13', 'Deposit', '', '', '333', 'Saving', 2000.00, 4800.00);
 

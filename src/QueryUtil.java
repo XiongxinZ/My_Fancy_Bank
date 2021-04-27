@@ -7,8 +7,8 @@ import java.util.List;
 
 public class QueryUtil {
     public static String getAllQueryWithConstrain(String tableName, String... constrain){
-        StringBuilder sql = getAll(tableName);
-        sql.append(tableName).append(" ");
+        StringBuilder sql = getPartAll(tableName);
+        sql.append(" ");
         assert constrain.length % 2 == 0;
         for (int i = 0; i < constrain.length; i = i + 2) {
             sql.append(" and ").append(constrain[i]).append("=").append("'").append(constrain[i+1]).append("'");
@@ -18,15 +18,35 @@ public class QueryUtil {
     }
 
     public static String getAllQuery(String tableName){
-        StringBuilder sql = getAll(tableName);
+        StringBuilder sql = getPartAll(tableName);
         sql.append(";");
         return sql.toString();
     }
 
-    private static StringBuilder getAll(String tableName){
+    public static StringBuilder getPartAll(String tableName){
         StringBuilder sql = new StringBuilder("select * from ");
         sql.append(tableName).append(" where 1 = 1");
         return sql;
+    }
+
+    public static StringBuilder appendConstrain(String... constrain){
+        StringBuilder sql = new StringBuilder(" ");
+        for (int i = 0; i < constrain.length; i = i + 2) {
+            sql.append(constrain[i]).append("=").append("'").append(constrain[i+1]).append("'");
+        }
+        return sql;
+    }
+
+    public static StringBuilder concatAndConstrain(StringBuilder s1, StringBuilder s2){
+        StringBuilder s = new StringBuilder(s1);
+        s.append(" and ").append(s2);
+        return s;
+    }
+
+    public static StringBuilder concatOrConstrain(StringBuilder s1, StringBuilder s2){
+        StringBuilder s = new StringBuilder(s1);
+        s.append(" or ").append(s2);
+        return s;
     }
 
     public static String getQueryString(String tableName, String... constrain){
@@ -68,7 +88,7 @@ public class QueryUtil {
             while(rs.next()) {
                 String[] dataRow = new String[rs.getMetaData().getColumnCount()];
                 for (int i = 0; i < dataRow.length; i++) {
-                    dataRow[i] = rs.getString(i);
+                    dataRow[i] = rs.getString(i+1);
                 }
                 list.add(dataRow);
             }

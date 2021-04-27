@@ -76,7 +76,7 @@ public class JDBCUtil {
 	public static void closeResource(Connection conn, Statement stm, ResultSet rs) {
 		closeResultSet(rs);
 		closeStatement(stm);
-		closeConnection(conn);
+//		closeConnection(conn);
 	}
 	
 	public static void closeResultSet(ResultSet rs) {
