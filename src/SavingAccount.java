@@ -4,7 +4,7 @@ public class SavingAccount extends Account implements CanDeposit, CanTransfer{
 
     public static final String TYPE = "Saving";
     @Serial
-    private static final long serialVersionUID = -2481826816986733553L;
+    private static final long serialVersionUid = -2481826816986733553L;
 
     private SavingAccount(Customer customer, double amount) {
         super(customer, amount, "Saving");

@@ -83,6 +83,14 @@ public abstract class Transaction{
         return transTime;
     }
 
+    public Double getFromBalance() {
+        return from == null? null:from.getAmount();
+    }
+
+    public Double getToBalance() {
+        return to == null? null:to.getAmount();
+    }
+
     public abstract String execute();
 
 }

@@ -23,7 +23,7 @@ public class AccountDao {
             String c_name = customer.getName();
             String c_pswd = customer.getPassword();
 
-            String sql = "insert into customer(c_ID, c_Name, c_PSWD, a_Saving, a_Checking, a_Loan, a_Security) "
+            String sql = "insert into customer(c_id, c_Name, c_PSWD, a_Saving, a_Checking, a_Loan, a_Security) "
                     + "values(?,?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
@@ -127,7 +127,7 @@ public class AccountDao {
             conn = JDBCUtil.getConnection();
 
 
-            String sql = "delete from customer where c_ID = ?";
+            String sql = "delete from customer where c_id = ?";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, id);
@@ -163,7 +163,7 @@ public class AccountDao {
             String c_id = customer.getId();
             String c_pswd = customer.getPassword();
 
-            String sql = "select * from customer where c_ID = ? and c_PSWD = ?";
+            String sql = "select * from customer where c_id = ? and c_PSWD = ?";
 
             System.out.println("selectCustomer(Customer customer)" + sql);
 
@@ -176,7 +176,7 @@ public class AccountDao {
             while(rs.next()) {
                 user = new Customer();
 
-                user.setId(rs.getString("c_ID"));
+                user.setId(rs.getString("c_id"));
                 user.setName(rs.getString("c_Name"));
                 user.setPassword(rs.getString("c_PSWD"));
             }
@@ -189,7 +189,7 @@ public class AccountDao {
     }
 
     @SuppressWarnings("finally")
-    public Customer selectCustomerWithCID(String id) {
+    public Customer selectCustomerWithCid(String id) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -199,9 +199,9 @@ public class AccountDao {
         try {
             conn = JDBCUtil.getConnection();
 
-            String sql = "select * from customer where c_ID = ?";
+            String sql = "select * from customer where c_id = ?";
 
-            System.out.println("selectCustomerWithCID(Customer customer)" + sql);
+            System.out.println("selectCustomerWithCid(Customer customer)" + sql);
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, id);
@@ -211,7 +211,7 @@ public class AccountDao {
             while(rs.next()) {
                 user = new Customer();
 
-                user.setId(rs.getString("c_ID"));
+                user.setId(rs.getString("c_id"));
                 user.setName(rs.getString("c_Name"));
                 user.setPassword(rs.getString("c_PSWD"));
             }
@@ -258,7 +258,7 @@ public class AccountDao {
 
             while(rs.next()) {
                 Customer user = new Customer();
-                user.setId(rs.getString("c_ID"));
+                user.setId(rs.getString("c_id"));
                 user.setName(rs.getString("c_Name"));
                 user.setPassword(rs.getString("c_PSWD"));
 

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Account implements Serializable, Modifiable {
     @Serial
-    private static final long serialVersionUID = 4155194950008766436L;
+    private static final long serialVersionUid = 4155194950008766436L;
     private HashMap<String, Double> amount = new HashMap<>();
     private Customer customer;
     private String accountType;
@@ -41,9 +41,9 @@ public class Account implements Serializable, Modifiable {
 
     // Transfer to another account
     public String transfer(Account account, double val){
-        if (val > amount.get("USD")){
-            return "Sorry you only have $" + amount.get("USD") + " in your " + accountType + "account";
-        }
+//        if (val > amount.get("USD")){
+//            return "Sorry you only have $" + amount.get("USD") + " in your " + accountType + "account";
+//        }
         account.addCurrency(val);
         this.removeCurrency(val);
         return "Transfer " + val + " from "+ toString() +" account to "+ account.toString()+"account.";
@@ -51,9 +51,9 @@ public class Account implements Serializable, Modifiable {
 
     // Transfer to customer's another account
     public String transfer(String account, double val){
-        if (customer.getAccount(account) == null){
-            return "Sorry you don't have the " + account + " account";
-        }
+//        if (customer.getAccount(account) == null){
+//            return "Sorry you don't have the " + account + " account";
+//        }
         customer.getAccount(account).addCurrency(val);
         return "Transfer " + val + " from "+ toString() +" account to "+ account +"account.";
     }

@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class User implements Serializable {
     @Serial
-    private static final long serialVersionUID = -4965774420061036775L;
+    private static final long serialVersionUid = -4965774420061036775L;
 
     private String name;
     private String password;

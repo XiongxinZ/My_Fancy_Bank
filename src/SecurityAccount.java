@@ -4,7 +4,7 @@ public class SecurityAccount extends Account implements CanTransfer, CanTransfer
 
     public static final String TYPE = "Security";
     @Serial
-    private static final long serialVersionUID = 637490753922657801L;
+    private static final long serialVersionUid = 637490753922657801L;
 
     static int temp = 5000;
 

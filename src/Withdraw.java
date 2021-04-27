@@ -17,10 +17,13 @@ public class Withdraw extends Transaction{
     @Override
     public String execute() {
         assert getTo() instanceof CheckingAccount;
+        String ret;
         if (getTo() instanceof CheckingAccount){
-            return ((CheckingAccount) getTo()).deposit(getAmount(), currency);
+            ret = ((CheckingAccount) getTo()).withdraw(getAmount(), currency);
+            TransactionDao.insertTransaction(this);
         }else{
-            return getTo().toString() + " can't withdraw.";
+            ret = getTo().toString() + " can't withdraw.";
         }
+        return ret;
     }
 }

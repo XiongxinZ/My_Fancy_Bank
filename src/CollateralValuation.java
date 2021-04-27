@@ -4,7 +4,7 @@ import java.io.Serial;
 public class CollateralValuation implements Order{
 
     @Serial
-    private static final long serialVersionUID = 8331184208579642887L;
+    private static final long serialVersionUid = 8331184208579642887L;
     Customer customer;
 
     String certificateName;

@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class Collateral implements Serializable, Modifiable {
     @Serial
-    private static final long serialVersionUID = -1636951387557509685L;
+    private static final long serialVersionUid = -1636951387557509685L;
     private double price;
 
     private boolean used = false;

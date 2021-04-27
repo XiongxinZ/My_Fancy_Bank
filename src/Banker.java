@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Banker extends User{
     @Serial
-    private static final long serialVersionUID = 1951449345466306912L;
+    private static final long serialVersionUid = 1951449345466306912L;
     private List<Order> orderList = SystemDatabase.getOrderList();
 
     public Banker(String name, String pwd) {

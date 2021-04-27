@@ -192,12 +192,12 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
         } else if(e.getSource() == jl_del && row >= 0) {
             Customer cs = new Customer();
             cs.setId((String) jt_customer.getValueAt(row, 0));
-            Customer c = new CustomerDao().selectCustomerWithCID(cs.getId());
+            Customer c = new CustomerDao().selectCustomerWithCid(cs.getId());
 //            new CustomerInformationDialog(c, 1);
         } else if(e.getSource() == jl_update && row >= 0) {
             Customer cs = new Customer();
             cs.setId((String) jt_customer.getValueAt(row, 0));
-            Customer c = new CustomerDao().selectCustomerWithCID(cs.getId());
+            Customer c = new CustomerDao().selectCustomerWithCid(cs.getId());
 //            new CustomerInformationDialog(c, 2);
         } else if(e.getSource() == jl_refresh) {
             fillTable(new Customer());

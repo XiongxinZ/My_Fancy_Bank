@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 public class Customer extends User implements Modifiable{
     @Serial
-    private static final long serialVersionUID = 6699128377666927421L;
+    private static final long serialVersionUid = 6699128377666927421L;
     private HashMap<String, Account> accountList = new HashMap<>();
 
     private boolean isDirty = false;

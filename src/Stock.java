@@ -4,7 +4,7 @@ import java.io.Serializable;
 public class Stock implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 2200435301494082440L;
+    private static final long serialVersionUid = 2200435301494082440L;
     private String name = "Tesla";
     private int quantity = 10;
 

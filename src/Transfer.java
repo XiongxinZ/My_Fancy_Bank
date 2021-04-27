@@ -5,6 +5,13 @@ public class Transfer extends Transaction{
 
     @Override
     public String execute() {
-        return getFrom().transfer(getTo(), getAmount());
+        String ret;
+        if (getAmount() > getFrom().getAmount("USD")){
+            ret =  "Sorry you only have $" + getFrom().getAmount("USD") + " in your " + getFrom().getAccountType() + "account";
+        }else{
+            ret = getFrom().transfer(getTo(), getAmount());
+            TransactionDao.insertTransaction(this);
+        }
+        return ret;
     }
 }

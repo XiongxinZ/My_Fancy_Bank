@@ -17,12 +17,16 @@ public class Deposit extends Transaction{
     @Override
     public String execute() {
         assert getTo() instanceof SavingAccount || getTo() instanceof CheckingAccount;
+        String ret;
         if (getTo() instanceof SavingAccount){
-            return ((SavingAccount) getTo()).deposit(getAmount(), currency);
+            ret =  ((SavingAccount) getTo()).deposit(getAmount(), currency);
+            TransactionDao.insertTransaction(this);
         }else if (getTo() instanceof CheckingAccount){
-            return ((CheckingAccount) getTo()).deposit(getAmount(), currency);
+            ret = ((CheckingAccount) getTo()).deposit(getAmount(), currency);
+            TransactionDao.insertTransaction(this);
         }else{
-            return getTo().toString() + " can't deposit.";
+            ret = getTo().toString() + " can't deposit.";
         }
+        return ret;
     }
 }
