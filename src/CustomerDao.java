@@ -23,7 +23,7 @@ public class CustomerDao {
 			String c_name = customer.getName();
 			String c_pswd = customer.getPassword();
 			
-			String sql = "insert into customer(c_id, c_name, c_pwd, a_saving, a_checking, a_loan, a_security) "
+			String sql = "insert into customer(c_id, c_name, c_pswd, a_saving, a_checking, a_loan, a_security) "
 					+ "values(?,?,?,?,?,?,?)";
 			
 			ps = conn.prepareStatement(sql);
@@ -147,6 +147,41 @@ public class CustomerDao {
 	public static int delCustomer(Customer customer) {
 
 		return delCustomer(customer.getId());
+	}
+
+	public static Customer selectCustomer(String name, String pswd) {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Customer user = null;
+
+		try {
+			conn = JDBCUtil.getConnection();
+
+			String sql = "select * from customer where c_name = ? and c_PSWD = ?";
+
+			System.out.println("selectCustomer(Customer customer)" + sql);
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setString(2, pswd);
+
+			rs = ps.executeQuery();
+
+			while(rs.next()) {
+				user = new Customer();
+
+				user.setId(rs.getString("c_id"));
+				user.setName(rs.getString("c_Name"));
+				user.setPassword(rs.getString("c_PSWD"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.closeResource(conn, ps, rs);
+		}
+		return user;
 	}
 	
 	@SuppressWarnings("finally")

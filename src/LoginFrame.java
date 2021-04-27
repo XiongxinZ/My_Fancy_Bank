@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Arrays;
 
 public class LoginFrame extends JFrame {
 
@@ -10,18 +13,23 @@ public class LoginFrame extends JFrame {
     JPanel centerPanel;
     JLabel imgLabel = new JLabel();;
     JPanel textPanel = paintCustomerTextPanel();
-    public LoginFrame(String imgPath) {
-        centerPanel = new JPanel(new BorderLayout());
-        imgLabel.setIcon(new ImageIcon(imgPath));
-        buildPanel();
-        add(centerPanel);
+    public LoginFrame(String type) {
+        this();
+        setTextPanel(paintCustomerTextPanel());
+        setSize(700, 500);
+        setVisible(true);
     }
+
+
 
     public LoginFrame() {
 //        layout = new GridBagLayout();
         centerPanel = new JPanel(new BorderLayout());
+        imgLabel.setIcon(new ImageIcon("img/login.jpg"));
         buildPanel();
         add(centerPanel);
+        setSize(700, 500);
+        setVisible(true);
     }
 
     public void buildPanel(){
@@ -78,6 +86,18 @@ public class LoginFrame extends JFrame {
         constraints.gridwidth = GridBagConstraints.BOTH;
         constraints.insets = new Insets(10,10,10,5);
         JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Customer customer = CustomerDao.selectCustomer(username.getText(), String.valueOf(password.getPassword()));
+                if (customer == null){
+                    new MessageFrame("Login Error", "No user or password error");
+                }else{
+                    dispose();
+                    new CustomerFrame(customer);
+                }
+            }
+        });
         layout.setConstraints(loginButton,constraints);
         jp.add(loginButton);
 
@@ -96,6 +116,33 @@ public class LoginFrame extends JFrame {
         constraints.gridwidth = GridBagConstraints.RELATIVE;
         constraints.insets = new Insets(0,20,10,20);
         JLabel register = new JLabel("<html><u><em>Register</em></u>");
+        register.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dispose();
+                new RegisterFrame();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         register.setForeground(Color.BLUE);
         layout.setConstraints(register,constraints);
         jp.add(register);
@@ -213,7 +260,7 @@ public class LoginFrame extends JFrame {
 
     public static void main(String[] args) {
 //        JPanel a = paintCustomerTextPanel();
-        JFrame jf = new LoginFrame("img/login.jpg");
+        JFrame jf = new LoginFrame();
 //        jf.add(a);
         jf.setSize(700, 500);
 //        jf.pack();
