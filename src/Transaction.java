@@ -59,6 +59,26 @@ public abstract class Transaction{
         return amount;
     }
 
+    public String getFromWhom() {
+        return fromWhom;
+    }
+
+    public String getToWhom() {
+        return toWhom;
+    }
+
+    public String getFromAccount() {
+        return fromAccount;
+    }
+
+    public String getToAccount() {
+        return toAccount;
+    }
+
+    public String getTransType() {
+        return transType;
+    }
+
     public String getTransTime() {
         return transTime;
     }

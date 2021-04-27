@@ -18,7 +18,12 @@ public class JDBCUtil {
 	
 	static {
 //		ResourceBundle bundle = ResourceBundle.getBundle("lib.jdbc");
-		
+//
+//
+//		DRIVERCLASS = bundle.getString("driverClass");
+//		URL = bundle.getString("url");
+//		USERNAME = bundle.getString("username");
+//		PASSWORD = bundle.getString("password");
 		DRIVERCLASS = ConfigUtil.getConfig("driverClass");
 		URL = ConfigUtil.getConfig("url");
 		USERNAME = ConfigUtil.getConfig("username");
@@ -48,7 +53,7 @@ public class JDBCUtil {
 	 * @throws SQLException
 	 */
 	public static Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		return getInstance().conn;
 	}
 
 	public static JDBCUtil getInstance() throws SQLException {
@@ -59,7 +64,7 @@ public class JDBCUtil {
 	}
 
 	public static Connection getConn() throws SQLException {
-		return instance.conn;
+		return getInstance().conn;
 	}
 	
 	/**

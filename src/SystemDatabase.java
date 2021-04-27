@@ -7,6 +7,8 @@ public class SystemDatabase {
 
     private static AtomicReference<SystemDatabase> _instance = new AtomicReference<SystemDatabase>(new SystemDatabase());
 
+    public static final String[] transType = {"Withdraw", "Deposit", "Transfer"};
+
     private HashSet<String> _currencyList;
     private ArrayList<Customer> _customerList;
     private ArrayList<Banker> _bankerList;
