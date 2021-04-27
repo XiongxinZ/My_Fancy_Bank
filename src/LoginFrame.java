@@ -63,7 +63,7 @@ public class LoginFrame extends JFrame {
         jp.add(info);
 
         constraints.insets = new Insets(10,10,10,20);
-        JLabel usernameLabel = new JLabel("Username:");
+        JLabel usernameLabel = new JLabel("Email:");
 //        label.setOpaque(true);
 //        label.setBorder(BorderFactory.createBevelBorder(0));
 //        label.setBackground(Color.LIGHT_GRAY);
@@ -164,7 +164,7 @@ public class LoginFrame extends JFrame {
         jp.add(info);
 
         constraints.insets = new Insets(10,10,10,20);
-        JLabel usernameLabel = new JLabel("Username:");
+        JLabel usernameLabel = new JLabel("Email:");
 //        label.setOpaque(true);
 //        label.setBorder(BorderFactory.createBevelBorder(0));
 //        label.setBackground(Color.LIGHT_GRAY);

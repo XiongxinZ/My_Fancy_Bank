@@ -6,14 +6,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Objects;
 
-public class User implements Serializable {
-    @Serial
-    private static final long serialVersionUid = -4965774420061036775L;
+public class User{
 
     private String name;
     private String password;
     private String type;
     private String id;
+    private String email;
 
     public String getName() {
         return name;
@@ -27,11 +26,12 @@ public class User implements Serializable {
         return password;
     }
 
-    public User(String name, String password,String type){
+    public User(String name, String password,String type, String email){
         this.name  = name;
         this.password = password;
         this.type = type;
-        this.id = Long.toString((name.hashCode() * 31L + type.hashCode())*31 + password.hashCode());
+        this.email = email;
+        this.id = Long.toString(email.hashCode() * 31L + type.hashCode());
     }
 
     public User(){}
@@ -48,6 +48,9 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    public String getEmail() {
+        return email;
+    }
 
     //    public User(String name, String password){
 //        this.name  = name;

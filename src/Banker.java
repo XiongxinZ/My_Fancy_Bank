@@ -7,8 +7,8 @@ public class Banker extends User{
     private static final long serialVersionUid = 1951449345466306912L;
     private List<Order> orderList = SystemDatabase.getOrderList();
 
-    public Banker(String name, String pwd) {
-        super(name, pwd, "Banker");
+    public Banker(String name, String pwd, String email) {
+        super(name, pwd, "Banker", email);
     }
 
     public void takeOrder(Order order){

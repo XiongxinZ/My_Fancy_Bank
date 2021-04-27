@@ -8,9 +8,8 @@ public class Customer extends User implements Modifiable{
 
     private boolean isDirty = false;
 
-    public Customer(String name, String pwd) {
-        super(name, pwd, "Customer");
-//        setId(getId() * 31 + "Customer".hashCode());
+    public Customer(String name, String pwd, String email) {
+        super(name, pwd, "Customer", email);
     }
 
     public Customer() {}
@@ -51,6 +50,10 @@ public class Customer extends User implements Modifiable{
 
     public String withdraw(double val){
         return withdraw(val, "USD");
+    }
+
+    public static String getId(String email){
+        return Long.toString(email.hashCode() * 31L + "Customer".hashCode());
     }
 
     public boolean hasAccount(String accountType){

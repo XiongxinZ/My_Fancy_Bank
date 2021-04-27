@@ -22,18 +22,20 @@ public class CustomerDao {
 			String c_id = customer.getId();
 			String c_name = customer.getName();
 			String c_pswd = customer.getPassword();
+			String c_email = customer.getEmail();
 			
-			String sql = "insert into customer(c_id, c_name, c_pswd, a_saving, a_checking, a_loan, a_security) "
-					+ "values(?,?,?,?,?,?,?)";
+			String sql = "insert into customer(c_id, c_name, c_pswd,c_email, a_saving, a_checking, a_loan, a_security) "
+					+ "values(?,?,?,?,?,?,?,?)";
 			
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, c_id);
 			ps.setString(2, c_name);
 			ps.setString(3, c_pswd);
-			ps.setString(4, Boolean.toString(customer.hasAccount("Saving")));
-			ps.setString(5, Boolean.toString(customer.hasAccount("Checking")));
-			ps.setString(6, Boolean.toString(customer.hasAccount("Loan")));
-			ps.setString(7, Boolean.toString(customer.hasAccount("Security")));
+			ps.setString(4, c_email);
+			ps.setString(5, Boolean.toString(customer.hasAccount("Saving")));
+			ps.setString(6, Boolean.toString(customer.hasAccount("Checking")));
+			ps.setString(7, Boolean.toString(customer.hasAccount("Loan")));
+			ps.setString(8, Boolean.toString(customer.hasAccount("Security")));
 			flag = ps.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -149,7 +151,40 @@ public class CustomerDao {
 		return delCustomer(customer.getId());
 	}
 
-	public static Customer selectCustomer(String name, String pswd) {
+	public static String getCustomerName(String id){
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String userName = null;
+		if (id == null){
+			return null;
+		}
+
+		try {
+			conn = JDBCUtil.getConnection();
+
+			String sql = "select * from customer where c_id = ?";
+
+			System.out.println("selectCustomer(Customer customer)" + sql);
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+
+			rs = ps.executeQuery();
+
+			rs.next();
+			userName = rs.getString("c_name");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.closeResource(conn, ps, rs);
+		}
+		return userName;
+	}
+
+	public static Customer selectCustomer(String email, String pswd) {
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -159,12 +194,12 @@ public class CustomerDao {
 		try {
 			conn = JDBCUtil.getConnection();
 
-			String sql = "select * from customer where c_name = ? and c_PSWD = ?";
+			String sql = "select * from customer where c_email = ? and c_PSWD = ?";
 
 			System.out.println("selectCustomer(Customer customer)" + sql);
 
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, name);
+			ps.setString(1, email);
 			ps.setString(2, pswd);
 
 			rs = ps.executeQuery();
@@ -175,6 +210,7 @@ public class CustomerDao {
 				user.setId(rs.getString("c_id"));
 				user.setName(rs.getString("c_Name"));
 				user.setPassword(rs.getString("c_PSWD"));
+				user.setPassword(rs.getString("c_email"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -186,41 +222,7 @@ public class CustomerDao {
 	
 	@SuppressWarnings("finally")
 	public static Customer selectCustomer(Customer customer) {
-		
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Customer user = null;
-		
-		try {
-			conn = JDBCUtil.getConnection();
-			
-			String c_id = customer.getId();
-			String c_pswd = customer.getPassword();
-			
-			String sql = "select * from customer where c_id = ? and c_PSWD = ?";
-			
-			System.out.println("selectCustomer(Customer customer)" + sql);
-			
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, c_id);
-			ps.setString(2, c_pswd);
-			
-			rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				user = new Customer();
-				
-				user.setId(rs.getString("c_id"));
-				user.setName(rs.getString("c_Name"));
-				user.setPassword(rs.getString("c_PSWD"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
-			return user;
-		}
+		return selectCustomer(customer.getEmail(), customer.getPassword());
 	}
 	
 	@SuppressWarnings("finally")

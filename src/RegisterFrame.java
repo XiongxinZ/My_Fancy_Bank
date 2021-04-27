@@ -41,6 +41,15 @@ public class RegisterFrame extends JFrame{
         layout.setConstraints(password, constraints);
         jp.add(password);
 
+        constraints.insets = new Insets(10,10,10,20);
+        JLabel emailLabel = new JLabel("Email:");
+        layout.setConstraints(emailLabel, constraints);
+        jp.add(emailLabel);
+
+        JTextField email = new JTextField();
+        layout.setConstraints(email, constraints);
+        jp.add(email);
+
         constraints.weightx = 1.0;
         constraints.gridwidth = GridBagConstraints.BOTH;
         constraints.insets = new Insets(10,10,10,5);
@@ -48,7 +57,7 @@ public class RegisterFrame extends JFrame{
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Customer newCustomer = new Customer(username.getText().trim(), password.getText().trim());
+                Customer newCustomer = new Customer(username.getText().trim(), password.getText().trim(), email.getText());
                 CustomerDao.insertCustomer(newCustomer);
                 new MessageFrame("IMPORTANT","<html>Your customer ID is <b><em>" + newCustomer.getId() + "</em></b>");
                 dispose();

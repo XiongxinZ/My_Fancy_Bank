@@ -45,15 +45,28 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
     private JLabel jl_update;
     private JLabel jl_refresh;
 
+    private Customer customer;
+
     /**
      * 将客户信息填入表格
-     * @param customer
+     *
      */
-    public void fillTable(Customer customer) {
+    public void fillTable() {
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
         List<Vector<String>> list = TransactionDao.getTransactionList(customer);
+
+        for(Vector<String> data : list) {
+            dm.addRow(data);
+        }
+    }
+
+    public void fillTable(String type) {
+        dm = (DefaultTableModel) jt_customer.getModel();
+        dm.setRowCount(0);
+
+        List<Vector<String>> list = TransactionDao.getTransactionList(customer, type);
 
         for(Vector<String> data : list) {
             dm.addRow(data);
@@ -69,11 +82,19 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
         }
     }
 
+    public TransactionHistoryPanel(Customer customer) {
+        this.customer = customer;
+        setPanel();
+    }
+
     /**
      * Transaction History of the specific customer.
      */
     public TransactionHistoryPanel() {
+        setPanel();
+    }
 
+    private void setPanel(){
         setLayout(new BorderLayout(0, 0));
 
         JPanel jp_tool = new JPanel();
@@ -81,23 +102,6 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
 
         add(jp_tool, BorderLayout.NORTH);
         jp_tool.setLayout(null);
-
-//        jl_add = new JLabel("添加");
-//        jl_add.setBounds(0, 10, 54, 30);
-//        jp_tool.add(jl_add);
-//        jl_add.setIcon(new ImageIcon("image/add.png"));
-//        jl_add.addMouseListener(this);
-
-//        jl_del = new JLabel("删除");
-//        jl_del.setBounds(64, 10, 54, 30);
-//        jp_tool.add(jl_del);
-//        jl_del.setIcon(new ImageIcon("image/delete.png"));
-//        jl_del.addMouseListener(this);
-//        jl_update = new JLabel("修改");
-//        jl_update.setBounds(128, 10, 54, 30);
-//        jp_tool.add(jl_update);
-//        jl_update.setIcon(new ImageIcon("image/update.png"));
-//        jl_update.addMouseListener(this);
 
         JLabel jl_type = new JLabel("Transaction Type");
         jl_type.setBounds(352, 10, 50, 30);
@@ -112,33 +116,6 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
             jc_type.addItem(data);
         }
 
-//        jtf_name = new JTextField();
-//        jtf_name.setBounds(399, 11, 100, 30);
-//        jp_tool.add(jtf_name);
-//        jtf_name.setColumns(10);
-//
-//        JLabel jl_id = new JLabel("卡号");
-//        jl_id.setBounds(521,10, 50, 30);
-//        jp_tool.add(jl_id);
-//
-//        jtf_id = new JTextField();
-//        jtf_id.setBounds(572, 11, 100, 30);
-//        jp_tool.add(jtf_id);
-//        jtf_id.setColumns(10);
-
-//        JLabel jl_place = new JLabel("籍贯");
-//        jl_place.setBounds(700, 10, 50, 30);
-//        jp_tool.add(jl_place);
-//
-//        JComboBox jc_place = new JComboBox();
-//        jc_place.setBounds(750, 10, 100, 30);
-//        jp_tool.add(jc_place);
-//        jc_place.addItem("All");
-//        String[] provinces = ComboList.getTransactionTypeList();
-//        for(String data : provinces) {
-//            jc_place.addItem(data);
-//        }
-
         jt_customer = new JTable(new DefaultTableModel(TableColumns.getTransactionColumns(), 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -151,19 +128,13 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
         jt_customer.setDefaultRenderer(Object.class, r);
         TableSetting.makeFace(jt_customer);
 
-        fillTable(new Customer());
+        fillTable();
         JScrollPane js = new JScrollPane(jt_customer);
         this.add(js, BorderLayout.CENTER);
 
-        JButton jb_submit = new JButton("查询");
+        JButton jb_submit = new JButton("Search");
         jb_submit.setBounds(890, 10, 80, 30);
         jp_tool.add(jb_submit);
-
-        jl_refresh = new JLabel("刷新");
-        jl_refresh.setBounds(199, 10, 54, 30);
-        jp_tool.add(jl_refresh);
-        jl_refresh.setIcon(new ImageIcon("image/refresh.png"));
-        jl_refresh.addMouseListener(this);
 
         jb_submit.addActionListener(new ActionListener() {
 
@@ -172,11 +143,12 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
 
                 String type = ((String) jc_type.getSelectedItem()).trim();
 
-                String query = QueryUtil.getAllQuery("transactionLog");
-                if(!("All").equals(type))
-                    query = QueryUtil.getAllQueryWithConstrain("transactionLog","t_type",type);
-
-                fillTable(QueryUtil.getResultString(query));
+//                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
+                if(!("All").equals(type)){
+                    fillTable(type);
+                }else{
+                    fillTable();
+                }
             }
         });
     }
@@ -200,7 +172,7 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
             Customer c = new CustomerDao().selectCustomerWithCid(cs.getId());
 //            new CustomerInformationDialog(c, 2);
         } else if(e.getSource() == jl_refresh) {
-            fillTable(new Customer());
+            fillTable();
         } else {
 
         }

@@ -40,8 +40,12 @@ CREATE TABLE `transactionLog`  (
 -- Records of transfer
 -- ----------------------------
 
-INSERT INTO `transactionLog` VALUES ('2020-06-12', 'Transfer', '123', 'Saving', '333', 'Saving', 2000.00, 4800.00, 5000.0);
-INSERT INTO `transactionLog` VALUES ('2020-06-12', 'Withdraw', '123', 'Saving', null, null, 100.00, 4700.00, null);
+INSERT INTO `transactionLog` VALUES ('2020-06-12', 'Transfer', '20907604216', 'Saving', '333', 'Saving', 2000.00, 4800.00, 5000.0);
+INSERT INTO `transactionLog` VALUES ('2020-06-12', 'Withdraw', '20907604216', 'Saving', null, null, 100.00, 4700.00, null);
+INSERT INTO `transactionLog` VALUES ('2020-06-13', 'Deposit', null, null, '333', 'Saving', 2000.00, null, 4800.00);
+
+INSERT INTO `transactionLog` VALUES ('2020-06-12', 'Transfer', '670820845', 'Saving', '333', 'Saving', 2000.00, 4800.00, 5000.0);
+INSERT INTO `transactionLog` VALUES ('2020-06-12', 'Withdraw', '670820845', 'Saving', null, null, 100.00, 4700.00, null);
 INSERT INTO `transactionLog` VALUES ('2020-06-13', 'Deposit', null, null, '333', 'Saving', 2000.00, null, 4800.00);
 
 -- ----------------------------
@@ -50,8 +54,9 @@ INSERT INTO `transactionLog` VALUES ('2020-06-13', 'Deposit', null, null, '333',
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer`  (
   `c_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'id',
-  `c_Name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Name',
-  `c_PSWD` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'password',
+  `c_Name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Name',
+  `c_PSWD` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'password',
+  `c_email` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'email',
   `a_Saving` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Saving Account',
   `a_Checking` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Checking Account',
   `a_Loan` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Loan Account',
