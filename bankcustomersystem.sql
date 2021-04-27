@@ -169,14 +169,14 @@ INSERT INTO `withdrawal` VALUES ('测试管理员1', '167821', '2020-06-12', 500
 -- ----------------------------
 DROP TABLE IF EXISTS `transactionLog`;
 CREATE TABLE `transactionLog`  (
-  `c_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'FromCustomer',
-  `c_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'FromAccount',
+  `t_date` date NOT NULL COMMENT 'Transaction Time',
+  `t_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Transaction Type',
+  `f_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'FromCustomer',
+  `f_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'FromAccount',
   `t_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ToCustomer',
   `t_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ToAccount',
-  `t_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Transaction Type',
-  `t_Date` date NOT NULL COMMENT 'Transaction Time',
-  `t_Money` decimal(8, 2) NOT NULL COMMENT 'Amount',
-  `c_Balance` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'Balance',
+  `t_money` decimal(8, 2) NOT NULL COMMENT 'Amount',
+  `c_balance` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'Balance',
   INDEX `c_ID`(`c_ID`) USING BTREE,
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -186,6 +186,10 @@ CREATE TABLE `transactionLog`  (
 --INSERT INTO `transfer` VALUES ('176542', '110220', '2020-06-12', 2000.00, 4800.00);
 --INSERT INTO `transfer` VALUES ('测试管理员1', '354126', '512468', '2020-06-12', 100.00, 5900.00);
 --INSERT INTO `transfer` VALUES ('测试管理员1', '512468', '110220', '2020-06-12', 3000.00, 6700.00);
+
+INSERT INTO `transactionLog` VALUES ('2020-06-12', 'transfer', '123', 'Saving', '333', 'Saving', 2000.00, 4800.00);
+INSERT INTO `transactionLog` VALUES ('2020-06-12', 'withdraw', '123', 'Saving', '', '', 100.00, 4700.00);
+INSERT INTO `transactionLog` VALUES ('2020-06-13', 'deposit', '', '', '333', 'Saving', 2000.00, 4800.00);
 
 
 -- ----------------------------
@@ -248,7 +252,7 @@ CREATE TABLE `collateral`  (
   PRIMARY KEY (`c_ID`, `c_account`) USING BTREE,
 --  CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`BMS_ID`) REFERENCES `admin` (`BMS_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 --  CONSTRAINT `account_ibfk_1` FOREIGN KEY (`c`) REFERENCES `customer` (`t_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `transfer_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `collateral_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -289,10 +293,10 @@ delimiter ;;
 CREATE TRIGGER `delMessgae` AFTER DELETE ON `customer` FOR EACH ROW BEGIN
 	DELETE FROM deposit
 	WHERE deposit.c_ID = OLD.c_ID;
-	
+
 	DELETE FROM withdrawal
 	WHERE withdrawal.c_ID = OLD.c_ID;
-	
+
 	DELETE FROM transfer
 	WHERE transfer.c_ID = OLD.c_ID;
 END
@@ -317,12 +321,10 @@ DROP TRIGGER IF EXISTS `showBalanceD`;
 delimiter ;;
 CREATE TRIGGER `showBalanceD` BEFORE INSERT ON `deposit` FOR EACH ROW BEGIN
 	DECLARE money DECIMAL(8, 2);
-	
 	SELECT c_Balance
 	FROM customer
 	WHERE customer.c_ID = NEW.c_ID
 	INTO money;
-	
 	SET NEW.c_Balance = NEW.d_Money + money;
 END
 ;;
@@ -370,12 +372,10 @@ DROP TRIGGER IF EXISTS `showBalanceT`;
 delimiter ;;
 CREATE TRIGGER `showBalanceT` BEFORE INSERT ON `transfer` FOR EACH ROW BEGIN
 	DECLARE money DECIMAL(8, 2);
-	
 	SELECT c_Balance
 	FROM customer
 	WHERE customer.c_ID = NEW.c_ID
 	INTO money;
-	
 	SET NEW.c_Balance = money - NEW.t_Money;
 END
 ;;
@@ -411,12 +411,10 @@ DROP TRIGGER IF EXISTS `showBalanceW`;
 delimiter ;;
 CREATE TRIGGER `showBalanceW` BEFORE INSERT ON `withdrawal` FOR EACH ROW BEGIN
 	DECLARE money DECIMAL(8, 2);
-	
 	SELECT c_Balance
 	FROM customer
 	WHERE customer.c_ID = NEW.c_ID
 	INTO money;
-	
 	SET NEW.c_Balance = money - NEW.w_Money;
 END
 ;;
