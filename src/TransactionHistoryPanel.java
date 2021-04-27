@@ -82,22 +82,22 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
         add(jp_tool, BorderLayout.NORTH);
         jp_tool.setLayout(null);
 
-        jl_add = new JLabel("Ìí¼Ó");
-        jl_add.setBounds(0, 10, 54, 30);
-        jp_tool.add(jl_add);
-        jl_add.setIcon(new ImageIcon("image/add.png"));
-        jl_add.addMouseListener(this);
+//        jl_add = new JLabel("Ìí¼Ó");
+//        jl_add.setBounds(0, 10, 54, 30);
+//        jp_tool.add(jl_add);
+//        jl_add.setIcon(new ImageIcon("image/add.png"));
+//        jl_add.addMouseListener(this);
 
-        jl_del = new JLabel("É¾³ý");
-        jl_del.setBounds(64, 10, 54, 30);
-        jp_tool.add(jl_del);
-        jl_del.setIcon(new ImageIcon("image/delete.png"));
-        jl_del.addMouseListener(this);
-        jl_update = new JLabel("ÐÞ¸Ä");
-        jl_update.setBounds(128, 10, 54, 30);
-        jp_tool.add(jl_update);
-        jl_update.setIcon(new ImageIcon("image/update.png"));
-        jl_update.addMouseListener(this);
+//        jl_del = new JLabel("É¾³ý");
+//        jl_del.setBounds(64, 10, 54, 30);
+//        jp_tool.add(jl_del);
+//        jl_del.setIcon(new ImageIcon("image/delete.png"));
+//        jl_del.addMouseListener(this);
+//        jl_update = new JLabel("ÐÞ¸Ä");
+//        jl_update.setBounds(128, 10, 54, 30);
+//        jp_tool.add(jl_update);
+//        jl_update.setIcon(new ImageIcon("image/update.png"));
+//        jl_update.addMouseListener(this);
 
         JLabel jl_type = new JLabel("Transaction Type");
         jl_type.setBounds(352, 10, 50, 30);

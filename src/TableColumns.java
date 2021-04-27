@@ -9,7 +9,7 @@ public class TableColumns {
 
     public static String[] getTransactionColumns() {
         String[] columns = new String[] {
-                "Date", "Transaction Type", "FromWho", "FromAccount", "ToWho", "ToAccount", "Amount", "Balance"
+                "Date", "Transaction Type", "FromWho", "FromAccount", "ToWho", "ToAccount", "Amount", "FromBalance","ToBalance"
         };
         return columns;
     }
