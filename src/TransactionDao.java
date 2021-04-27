@@ -90,7 +90,8 @@ public class TransactionDao {
                 dataRow.add(rs.getString("t_id"));
                 dataRow.add(rs.getString("t_account"));
                 dataRow.add(rs.getString("t_money"));
-                dataRow.add(rs.getString("c_balance"));
+                dataRow.add(rs.getString("f_balance"));
+                dataRow.add(rs.getString("t_balance"));
 
                 list.add(dataRow);
             }

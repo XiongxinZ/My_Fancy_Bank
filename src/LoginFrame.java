@@ -156,7 +156,7 @@ public class LoginFrame extends JFrame {
         jp.add(backButton);
 
         constraints.insets = new Insets(0,20,10,20);
-        JLabel register = new JLabel("<html><em>Manager user can only<br> be created by exist <br>manager.</em>");
+        JLabel register = new JLabel("<html><em>Manager user can only<br> be created by existing <br>manager.</em>");
         register.setForeground(Color.GRAY);
         layout.setConstraints(register,constraints);
         jp.add(register);

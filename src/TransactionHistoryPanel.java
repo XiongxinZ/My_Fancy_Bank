@@ -252,7 +252,6 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
         } else {
 
         }
-
     }
 
 }
