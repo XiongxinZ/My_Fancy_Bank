@@ -53,6 +53,7 @@ public class JDBCUtil {
 	 * @throws SQLException
 	 */
 	public static Connection getConnection() throws SQLException {
+		// return DriverManager.getConnection(URL, USERNAME, PASSWORD);
 		return getInstance().conn;
 	}
 
