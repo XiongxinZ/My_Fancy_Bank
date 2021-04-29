@@ -13,10 +13,12 @@ public class LoginFrame extends JFrame {
     JPanel centerPanel;
     JLabel imgLabel = new JLabel();;
     JPanel textPanel = paintCustomerTextPanel();
+    ImageIcon img;
+
     public LoginFrame(String type) {
         this();
         setTextPanel(paintCustomerTextPanel());
-        setSize(700, 500);
+        setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
         setVisible(true);
     }
 
@@ -25,10 +27,8 @@ public class LoginFrame extends JFrame {
     public LoginFrame() {
 //        layout = new GridBagLayout();
         centerPanel = new JPanel(new BorderLayout());
-        imgLabel.setIcon(new ImageIcon("img/login.jpg"));
         buildPanel();
-        add(centerPanel);
-        setSize(700, 500);
+        add(centerPanel);setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
         setVisible(true);
     }
 
@@ -42,6 +42,14 @@ public class LoginFrame extends JFrame {
         centerPanel.add(welcomeLabel, BorderLayout.NORTH);
 
 //        imgLabel.setPreferredSize(new Dimension(400,400));
+
+        imgLabel = new JLabel("New label"){
+            protected void paintComponent(Graphics g) {
+                ImageIcon icon = new ImageIcon("img/login.png");
+                g.drawImage(icon.getImage(), 0, 0, getWidth(),getHeight(),
+                        icon.getImageObserver());
+            }
+        };
         centerPanel.add(imgLabel, BorderLayout.CENTER);
 
 
@@ -261,9 +269,6 @@ public class LoginFrame extends JFrame {
     public static void main(String[] args) {
 //        JPanel a = paintCustomerTextPanel();
         JFrame jf = new LoginFrame();
-//        jf.add(a);
-        jf.setSize(700, 500);
-//        jf.pack();
-        jf.setVisible(true);
+
     }
 }

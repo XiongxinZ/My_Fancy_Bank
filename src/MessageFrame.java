@@ -6,7 +6,7 @@ public class MessageFrame extends JFrame {
         super(title);
         JLabel jl = new JLabel(content,JLabel.CENTER);
         add(jl);
-        setSize(200,100);
+        setSize(ConfigUtil.getConfigInt("MessageWidth"), ConfigUtil.getConfigInt("MessageHeight"));
         setVisible(true);
     }
 }

@@ -24,16 +24,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 
 
-public class TransactionHistoryPanel extends JPanel implements MouseListener {
-
-    // ≤‚ ‘
-    public static void main(String[] args) {
-        TransactionHistoryPanel a = new TransactionHistoryPanel();
-        JFrame jf = new JFrame();
-        jf.add(a);
-        jf.setSize(1000, 500);
-        jf.setVisible(true);
-    }
+public class TransactionHistoryPanel extends CustomerContentPanel implements MouseListener {
 
     private JTextField jtf_name;
     private JTextField jtf_id;
@@ -83,16 +74,15 @@ public class TransactionHistoryPanel extends JPanel implements MouseListener {
     }
 
     public TransactionHistoryPanel(Customer customer) {
-        this.customer = customer;
-        setPanel();
+        super(customer);
     }
 
     /**
      * Transaction History of the specific customer.
      */
-    public TransactionHistoryPanel() {
-        setPanel();
-    }
+//    public TransactionHistoryPanel() {
+//        setPanel();
+//    }
 
     private void setPanel(){
         setLayout(new BorderLayout(0, 0));

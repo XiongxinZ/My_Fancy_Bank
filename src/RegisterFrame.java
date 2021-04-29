@@ -4,11 +4,66 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RegisterFrame extends JFrame{
+    private JLabel leftBar;
+    private JLabel rightBar;
+
+    private JPanel centerPanel;
+
+    public static void main(String[] args) {
+        new RegisterFrame();
+    }
+
     public RegisterFrame() {
         super("Customer Registration");
-        add(paintRegistrationTextPanel());
-        setSize(700, 500);
+        buildPanel();
+        add(centerPanel);
+        setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
         setVisible(true);
+    }
+
+    private void buildPanel(){
+        GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        centerPanel = new JPanel(layout);
+
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1.0;
+        constraints.gridwidth = 1;
+        constraints.insets = new Insets(0,0,0,40);
+
+        leftBar = new JLabel("leftBar"){
+            protected void paintComponent(Graphics g) {
+                ImageIcon icon = new ImageIcon("img/emi.png");
+                g.drawImage(icon.getImage(), 0, 0, getWidth(),getHeight(),
+                        icon.getImageObserver());
+            }
+        };
+
+        layout.setConstraints(leftBar, constraints);
+        centerPanel.add(leftBar);
+//        leftBar.setPreferredSize(new Dimension((int) (getWidth()*0.2),getHeight()));
+
+
+        constraints.insets = new Insets(10,20,10,20);
+        JPanel textPanel = paintRegistrationTextPanel();
+        layout.setConstraints(textPanel,constraints);
+        centerPanel.add(textPanel);
+
+
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+
+        constraints.insets = new Insets(0,40,0,0);
+        rightBar = new JLabel("leftBar"){
+            protected void paintComponent(Graphics g) {
+                ImageIcon icon = new ImageIcon("img/emi.png");
+                g.drawImage(icon.getImage(), 0, 0, getWidth(),getHeight(),
+                        icon.getImageObserver());
+            }
+        };
+        layout.setConstraints(rightBar, constraints);
+        centerPanel.add(rightBar);
+
     }
 
     private JPanel paintRegistrationTextPanel(){
@@ -59,9 +114,9 @@ public class RegisterFrame extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 Customer newCustomer = new Customer(username.getText().trim(), password.getText().trim(), email.getText());
                 CustomerDao.insertCustomer(newCustomer);
-                new MessageFrame("IMPORTANT","<html>Your customer ID is <b><em>" + newCustomer.getId() + "</em></b>");
                 dispose();
                 new LoginFrame();
+                new MessageFrame("IMPORTANT","<html>Your customer ID is <b><em>" + newCustomer.getId() + "</em></b>");
             }
         });
         layout.setConstraints(registerButton,constraints);
@@ -82,4 +137,9 @@ public class RegisterFrame extends JFrame{
 
         return jp;
     }
+//
+//    private JLabel setSideImg(String filename){
+//        JLabel label = new JLabel(new ImageIcon(filename));
+//        return label;
+//    }
 }

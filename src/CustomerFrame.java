@@ -16,7 +16,7 @@ public class CustomerFrame extends JFrame {
         contextPanel = new JPanel();
         centerPanel.add(contextPanel, BorderLayout.CENTER);
         add(centerPanel);
-        setSize(700, 500);
+        setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
         setVisible(true);
 
     }
@@ -39,7 +39,7 @@ public class CustomerFrame extends JFrame {
         homepage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setContextPanel(new CustomerHomePagePanel());
+                setContextPanel(new CustomerHomepagePanel(customer));
             }
         });
         transHis.addActionListener(new ActionListener() {
