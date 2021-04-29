@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RegisterFrame extends JFrame{
+public class RegisterFrame extends CoreFrame{
     private JLabel leftBar;
     private JLabel rightBar;
 
@@ -17,7 +17,7 @@ public class RegisterFrame extends JFrame{
         super("Customer Registration");
         buildPanel();
         add(centerPanel);
-        setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
+
         setVisible(true);
     }
 
@@ -34,7 +34,7 @@ public class RegisterFrame extends JFrame{
 
         leftBar = new JLabel("leftBar"){
             protected void paintComponent(Graphics g) {
-                ImageIcon icon = new ImageIcon("img/emi.png");
+                ImageIcon icon = new ImageIcon("img/left.jpg");
                 g.drawImage(icon.getImage(), 0, 0, getWidth(),getHeight(),
                         icon.getImageObserver());
             }
@@ -56,7 +56,7 @@ public class RegisterFrame extends JFrame{
         constraints.insets = new Insets(0,40,0,0);
         rightBar = new JLabel("leftBar"){
             protected void paintComponent(Graphics g) {
-                ImageIcon icon = new ImageIcon("img/emi.png");
+                ImageIcon icon = new ImageIcon("img/right.jpg");
                 g.drawImage(icon.getImage(), 0, 0, getWidth(),getHeight(),
                         icon.getImageObserver());
             }

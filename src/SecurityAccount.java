@@ -16,7 +16,7 @@ public class SecurityAccount extends Account implements CanTransfer, CanTransfer
         super(customer);
     }
 
-    public static String createAccount(Customer customer){
+    public static String createAccountFromAccount(Customer customer){
         if (!customer.hasAccount("Saving")){
             return "You should create a Saving Account and put at least $5000 into the account";
         }else if (customer.getAccount("Saving").getAmount() > temp){
@@ -68,5 +68,10 @@ public class SecurityAccount extends Account implements CanTransfer, CanTransfer
     @Override
     public String transfer(double val, Account account) {
         return null;
+    }
+
+    @Override
+    public boolean isMultiCurr() {
+        return false;
     }
 }

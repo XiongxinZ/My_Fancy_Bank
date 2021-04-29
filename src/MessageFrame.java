@@ -1,12 +1,10 @@
 import javax.swing.*;
-import java.awt.*;
 
-public class MessageFrame extends JFrame {
+public class MessageFrame extends PopupFrame {
     public MessageFrame(String title, String content){
         super(title);
-        JLabel jl = new JLabel(content,JLabel.CENTER);
+        JLabel jl = new JLabel("<html><body style='width: %1spx'>%1s" + content,JLabel.CENTER);
         add(jl);
-        setSize(ConfigUtil.getConfigInt("MessageWidth"), ConfigUtil.getConfigInt("MessageHeight"));
         setVisible(true);
     }
 }

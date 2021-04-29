@@ -1,6 +1,4 @@
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -36,7 +34,14 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
     private JLabel jl_update;
     private JLabel jl_refresh;
 
-    private Customer customer;
+//    private Customer customer;
+
+    public static void main(String[] args) {
+        JFrame jf = new JFrame();
+        jf.add(new TransactionHistoryPanel(new Customer()));
+        jf.setSize(750,500);
+        jf.setVisible(true);
+    }
 
     /**
      * 将客户信息填入表格
@@ -46,18 +51,18 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        List<Vector<String>> list = TransactionDao.getTransactionList(customer);
+        List<Vector<String>> list = TransactionDao.getTransactionList(getCustomer());
 
         for(Vector<String> data : list) {
             dm.addRow(data);
         }
     }
 
-    public void fillTable(String type) {
+    public void fillTable(String type, String direction) {
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        List<Vector<String>> list = TransactionDao.getTransactionList(customer, type);
+        List<Vector<String>> list = TransactionDao.getTransactionList(getCustomer(), type, direction);
 
         for(Vector<String> data : list) {
             dm.addRow(data);
@@ -75,6 +80,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
 
     public TransactionHistoryPanel(Customer customer) {
         super(customer);
+        setPanel();
     }
 
     /**
@@ -87,24 +93,37 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
     private void setPanel(){
         setLayout(new BorderLayout(0, 0));
 
-        JPanel jp_tool = new JPanel();
+        JPanel jp_tool = new JPanel(new FlowLayout());
         jp_tool.setPreferredSize(new Dimension(1000, 50));
 
         add(jp_tool, BorderLayout.NORTH);
-        jp_tool.setLayout(null);
+//        jp_tool.setLayout(null);
 
         JLabel jl_type = new JLabel("Transaction Type");
-        jl_type.setBounds(352, 10, 50, 30);
+//        jl_type.setBounds(352, 10, 50, 30);
         jp_tool.add(jl_type);
 
         JComboBox<String> jc_type = new JComboBox<>();
-        jc_type.setBounds(750, 10, 100, 30);
-        jp_tool.add(jc_type);
-        jc_type.addItem("All");
+//        jc_type.setBounds(750, 10, 100, 30);
+        jc_type.addItem("ALL");
         String[] typeList = ComboList.getTransactionTypeList();
         for(String data : typeList) {
             jc_type.addItem(data);
         }
+        jp_tool.add(jc_type);
+
+        JLabel jl_to = new JLabel("Direction");
+//        jl_to.setBounds(700, 10, 50, 30);
+        jp_tool.add(jl_to);
+
+        JComboBox<String> jc_direction = new JComboBox<>();
+//        jc_direction.setBounds(750, 10, 100, 30);
+        jc_direction.addItem("ALL");
+        String[] directionList = {"IN", "OUT"};
+        for(String data : directionList) {
+            jc_direction.addItem(data);
+        }
+        jp_tool.add(jc_direction);
 
         jt_customer = new JTable(new DefaultTableModel(TableColumns.getTransactionColumns(), 0) {
             public boolean isCellEditable(int row, int column) {
@@ -123,7 +142,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         this.add(js, BorderLayout.CENTER);
 
         JButton jb_submit = new JButton("Search");
-        jb_submit.setBounds(890, 10, 80, 30);
+//        jb_submit.setBounds(890, 10, 80, 30);
         jp_tool.add(jb_submit);
 
         jb_submit.addActionListener(new ActionListener() {
@@ -132,13 +151,11 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
             public void actionPerformed(ActionEvent e) {
 
                 String type = ((String) jc_type.getSelectedItem()).trim();
+                String direction = ((String) jc_direction.getSelectedItem()).trim();
 
 //                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
-                if(!("All").equals(type)){
-                    fillTable(type);
-                }else{
-                    fillTable();
-                }
+                fillTable(type, direction);
+
             }
         });
     }
@@ -215,6 +232,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
 
         }
     }
+
 
 }
 

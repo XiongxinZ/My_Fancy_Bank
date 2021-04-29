@@ -3,20 +3,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CustomerFrame extends JFrame {
+public class CustomerFrame extends CoreFrame {
     private Customer customer;
     private JPanel centerPanel;
     private JPanel contextPanel;
     private JPanel infoPanel;
     public CustomerFrame(Customer customer){
+        super("Customer System");
         this.customer = customer;
         centerPanel = new JPanel(new BorderLayout());
         setTopInfo();
         centerPanel.add(infoPanel, BorderLayout.NORTH);
-        contextPanel = new JPanel();
+        contextPanel = new CustomerHomepagePanel(customer);
         centerPanel.add(contextPanel, BorderLayout.CENTER);
         add(centerPanel);
-        setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
+
         setVisible(true);
 
     }

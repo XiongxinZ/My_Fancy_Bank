@@ -16,7 +16,7 @@ public class LoanAccount extends Account{
         super(customer);
     }
 
-    public static String createAccount(Customer customer){
+    public static String createAccountFromAccount(Customer customer){
         // only pay from saving account
         if (customer.hasAccount("Saving") && customer.getAccount("Saving").getAmount() > temp){
             customer.getAccount("Saving").removeCurrency(temp);
@@ -33,4 +33,8 @@ public class LoanAccount extends Account{
         return "Submit application! The collateral worth $"+ collateral.getPrice() +  ". Waiting manager to approve";
     }
 
+    @Override
+    public boolean isMultiCurr() {
+        return false;
+    }
 }

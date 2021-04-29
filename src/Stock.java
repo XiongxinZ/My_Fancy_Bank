@@ -5,7 +5,7 @@ public class Stock implements Serializable {
 
     @Serial
     private static final long serialVersionUid = 2200435301494082440L;
-    private String name = "Tesla";
+    private String name;
     private int quantity = 10;
 
     public Stock(){ }

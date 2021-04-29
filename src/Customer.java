@@ -19,13 +19,14 @@ public class Customer extends User implements Modifiable{
             return "You already have the " + accountType +"Account.";
         }
 
-        return switch (accountType) {
-            case "Saving" -> SavingAccount.createAccount(this);
-            case "Checking" -> CheckingAccount.createAccount(this);
-            case "Loan" -> LoanAccount.createAccount(this);
-            case "Security" -> SecurityAccount.createAccount(this);
-            default -> null;
-        };
+//        return switch (accountType) {
+//            case "Saving" -> SavingAccount.createAccountFromCash(this);
+//            case "Checking" -> CheckingAccount.createAccountFromCash(this);
+//            case "Loan" -> LoanAccount.createAccountFromAccount(this);
+//            case "Security" -> SecurityAccount.createAccountFromAccount(this);
+//            default -> null;
+//        };
+        return null;
     }
 
     public String deposit(double val, String currency, String accountType){
@@ -70,6 +71,10 @@ public class Customer extends User implements Modifiable{
 
     public void addAccount(String accountType, Account account){
         accountList.put(accountType, account);
+    }
+
+    public void setAccountList(HashMap<String, Account> accountList) {
+        this.accountList = accountList;
     }
 
     @Override

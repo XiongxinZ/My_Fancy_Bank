@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CustomerDao {
 	
-	@SuppressWarnings("finally")
+
 	public static int insertCustomer(Customer customer) {
 		
 		Connection conn = null;
@@ -46,8 +46,8 @@ public class CustomerDao {
 		}
 		
 	}
-	
-	@SuppressWarnings("finally")
+
+
 	public static int updateCustomer(Customer customer) {
 		
 		Connection conn = null;
@@ -108,12 +108,12 @@ public class CustomerDao {
 			e.printStackTrace();
 		} finally {
 			JDBCUtil.closeResource(conn, ps, rs);
-			return flag;
+
 		}
+		return flag;
 	}
 
 
-	@SuppressWarnings("finally")
 	public static int updateCustomerPSW(Customer customer) {
 		return updateCustomerPSW(customer.getId(), customer.getPassword());
 	}
@@ -145,7 +145,6 @@ public class CustomerDao {
 		}
 	}
 
-	@SuppressWarnings("finally")
 	public static int delCustomer(Customer customer) {
 
 		return delCustomer(customer.getId());
@@ -211,6 +210,7 @@ public class CustomerDao {
 				user.setName(rs.getString("c_Name"));
 				user.setPassword(rs.getString("c_PSWD"));
 				user.setPassword(rs.getString("c_email"));
+				user.setAccountList(AccountDao.selectAccountList(user));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -219,13 +219,12 @@ public class CustomerDao {
 		}
 		return user;
 	}
-	
-	@SuppressWarnings("finally")
+
 	public static Customer selectCustomer(Customer customer) {
 		return selectCustomer(customer.getEmail(), customer.getPassword());
 	}
-	
-	@SuppressWarnings("finally")
+
+
 	public static Customer selectCustomerWithCid(String id) {
 		
 		Connection conn = null;
@@ -260,7 +259,7 @@ public class CustomerDao {
 		}
 	}
 	
-	@SuppressWarnings("finally")
+
 	public static List<Customer> selectCustomerList(Customer customer){
 		Connection conn = null;
 		PreparedStatement ps = null;

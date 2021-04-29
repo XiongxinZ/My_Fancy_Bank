@@ -7,13 +7,36 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
     static int temp = 10;
     public static final String TYPE = "Checking";
 
-    private CheckingAccount(Customer customer, double amount) {
+    public CheckingAccount(Customer customer, double amount) {
         super(customer, amount, "Checking");
     }
 
-    private CheckingAccount(Customer customer) {
+    public CheckingAccount(Customer customer) {
         super(customer, "Checking");
     }
+
+    @Override
+    protected void addCurrency(double val, String currency) {
+        super.addCurrency(val, currency);
+        AccountDao.updateCheckingMoney(this, currency);
+    }
+
+    @Override
+    protected void addCurrency(double val) {
+        addCurrency(val, "USD");
+    }
+
+    @Override
+    protected void removeCurrency(double val) {
+        removeCurrency(val,"USD");
+    }
+
+    @Override
+    protected void removeCurrency(double val, String currency) {
+        super.removeCurrency(val, currency);
+        AccountDao.updateCheckingMoney(this,currency);
+    }
+
 
     public String deposit(double val){
         return deposit(val, "USD");
@@ -33,14 +56,26 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
         return "Withdraw $" + val + ", amount $" + getAmount();
     }
 
-    public static String createAccount(Customer customer){
-        // 开户收费？
+    public static String createAccountFromCash(Customer customer, double deposit){
+        CheckingAccount newly = new CheckingAccount(customer);
+        newly.deposit(deposit);
+        newly.consume(temp);
 
-        // 付钱
-        // code
-
-        customer.addAccount(TYPE, new CheckingAccount(customer));
+        customer.addAccount(TYPE, newly);
         customer.markDirty(true);
+        AccountDao.insertChecking(newly);
+        return "Create " + TYPE + " account successfully. Deposit "+deposit +
+                ", account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
+                ". Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"into the account. ";
+    }
+
+    public static String createAccountFromAccount(Customer customer){
+        Account account = customer.getAccount("Saving");
+        account.consume(temp);
+        CheckingAccount newly = new CheckingAccount(customer);
+        customer.addAccount(TYPE, newly);
+        customer.markDirty(true);
+        AccountDao.insertChecking(newly);
         return "Create " + TYPE + " account successfully. Deposit %.2f, account fee cost %d. Put the remaining %.2f into the account. ";
     }
 }

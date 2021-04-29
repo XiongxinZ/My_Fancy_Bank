@@ -6,4 +6,9 @@ public class CustomerContentPanel extends JPanel {
     public CustomerContentPanel(Customer customer) {
         this.customer = customer;
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
 }

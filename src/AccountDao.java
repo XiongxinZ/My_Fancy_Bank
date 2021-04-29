@@ -4,12 +4,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class AccountDao {
 
-    @SuppressWarnings("finally")
-    public static int insertCustomer(Customer customer) {
+
+    public static int insertSaving(SavingAccount savingAccount) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -19,34 +20,34 @@ public class AccountDao {
         try {
             conn = JDBCUtil.getConnection();
 
-            String c_id = customer.getId();
-            String c_name = customer.getName();
-            String c_pswd = customer.getPassword();
+            String c_id = savingAccount.getCustomer().getId();
+            String a_id = savingAccount.getId();
+            String c_account = savingAccount.getAccountType();
+            double c_Balance_USD = savingAccount.getAmount("USD");
+            double c_Balance_CNY = savingAccount.getAmount("CNY");
+            double c_Balance_JPY = savingAccount.getAmount("JPY");
 
-            String sql = "insert into customer(c_id, c_Name, c_PSWD, a_Saving, a_Checking, a_Loan, a_Security) "
-                    + "values(?,?,?,?,?,?,?)";
+            String sql = "insert into saving(c_id, a_id, c_account, c_Balance_USD, c_Balance_CNY, c_Balance_JPY) "
+                    + "values(?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, c_id);
-            ps.setString(2, c_name);
-            ps.setString(3, c_pswd);
-            ps.setString(4, Boolean.toString(customer.hasAccount("Saving")));
-            ps.setString(5, Boolean.toString(customer.hasAccount("Checking")));
-            ps.setString(6, Boolean.toString(customer.hasAccount("Loan")));
-            ps.setString(7, Boolean.toString(customer.hasAccount("Security")));
+            ps.setString(2, a_id);
+            ps.setString(3, c_account);
+            ps.setDouble(4, c_Balance_USD);
+            ps.setDouble(5, c_Balance_CNY);
+            ps.setDouble(6, c_Balance_JPY);
             flag = ps.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JDBCUtil.closeResource(conn, ps, rs);
-            return flag;
         }
-
+        return flag;
     }
 
-    @SuppressWarnings("finally")
-    public int updateCustomer(Customer customer) {
+    public static int insertChecking(CheckingAccount checkingAccount) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -56,21 +57,52 @@ public class AccountDao {
         try {
             conn = JDBCUtil.getConnection();
 
-            String c_id = customer.getId();
-            String c_pswd = customer.getPassword();
+            String c_id = checkingAccount.getCustomer().getId();
+            String a_id = checkingAccount.getId();
+            String c_account = checkingAccount.getAccountType();
+            double c_Balance_USD = checkingAccount.getAmount("USD");
+            double c_Balance_CNY = checkingAccount.getAmount("CNY");
+            double c_Balance_JPY = checkingAccount.getAmount("JPY");
 
-            StringBuffer sql = new StringBuffer("update customer set");
+            String sql = "insert into checking(c_id, a_id, c_account, c_Balance_USD, c_Balance_CNY, c_Balance_JPY) "
+                    + "values(?,?,?,?,?,?)";
 
-            if(!("".equals(c_pswd)) && c_pswd != null) {
-                sql.append(" c_pswd = '" + c_pswd + "'");
-            }
-//
-//			if(!("".equals(c_status)) && c_status != null) {
-//				sql.append(" , c_status = '" + c_status + "'");
-//			}
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, c_id);
+            ps.setString(2, a_id);
+            ps.setString(3, c_account);
+            ps.setDouble(4, c_Balance_USD);
+            ps.setDouble(5, c_Balance_CNY);
+            ps.setDouble(6, c_Balance_JPY);
+            flag = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return flag;
+    }
+
+
+    public static int updateSavingMoney(SavingAccount savingAccount, String curr) {
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int flag = 0;
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            StringBuffer sql = new StringBuffer("update saving set");
+
+            String c_id = savingAccount.getCustomer().getId();
+            double val = savingAccount.getAmount(curr);
+            sql.append(" c_Balance_").append(curr).append(" =").append(val);
 
             if(!"".equals(c_id) && c_id != null) {
-                sql.append(" where c_id = '" + c_id + "'");
+                sql.append(" where c_id = '").append(c_id).append("'");
             }
 
             ps = conn.prepareStatement(String.valueOf(sql));
@@ -80,9 +112,41 @@ public class AccountDao {
             e.printStackTrace();
         } finally {
             JDBCUtil.closeResource(conn, ps, rs);
-            return flag;
         }
+        return flag;
     }
+
+    public static int updateCheckingMoney(CheckingAccount checkingAccount, String curr) {
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int flag = 0;
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            StringBuffer sql = new StringBuffer("update saving set");
+
+            String c_id = checkingAccount.getCustomer().getId();
+            double val = checkingAccount.getAmount(curr);
+            sql.append(" c_Balance_").append(curr).append(" = ").append(val);
+
+            if(!"".equals(c_id) && c_id != null) {
+                sql.append(" where c_id = '").append(c_id).append("'");
+            }
+
+            ps = conn.prepareStatement(String.valueOf(sql));
+            flag = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return flag;
+    }
+
 
     public int updateCustomerPSW(String id, String pwd) {
 
@@ -106,12 +170,12 @@ public class AccountDao {
             e.printStackTrace();
         } finally {
             JDBCUtil.closeResource(conn, ps, rs);
-            return flag;
         }
+        return flag;
     }
 
 
-    @SuppressWarnings("finally")
+
     public int updateCustomerPSW(Customer customer) {
         return updateCustomerPSW(customer.getId(), customer.getPassword());
     }
@@ -143,13 +207,13 @@ public class AccountDao {
         }
     }
 
-    @SuppressWarnings("finally")
+
     public int delCustomer(Customer customer) {
 
         return delCustomer(customer.getId());
     }
 
-    @SuppressWarnings("finally")
+
     public Customer selectCustomer(Customer customer) {
 
         Connection conn = null;
@@ -187,19 +251,18 @@ public class AccountDao {
             return user;
         }
     }
-
-    @SuppressWarnings("finally")
-    public Customer selectCustomerWithCid(String id) {
+//
+    public static Account selectLoanWithCid(Customer customer) {
 
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Customer user = null;
+        SavingAccount savingAccount = null;
 
         try {
             conn = JDBCUtil.getConnection();
-
-            String sql = "select * from customer where c_id = ?";
+            String id = customer.getId();
+            String sql = "select * from loan where c_id = ?";
 
             System.out.println("selectCustomerWithCid(Customer customer)" + sql);
 
@@ -209,66 +272,157 @@ public class AccountDao {
             rs = ps.executeQuery();
 
             while(rs.next()) {
-                user = new Customer();
-
-                user.setId(rs.getString("c_id"));
-                user.setName(rs.getString("c_Name"));
-                user.setPassword(rs.getString("c_PSWD"));
+                savingAccount = new SavingAccount(customer);
+//
+//                savingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_USD")),"USD");
+//                savingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"CNY");
+//                savingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"JPY");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JDBCUtil.closeResource(conn, ps, rs);
-            return user;
         }
+        return savingAccount;
     }
 
-    @SuppressWarnings("finally")
-    public List<Customer> selectCustomerList(Customer customer){
+//
+    public static Account selectSecurityWithCid(Customer customer) {
+
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-
-        ArrayList<Customer> list = new ArrayList<>();
+        SavingAccount savingAccount = null;
 
         try {
             conn = JDBCUtil.getConnection();
+            String id = customer.getId();
+            String sql = "select * from security where c_id = ?";
 
-            String c_id = customer.getId();
-            String c_name = customer.getName();
-            String c_pswd = customer.getPassword();
+            System.out.println("selectCustomerWithCid(Customer customer)" + sql);
 
-            StringBuffer sql = new StringBuffer("select * from customer where 1 = 1");
-
-            if(!"".equals(c_id) && c_id != null) {
-                sql.append(" and c_id = '" + c_id + "'");
-            }
-
-            if(!("".equals(c_name)) && c_name != null) {
-                sql.append(" and c_name = '" + c_name + "'");
-            }
-
-            if(!("".equals(c_pswd)) && c_pswd != null) {
-                sql.append(" and c_pswd = '" + c_pswd + "'");
-            }
-
-            ps = conn.prepareStatement(String.valueOf(sql));
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
 
             rs = ps.executeQuery();
 
             while(rs.next()) {
-                Customer user = new Customer();
-                user.setId(rs.getString("c_id"));
-                user.setName(rs.getString("c_Name"));
-                user.setPassword(rs.getString("c_PSWD"));
+                savingAccount = new SavingAccount(customer);
 
-                list.add(user);
+                savingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_USD")),"USD");
+                savingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"CNY");
+                savingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"JPY");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JDBCUtil.closeResource(conn, ps, rs);
-            return list;
         }
+        return savingAccount;
+    }
+
+//
+    public static Account selectCheckingWithCid(Customer customer) {
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        CheckingAccount checkingAccount = null;
+
+        try {
+            conn = JDBCUtil.getConnection();
+            String id = customer.getId();
+            String sql = "select * from checking where c_id = ?";
+
+            System.out.println("selectCustomerWithCid(Customer customer)" + sql);
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+
+            rs = ps.executeQuery();
+
+            while(rs.next()) {
+                checkingAccount = new CheckingAccount(customer);
+
+                checkingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_USD")),"USD");
+                checkingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"CNY");
+                checkingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"JPY");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return checkingAccount;
+    }
+
+
+    public static Account selectSavingWithCid(Customer customer) {
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        SavingAccount savingAccount = null;
+
+        try {
+            conn = JDBCUtil.getConnection();
+            String id = customer.getId();
+            String sql = "select * from saving where c_id = ?";
+
+            System.out.println("selectCustomerWithCid(Customer customer)" + sql);
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+
+            rs = ps.executeQuery();
+
+            while(rs.next()) {
+                savingAccount = new SavingAccount(customer);
+
+                savingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_USD")),"USD");
+                savingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"CNY");
+                savingAccount.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"JPY");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return savingAccount;
+    }
+
+
+
+    public static HashMap<String, Account> selectAccountList(Customer customer){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        HashMap<String,Account> list = new HashMap<>();
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            if (selectCheckingWithCid(customer) != null){
+                list.put("Checking", selectCheckingWithCid(customer));
+            }
+
+            if (selectSavingWithCid(customer) != null){
+                list.put("Saving", selectSavingWithCid(customer));
+            }
+
+            if (selectSecurityWithCid(customer) != null){
+                list.put("Security", selectSecurityWithCid(customer));
+            }
+
+            if (selectLoanWithCid(customer) != null){
+                list.put("Loan", selectLoanWithCid(customer));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return list;
     }
 }

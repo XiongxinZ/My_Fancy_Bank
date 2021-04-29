@@ -6,11 +6,11 @@ public class SavingAccount extends Account implements CanDeposit, CanTransfer{
     @Serial
     private static final long serialVersionUid = -2481826816986733553L;
 
-    private SavingAccount(Customer customer, double amount) {
+    public SavingAccount(Customer customer, double amount) {
         super(customer, amount, "Saving");
     }
 
-    private SavingAccount(Customer customer) {
+    public SavingAccount(Customer customer) {
         super(customer, "Saving");
     }
 
@@ -47,19 +47,47 @@ public class SavingAccount extends Account implements CanDeposit, CanTransfer{
         return transfer(val, getCustomer().getAccount(account), "USD");
     }
 
-    public static String createAccount(Customer customer){
-
-        if (customer.hasAccount("Checking") && customer.getAccount("Checking").getAmount() > 10){
-            customer.getAccount("Checking").removeCurrency(10);
-            customer.addAccount(TYPE, new SavingAccount(customer));
-            customer.markDirty(true);
-            return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
-        }else{
-            // 付钱
-            // code
-            customer.markDirty(true);
-            customer.addAccount(TYPE, new SavingAccount(customer));
-            return "Create " + TYPE + " account successfully. Deposit %.2f, account fee cost %d. Put the remaining %.2f into the account. ";
-        }
+    @Override
+    protected void addCurrency(double val, String currency) {
+        super.addCurrency(val, currency);
+        AccountDao.updateSavingMoney(this, currency);
     }
+
+    @Override
+    protected void addCurrency(double val) {
+        addCurrency(val, "USD");
+    }
+
+    @Override
+    protected void removeCurrency(double val) {
+        removeCurrency(val,"USD");
+    }
+
+    @Override
+    protected void removeCurrency(double val, String currency) {
+        super.removeCurrency(val, currency);
+        AccountDao.updateSavingMoney(this,currency);
+    }
+
+    public static String createAccountFromCash(Customer customer, double deposit){
+        SavingAccount newly = new SavingAccount(customer);
+        newly.deposit(deposit);
+        newly.consume(ConfigUtil.getConfigInt("AccountFee"));
+
+        customer.addAccount(TYPE, newly);
+        customer.markDirty(true);
+        AccountDao.insertSaving(newly);
+        return "Create " + TYPE + " account successfully. Deposit "+deposit +
+                ", account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
+                ". Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"into the account. ";    }
+
+    public static String createAccountFromAccount(Customer customer){
+        customer.getAccount("Checking").removeCurrency(ConfigUtil.getConfigInt("AccountFee"));
+        SavingAccount newly = new SavingAccount(customer);
+        customer.addAccount(TYPE, newly);
+        customer.markDirty(true);
+        AccountDao.insertSaving(newly);
+        return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
+    }
+
 }

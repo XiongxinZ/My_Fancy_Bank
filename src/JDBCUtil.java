@@ -1,4 +1,7 @@
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -17,19 +20,27 @@ public class JDBCUtil {
 	private static JDBCUtil instance = null;
 	
 	static {
-//		ResourceBundle bundle = ResourceBundle.getBundle("lib.jdbc");
-//
-//
-//		DRIVERCLASS = bundle.getString("driverClass");
-//		URL = bundle.getString("url");
-//		USERNAME = bundle.getString("username");
-//		PASSWORD = bundle.getString("password");
-		DRIVERCLASS = ConfigUtil.getConfig("driverClass");
-		URL = ConfigUtil.getConfig("url");
-		USERNAME = ConfigUtil.getConfig("username");
-		PASSWORD = ConfigUtil.getConfig("password");
+		 Properties properties = new Properties();
+		try {
+			properties.load(new FileInputStream("jdbc.properties"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+		DRIVERCLASS = properties.getProperty("driverClass");
+		URL = properties.getProperty("url");
+		USERNAME = properties.getProperty("username");
+		PASSWORD = properties.getProperty("password");
+//		DRIVERCLASS = ConfigUtil.getConfig("driverClass");
+//		URL = ConfigUtil.getConfig("url");
+//		USERNAME = ConfigUtil.getConfig("username");
+//		PASSWORD = ConfigUtil.getConfig("password");
 	}
-	
+
+	public static void main(String[] args) {
+
+	}
 	// test
 //	public static void main(String[] args) {
 //		System.out.println(DRIVERCLASS + "\n" + URL + "\n" + USERNAME + "\n" + PASSWORD);

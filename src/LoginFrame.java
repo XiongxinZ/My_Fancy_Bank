@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 
-public class LoginFrame extends JFrame {
+public class LoginFrame extends CoreFrame {
 
     GridBagLayout layout;
 //    GridBagConstraints constraints = new GridBagConstraints();
@@ -25,10 +25,12 @@ public class LoginFrame extends JFrame {
 
 
     public LoginFrame() {
+        super("Login");
 //        layout = new GridBagLayout();
         centerPanel = new JPanel(new BorderLayout());
         buildPanel();
-        add(centerPanel);setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
+        add(centerPanel);
+
         setVisible(true);
     }
 
@@ -43,9 +45,9 @@ public class LoginFrame extends JFrame {
 
 //        imgLabel.setPreferredSize(new Dimension(400,400));
 
-        imgLabel = new JLabel("New label"){
+        imgLabel = new JLabel("Login img"){
             protected void paintComponent(Graphics g) {
-                ImageIcon icon = new ImageIcon("img/login.png");
+                ImageIcon icon = new ImageIcon("img/login.jpg");
                 g.drawImage(icon.getImage(), 0, 0, getWidth(),getHeight(),
                         icon.getImageObserver());
             }

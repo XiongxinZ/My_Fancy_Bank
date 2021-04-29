@@ -32,7 +32,7 @@ public class QueryUtil {
     public static StringBuilder appendConstrain(String... constrain){
         StringBuilder sql = new StringBuilder(" ");
         for (int i = 0; i < constrain.length; i = i + 2) {
-            sql.append(constrain[i]).append("=").append("'").append(constrain[i+1]).append("'");
+            sql.append(constrain[i]).append("=").append("'").append(constrain[i+1]).append("' ");
         }
         return sql;
     }

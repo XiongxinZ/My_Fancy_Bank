@@ -159,4 +159,65 @@ public class TransactionDao {
         }
         return list;
     }
+
+    public static List<Vector<String>> getTransactionList(Customer customer, String type, String direction){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        ArrayList<Vector<String>> list = new ArrayList<>();
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            String id = customer.getId();
+            String name = customer.getName();
+//            String c_pswd = customer.getPassword();
+
+            StringBuilder sql = QueryUtil.getPartAll(dbName);
+
+            if(!"".equals(id) && id != null) {
+                sql.append(" and");
+                if ("All".equalsIgnoreCase(direction)){
+                    sql.append(" (");
+                    sql.append (QueryUtil.appendConstrain("f_id",id)).append(" or ").append(QueryUtil.appendConstrain("t_id", id));
+                    sql.append(")");
+                }else if ("out".equalsIgnoreCase(direction)){
+                    sql.append(QueryUtil.appendConstrain("f_id",id));
+                }else if ("in".equalsIgnoreCase(direction)){
+                    sql.append(QueryUtil.appendConstrain("t_id", id));
+                }
+            }
+
+            if (!"All".equalsIgnoreCase(type)){
+                sql.append(" and");
+                sql.append(QueryUtil.appendConstrain("t_type",type));
+            }
+
+
+            ps = conn.prepareStatement(String.valueOf(sql));
+
+            rs = ps.executeQuery();
+//            int size = rs.getFetchSize();
+            while(rs.next()) {
+                Vector<String> dataRow = new Vector<>();
+                dataRow.add(rs.getString("t_date"));
+                dataRow.add(rs.getString("t_type"));
+                dataRow.add(CustomerDao.getCustomerName(rs.getString("f_id")));
+                dataRow.add(rs.getString("f_account"));
+                dataRow.add(CustomerDao.getCustomerName(rs.getString("t_id")));
+                dataRow.add(rs.getString("t_account"));
+                dataRow.add(rs.getString("t_money"));
+                dataRow.add(rs.getString("f_balance"));
+                dataRow.add(rs.getString("t_balance"));
+
+                list.add(dataRow);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return list;
+    }
 }
