@@ -1,6 +1,6 @@
 import java.io.Serial;
 
-public class SecurityAccount extends Account implements CanTransferToOthers, CanTransferWithin {
+public class SecurityAccount extends Account implements CanTransferWithin {
 
     public static final String TYPE = "Security";
     @Serial
@@ -69,10 +69,16 @@ public class SecurityAccount extends Account implements CanTransferToOthers, Can
 //        return transfer(val, getCustomer().getAccount(account), "USD");
     }
 
-    @Override
-    public String transfer(Account account, double val, String curr) {
-        return new Transfer(this,account,val,curr).execute();
-    }
+//    @Override
+//    public String transfer(Account account, double val, String curr) {
+//        return new Transfer(this,account,val,curr).execute();
+//    }
+
+//    @Override
+//    public String transfer(String email, String accountType, double val, String curr) {
+//        String c_id = Customer.getId(email);
+//        return new Transfer(this, c_id, accountType,val,curr).execute();
+//    }
 
     @Override
     public boolean isMultiCurr() {

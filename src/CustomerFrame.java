@@ -94,4 +94,8 @@ public class CustomerFrame extends CoreFrame {
         centerPanel.add(contextPanel, BorderLayout.CENTER);
         centerPanel.updateUI();
     }
+
+    public JPanel getContextPanel() {
+        return contextPanel;
+    }
 }

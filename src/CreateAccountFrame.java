@@ -19,17 +19,20 @@ public class CreateAccountFrame extends PopupFrame{
         JLabel label = new JLabel("How to Pay Account Fee($10)", JLabel.CENTER);
         add(label);
 
-        JButton button1 = new JButton("Cash(Deposit)");
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new DepositTempFrame(customer, type);
-            }
-        });
+        if (type.equals("Saving") || type.equals("Checking")){
+            JButton button1 = new JButton("Cash(Deposit)");
+            button1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    CreateAccountFrame.this.dispose();
+                    new DepositTempFrame(customer, type);
+                }
+            });
+            add(button1);
+        }
+
 
         JButton button2;
-        String targetAccount;
         if (type.equalsIgnoreCase("Saving")){
             button2 = new JButton("Checking Account");
             button2.addActionListener(new ActionListener() {
@@ -37,8 +40,8 @@ public class CreateAccountFrame extends PopupFrame{
                 public void actionPerformed(ActionEvent e) {
                     if (customer.hasAccount("Checking")){
                         if (customer.getAccount("Checking").getAmount() >= ConfigUtil.getConfigInt("AccountFee")){
-                            dispose();
                             String message = SavingAccount.createAccountFromAccount(customer);
+                            CreateAccountFrame.this.dispose();
                             new CustomerFrame(customer);
                             new MessageFrame("Success Info",message);
                         }else{
@@ -57,14 +60,13 @@ public class CreateAccountFrame extends PopupFrame{
                 public void actionPerformed(ActionEvent e) {
                     if (customer.hasAccount("Saving")){
                         if (customer.getAccount("Saving").getAmount() >= ConfigUtil.getConfigInt("AccountFee")){
-                            dispose();
-                            String message;
-                            switch (type){
-                                case "Checking" :message = CheckingAccount.createAccountFromAccount(customer);break;
-                                case "Security":message = SecurityAccount.createAccountFromAccount(customer);break;
-                                case "Loan": message = LoanAccount.createAccountFromAccount(customer);break;
-                                default: message = "Success.";
-                            }
+                            String message = switch (type) {
+                                case "Checking" -> CheckingAccount.createAccountFromAccount(customer);
+                                case "Security" -> SecurityAccount.createAccountFromAccount(customer);
+                                case "Loan" -> LoanAccount.createAccountFromAccount(customer);
+                                default -> "Success.";
+                            };
+                            CreateAccountFrame.this.dispose();
                             new CustomerFrame(customer);
                             new MessageFrame("Success Info",message);
                         }else{
@@ -87,7 +89,6 @@ public class CreateAccountFrame extends PopupFrame{
             }
         });
 
-        add(button1);
         add(button2);
         add(back);
     }

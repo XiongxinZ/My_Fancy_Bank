@@ -19,7 +19,7 @@ public class TransactionDao {
         try {
             conn = JDBCUtil.getConnection();
 
-            String sql = "insert into customer(t_data, t_type, f_id, f_name, t_id, t_name, t_money, f_balance, t_balance) "
+            String sql = "insert into customer(t_date, t_type, f_id, f_name, t_id, t_name, t_money, f_balance, t_balance) "
                     + "values(?,?,?,?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);

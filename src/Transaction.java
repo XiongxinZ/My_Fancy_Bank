@@ -43,7 +43,28 @@ public abstract class Transaction{
     }
 
     public Transaction(Account from, Account to, double amount, String currency) {
-        this(from,to,amount,currency,currency);
+        this.from = from;
+        this.to = to;
+        this.fromWhom = from.getCustomer().getName();
+        this.toWhom = to.getCustomer().getName();
+        this.fromAccount = from.getAccountType();
+        this.toAccount = to.getAccountType();
+        this.transTime = new Date().toString();
+        this.amount = amount;
+        this.currencyFrom = currency;
+        this.currencyTo = currency;
+    }
+
+    public Transaction(Account from, String toWhom, String toAccount, double amount, String currency) {
+        this.from = from;
+        this.fromWhom = from.getCustomer().getName();
+        this.toWhom = toWhom;
+        this.fromAccount = from.getAccountType();
+        this.toAccount = toAccount;
+        this.transTime = new Date().toString();
+        this.amount = amount;
+        this.currencyFrom = currency;
+        this.currencyTo = currency;
     }
 
     public Transaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currency) {

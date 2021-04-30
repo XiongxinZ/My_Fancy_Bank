@@ -43,8 +43,10 @@ public class DepositFrame extends PopupFrame {
                     double amount = Double.parseDouble(amountText.getText().trim());
                     String cur = ((String) box.getSelectedItem()).trim();
                     String message = ((CanDeposit) account).deposit(amount, cur);
-                    dispose();
+                    DepositFrame.this.dispose();
                     new MessageFrame("Deposit Success", message);
+                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(DepositFrame.this)).getContextPanel()).repaintPanel();
+
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");
                 }

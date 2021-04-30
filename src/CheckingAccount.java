@@ -76,6 +76,12 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
         return new Transfer(this,account,val,curr).execute();
     }
 
+    @Override
+    public String transfer(String email, String accountType, double val, String curr) {
+        String c_id = Customer.getId(email);
+        return new Transfer(this, c_id, accountType,val,curr).execute();
+    }
+
     public static String createAccountFromCash(Customer customer, double deposit){
         CheckingAccount newly = new CheckingAccount(customer);
         newly.deposit(deposit);

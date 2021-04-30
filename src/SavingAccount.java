@@ -1,6 +1,6 @@
 import java.io.Serial;
 
-public class SavingAccount extends Account implements CanDeposit, CanTransferToOthers {
+public class SavingAccount extends Account implements CanDeposit, CanTransferWithin {
 
     public static final String TYPE = "Saving";
     @Serial
@@ -25,51 +25,15 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferToO
     }
 
     // Transfer to customer's another account
-
-    public String transfer(double val, Account account, String currency){
-        if (val > getAmount(currency)){
-            return "Sorry you only have " + getAmount() + currency + " in your " + getAccountType() + "account";
-        }
-        account.addCurrency(val);
-        this.removeCurrency(val);
-        return "Transfer " + val + " from "+ toString() +" account to "+ account.toString()+"account.";
-    }
-
-    // Transfer to another account
-    public String transfer(double val,Account account){
-        return transfer(val, account, "USD");
-    }
-
-    public String transfer(double val,String account){
-        if (getCustomer().getAccount(account) == null){
-            return "Sorry you don't have the " + account + " account";
-        }
-        return transfer(val, getCustomer().getAccount(account), "USD");
-    }
-
-
-
     @Override
-    protected void addCurrency(double val, String currency) {
-        super.addCurrency(val, currency);
-//        AccountDao.updateSavingMoney(this, currency);
+    public String transfer(String account,double val, String curr){
+        return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();
     }
 
-    @Override
-    protected void addCurrency(double val) {
-        addCurrency(val, "USD");
-    }
-
-    @Override
-    protected void removeCurrency(double val) {
-        removeCurrency(val,"USD");
-    }
-
-    @Override
-    protected void removeCurrency(double val, String currency) {
-        super.removeCurrency(val, currency);
-//        AccountDao.updateSavingMoney(this,currency);
-    }
+//    @Override
+//    public String transfer(Account account, double val, String curr) {
+//        return new Transfer(this,account,val,curr).execute();
+//    }
 
     public static String createAccountFromCash(Customer customer, double deposit){
         SavingAccount newly = new SavingAccount(customer);

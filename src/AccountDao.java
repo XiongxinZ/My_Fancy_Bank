@@ -76,6 +76,45 @@ public class AccountDao {
         return flag;
     }
 
+    public static int updateAccountMoney(String id, String accountType, double val, String curr) {
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int flag = 0;
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+//            String c_id = id;
+//            String type = accountType;
+            String select = "select * from account where c_id = ? and c_account = ?";
+
+            ps = conn.prepareStatement(select);
+            ps.setString(1, id);
+            ps.setString(2, accountType);
+
+            rs = ps.executeQuery();
+            double amount = 0;
+
+            while(rs.next()) {
+                amount = Double.parseDouble(rs.getString("c_Balance_"+curr));
+            }
+
+
+            String sql = "update account set c_Balance_" + curr + " = " + (amount + val) +
+                    " where c_id = '" + id + "' and c_account = '" + accountType + "'";
+            ps = conn.prepareStatement(String.valueOf(sql));
+            flag = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return flag;
+    }
+
 
     public int delCustomer(String id) {
 

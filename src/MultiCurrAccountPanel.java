@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 
 public class MultiCurrAccountPanel extends CustomerContentPanel{
     private Account account;
+
+    private JPanel infoPanel;
+    private JPanel operationPanel;
     public MultiCurrAccountPanel(Account account) {
         super(account.getCustomer());
         this.account = account;
@@ -14,8 +17,10 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
     private void setPanel(){
         setLayout(new GridLayout(2,1));
 
-        add(infoPanel());
-        add(operationPanel());
+        infoPanel = infoPanel();
+        operationPanel = operationPanel();
+        add(infoPanel);
+        add(operationPanel);
     }
 
     private JPanel infoPanel(){
@@ -43,7 +48,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             transferToOthers.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
+                    new TransferFrame(account,1);
                 }
             });
             jp.add(transferToOthers);
@@ -54,7 +59,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             transferToAccount.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
+                    new TransferFrame(account,0);
                 }
             });
             jp.add(transferToAccount);
@@ -97,6 +102,24 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             jp.add(exchange);
         }
 
+        JButton back = new JButton("Back");
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((CustomerFrame)GuiUtil.getFrame(MultiCurrAccountPanel.this)).setContextPanel(new CustomerHomepagePanel(getCustomer()));
+            }
+        });
+        jp.add(back);
+
         return jp;
+    }
+
+    public void repaintPanel(){
+        remove(infoPanel);
+        remove(operationPanel);
+        infoPanel = infoPanel();
+        add(infoPanel);
+        add(operationPanel);
+        updateUI();
     }
 }
