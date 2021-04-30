@@ -3,39 +3,31 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class WithdrawFrame extends PopupFrame {
+public class ChangeCurrFrame extends PopupFrame {
     private Account account;
-    public WithdrawFrame(Account account) {
-        super(account.toString() + " Withdraw");
+    public ChangeCurrFrame(Account account) {
+        super(account.toString() + " change currency type");
         this.account = account;
         setFrame();
         setVisible(true);
     }
 
-//    public WithdrawFrame() {
-//        super(" Withdraw");
-////        this.account = account;
-//        setFrame();
-//        setVisible(true);
-//    }
-
     private void setFrame(){
         JPanel jPanel = new JPanel(new GridLayout(4,2));
         jPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
-        JLabel typeLabel = new JLabel("Currency: ");
-        jPanel.add(typeLabel);
+        JLabel fromLabel = new JLabel("From Currency: ");
+        jPanel.add(fromLabel);
 
         JComboBox<String> box = new JComboBox<>(new String[]{"USD", "CNY", "JPY"});
         jPanel.add(box);
 
 
-        JLabel balanceLabel = new JLabel("Balance: ");
-        jPanel.add(balanceLabel);
+        JLabel toLabel = new JLabel("To Currency: ");
+        jPanel.add(toLabel);
 
-        JLabel balance = new JLabel(Double.toString(account.getAmount((String) box.getSelectedItem())));
-//        JLabel balance = new JLabel("0.0");
-        jPanel.add(balance);
+        JComboBox<String> box2 = new JComboBox<>(new String[]{"USD", "CNY", "JPY"});
+        jPanel.add(box2);
 
 
         JLabel amountLabel = new JLabel("Amount: ");
@@ -50,9 +42,10 @@ public class WithdrawFrame extends PopupFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     double amount = Double.parseDouble(amountText.getText().trim());
-                    String cur = ((String) box.getSelectedItem()).trim();
-                    String message = ((CanWithdraw) account).withdraw(amount, cur);
-                    new MessageFrame("Deposit Success", message);
+                    String from = ((String) box.getSelectedItem()).trim();
+                    String to = ((String) box2.getSelectedItem()).trim();
+                    String message = ((CanChangeCurr) account).changeCurr(from, to, amount);
+                    new MessageFrame("Change Success", message);
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");
                 }

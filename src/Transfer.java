@@ -1,5 +1,5 @@
 public class Transfer extends Transaction{
-    public Transfer(Account from, Account to, double amount) {
+    public Transfer(Account from, Account to, double amount, String currency) {
         super(from, to, amount);
     }
 

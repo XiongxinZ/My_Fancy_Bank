@@ -17,10 +17,20 @@ public class Withdraw extends Transaction{
     @Override
     public String execute() {
         assert getTo() instanceof CheckingAccount;
+
         String ret;
-        if (getTo() instanceof CheckingAccount){
-            ret = ((CheckingAccount) getTo()).withdraw(getAmount(), currency);
+        if (getTo() instanceof SavingAccount){
+            SavingAccount savingAccount = (SavingAccount) getFrom();
+            savingAccount.removeCurrency(getAmount(), currency);
+            AccountDao.updateAccountMoney(savingAccount, currency);
             TransactionDao.insertTransaction(this);
+            ret =  "Withdraw $" + getAmount() + ", amount $" + getAmount();
+        }else if (getTo() instanceof CheckingAccount){
+            CheckingAccount checkingAccount = (CheckingAccount) getFrom();
+            checkingAccount.removeCurrency(getAmount(), currency);
+            AccountDao.updateAccountMoney(checkingAccount,currency);
+            TransactionDao.insertTransaction(this);
+            ret = "Withdraw $" + getAmount() + ", amount $" + getAmount();
         }else{
             ret = getTo().toString() + " can't withdraw.";
         }

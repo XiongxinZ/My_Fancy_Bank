@@ -46,23 +46,24 @@ public class Account implements Serializable, Modifiable {
         this(customer, 0.0, "Saving");
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     // Transfer to another account
     public String transfer(Account account, double val){
-//        if (val > amount.get("USD")){
-//            return "Sorry you only have $" + amount.get("USD") + " in your " + accountType + "account";
-//        }
         account.addCurrency(val);
         this.removeCurrency(val);
         return "Transfer " + val + " from "+ toString() +" account to "+ account.toString()+"account.";
     }
 
     // Transfer to customer's another account
-    public String transfer(String account, double val){
+    public String transfer(String account, double val, String currency){
 //        if (customer.getAccount(account) == null){
 //            return "Sorry you don't have the " + account + " account";
 //        }
-        customer.getAccount(account).addCurrency(val);
-        return "Transfer " + val + " from "+ toString() +" account to "+ account +"account.";
+        return new Transfer(this, customer.getAccount(accountType), val, currency).execute();
+
     }
 
     public void consume(double val){

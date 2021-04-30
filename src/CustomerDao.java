@@ -204,12 +204,12 @@ public class CustomerDao {
 			rs = ps.executeQuery();
 
 			while(rs.next()) {
-				user = new Customer();
+				user = new Customer(pswd, email);
 
 				user.setId(rs.getString("c_id"));
 				user.setName(rs.getString("c_Name"));
 				user.setPassword(rs.getString("c_PSWD"));
-				user.setPassword(rs.getString("c_email"));
+				user.setEmail(rs.getString("c_email"));
 				user.setAccountList(AccountDao.selectAccountList(user));
 			}
 		} catch (SQLException e) {

@@ -16,14 +16,24 @@ public class Deposit extends Transaction{
 
     @Override
     public String execute() {
-        assert getTo() instanceof SavingAccount || getTo() instanceof CheckingAccount;
+        assert getTo() instanceof CanDeposit;
+//        assert getTo() instanceof SavingAccount || getTo() instanceof CheckingAccount;
         String ret;
         if (getTo() instanceof SavingAccount){
-            ret =  ((SavingAccount) getTo()).deposit(getAmount(), currency);
+            SavingAccount savingAccount = (SavingAccount) getTo();
+            savingAccount.addCurrency(getAmount(), currency);
+            AccountDao.updateAccountMoney(savingAccount,currency);
             TransactionDao.insertTransaction(this);
+            ret = "Deposit $" + getAmount() + ", amount $" + getAmount();
         }else if (getTo() instanceof CheckingAccount){
-            ret = ((CheckingAccount) getTo()).deposit(getAmount(), currency);
+//            ret = ((CheckingAccount) getTo()).deposit(getAmount(), currency);
+//            TransactionDao.insertTransaction(this);
+
+            CheckingAccount checkingAccount = (CheckingAccount) getTo();
+            checkingAccount.addCurrency(getAmount(), currency);
+            AccountDao.updateAccountMoney(checkingAccount,currency);
             TransactionDao.insertTransaction(this);
+            ret = "Deposit $" + getAmount() + ", amount $" + getAmount();
         }else{
             ret = getTo().toString() + " can't deposit.";
         }

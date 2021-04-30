@@ -15,12 +15,12 @@ public class SavingAccount extends Account implements CanDeposit, CanTransfer{
     }
 
     public String deposit(double val){
-        addCurrency(val);
-        return "Deposit $" + val + ", amount $" + getAmount();
+        return deposit(val,"USD");
     }
 
     public String deposit(double val,String currency){
         addCurrency(val, currency);
+        AccountDao.updateAccountMoney(this,currency);
         return "Deposit $" + val + ", amount $" + getAmount();
     }
 
@@ -47,10 +47,12 @@ public class SavingAccount extends Account implements CanDeposit, CanTransfer{
         return transfer(val, getCustomer().getAccount(account), "USD");
     }
 
+
+
     @Override
     protected void addCurrency(double val, String currency) {
         super.addCurrency(val, currency);
-        AccountDao.updateSavingMoney(this, currency);
+//        AccountDao.updateSavingMoney(this, currency);
     }
 
     @Override
@@ -66,7 +68,7 @@ public class SavingAccount extends Account implements CanDeposit, CanTransfer{
     @Override
     protected void removeCurrency(double val, String currency) {
         super.removeCurrency(val, currency);
-        AccountDao.updateSavingMoney(this,currency);
+//        AccountDao.updateSavingMoney(this,currency);
     }
 
     public static String createAccountFromCash(Customer customer, double deposit){
@@ -76,7 +78,7 @@ public class SavingAccount extends Account implements CanDeposit, CanTransfer{
 
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertSaving(newly);
+        AccountDao.insertAccount(newly);
         return "Create " + TYPE + " account successfully. Deposit "+deposit +
                 ", account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
                 ". Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"into the account. ";    }
@@ -86,8 +88,9 @@ public class SavingAccount extends Account implements CanDeposit, CanTransfer{
         SavingAccount newly = new SavingAccount(customer);
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertSaving(newly);
-        return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
+        AccountDao.insertAccount(newly);
+        AccountDao.updateAccountMoney((CheckingAccount) customer.getAccount("Checking"), "USD");
+        return "Pay the fee from Checking Account automatically. Create " + TYPE + " account successfully";
     }
 
 }

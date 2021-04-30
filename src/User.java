@@ -34,10 +34,22 @@ public class User{
         this.id = Long.toString(email.hashCode() * 31L + type.hashCode());
     }
 
+    public User(String password,String type, String email){
+//        this.name  = name;
+        this.password = password;
+        this.type = type;
+        this.email = email;
+        this.id = Long.toString(email.hashCode() * 31L + type.hashCode());
+    }
+
     public User(){}
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setType(String type) {

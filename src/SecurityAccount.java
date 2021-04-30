@@ -9,11 +9,11 @@ public class SecurityAccount extends Account implements CanTransfer, CanTransfer
     static int temp = 5000;
 
     public SecurityAccount(Customer customer, double amount) {
-        super(customer, amount);
+        super(customer, amount,"Security");
     }
 
     public SecurityAccount(Customer customer) {
-        super(customer);
+        super(customer,"Security");
     }
 
     public static String createAccountFromAccount(Customer customer){
@@ -21,8 +21,11 @@ public class SecurityAccount extends Account implements CanTransfer, CanTransfer
             return "You should create a Saving Account and put at least $5000 into the account";
         }else if (customer.getAccount("Saving").getAmount() > temp){
             customer.getAccount("Saving").removeCurrency(temp);
-            customer.addAccount(TYPE, new LoanAccount(customer));
+            SecurityAccount newly = new SecurityAccount(customer);
+            customer.addAccount(TYPE, newly);
             customer.markDirty(true);
+            AccountDao.insertAccount(newly);
+            AccountDao.updateAccountMoney(customer.getAccount("Saving"),"USD");
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully. ";
         }else{
             return "Your Saving Account should have at least $5000";

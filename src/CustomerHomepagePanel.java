@@ -51,7 +51,8 @@ public class CustomerHomepagePanel extends CustomerContentPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (getCustomer().getAccount("Loan") == null){
-                    new MessageFrame("Create Account",LoanAccount.createAccountFromAccount(getCustomer()));
+                    GuiUtil.getFrame(CustomerHomepagePanel.this).dispose();
+                    new CreateAccountFrame(getCustomer(), "Loan");
                 }else{
                     ((CustomerFrame)GuiUtil.getFrame(CustomerHomepagePanel.this)).setContextPanel(new MultiCurrAccountPanel(getCustomer().getAccount("Loan")));
                 }
@@ -64,7 +65,8 @@ public class CustomerHomepagePanel extends CustomerContentPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (getCustomer().getAccount("Security") == null){
-                    new MessageFrame("Create Account",SecurityAccount.createAccountFromAccount(getCustomer()));
+                    GuiUtil.getFrame(CustomerHomepagePanel.this).dispose();
+                    new CreateAccountFrame(getCustomer(), "Security");
                 }else{
                     ((CustomerFrame)GuiUtil.getFrame(CustomerHomepagePanel.this)).setContextPanel(new MultiCurrAccountPanel(getCustomer().getAccount("Security")));
                 }

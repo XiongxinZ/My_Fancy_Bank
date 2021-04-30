@@ -35,14 +35,19 @@ public class CreateAccountFrame extends PopupFrame{
             button2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (customer.getAccount("Checking").getAmount() >= ConfigUtil.getConfigInt("AccountFee")){
-                        dispose();
-                        String message = SavingAccount.createAccountFromAccount(customer);
-                        new CustomerFrame(customer);
-                        new MessageFrame("Success Info",message);
+                    if (customer.hasAccount("Checking")){
+                        if (customer.getAccount("Checking").getAmount() >= ConfigUtil.getConfigInt("AccountFee")){
+                            dispose();
+                            String message = SavingAccount.createAccountFromAccount(customer);
+                            new CustomerFrame(customer);
+                            new MessageFrame("Success Info",message);
+                        }else{
+                            new MessageFrame("Error Info", "You don't have enough money");
+                        }
                     }else{
-                        new MessageFrame("Error Info", "You don't have enough money");
+                        new MessageFrame("Error Info", "You don't Checking account");
                     }
+
                 }
             });
         }else{
@@ -50,14 +55,25 @@ public class CreateAccountFrame extends PopupFrame{
             button2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (customer.getAccount("Saving").getAmount() >= ConfigUtil.getConfigInt("AccountFee")){
-                        CreateAccountFrame.this.dispose();
-                        String message = CheckingAccount.createAccountFromAccount(customer);
-                        new CustomerFrame(customer);
-                        new MessageFrame("Success Info",message);
+                    if (customer.hasAccount("Saving")){
+                        if (customer.getAccount("Saving").getAmount() >= ConfigUtil.getConfigInt("AccountFee")){
+                            dispose();
+                            String message;
+                            switch (type){
+                                case "Checking" :message = CheckingAccount.createAccountFromAccount(customer);break;
+                                case "Security":message = SecurityAccount.createAccountFromAccount(customer);break;
+                                case "Loan": message = LoanAccount.createAccountFromAccount(customer);break;
+                                default: message = "Success.";
+                            }
+                            new CustomerFrame(customer);
+                            new MessageFrame("Success Info",message);
+                        }else{
+                            new MessageFrame("Error Info", "You don't have enough money");
+                        }
                     }else{
-                        new MessageFrame("Error Info", "You don't have enough money");
+                        new MessageFrame("Error Info", "You don't Saving account");
                     }
+
                 }
             });
         }

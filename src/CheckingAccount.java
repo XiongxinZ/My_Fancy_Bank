@@ -1,6 +1,6 @@
 import java.io.Serial;
 
-public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
+public class CheckingAccount extends Account implements CanDeposit, CanWithdraw, CanChangeCurr{
 
     @Serial
     private static final long serialVersionUid = -5974937777045507260L;
@@ -18,7 +18,7 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
     @Override
     protected void addCurrency(double val, String currency) {
         super.addCurrency(val, currency);
-        AccountDao.updateCheckingMoney(this, currency);
+//        AccountDao.updateCheckingMoney(this, currency);
     }
 
     @Override
@@ -34,8 +34,12 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
     @Override
     protected void removeCurrency(double val, String currency) {
         super.removeCurrency(val, currency);
-        AccountDao.updateCheckingMoney(this,currency);
+//        AccountDao.updateCheckingMoney(this,currency);
     }
+
+//    public String depositExe(double val, String currency){
+//        return new Deposit(this,)
+//    }
 
 
     public String deposit(double val){
@@ -43,8 +47,7 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
     }
 
     public String deposit(double val,String currency){
-        addCurrency(val, currency);
-        return "Deposit $" + val + ", amount $" + getAmount();
+        return new Deposit(this, val, currency).execute();
     }
 
     public String withdraw(double val){
@@ -52,8 +55,15 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
     }
 
     public String withdraw(double val,String currency){
-        removeCurrency(val, currency);
-        return "Withdraw $" + val + ", amount $" + getAmount();
+        return new Withdraw(this,val,currency).execute();
+    }
+
+    public String changeCurr(String fromType, String toType, double amount){
+        setAmount(getAmount(fromType) - amount, fromType);
+        setAmount(getAmount(toType) + amount * ConfigUtil.getConfigDouble(fromType+"To"+toType), toType);
+        AccountDao.updateAccountMoney(this, fromType);
+        AccountDao.updateAccountMoney(this,toType);
+        return "Successful! " + fromType + amount +" to " + toType + amount * ConfigUtil.getConfigDouble(fromType+"To"+toType);
     }
 
     public static String createAccountFromCash(Customer customer, double deposit){
@@ -63,7 +73,7 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
 
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertChecking(newly);
+        AccountDao.insertAccount(newly);
         return "Create " + TYPE + " account successfully. Deposit "+deposit +
                 ", account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
                 ". Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"into the account. ";
@@ -75,7 +85,8 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw{
         CheckingAccount newly = new CheckingAccount(customer);
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertChecking(newly);
-        return "Create " + TYPE + " account successfully. Deposit %.2f, account fee cost %d. Put the remaining %.2f into the account. ";
+        AccountDao.insertAccount(newly);
+        AccountDao.updateAccountMoney(account, "USD");
+        return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
     }
 }

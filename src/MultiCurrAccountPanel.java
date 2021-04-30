@@ -12,14 +12,14 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
     }
 
     private void setPanel(){
-        setLayout(new GridLayout(1,1));
+        setLayout(new GridLayout(2,1));
 
         add(infoPanel());
         add(operationPanel());
     }
 
     private JPanel infoPanel(){
-        JPanel jp = new JPanel(new GridLayout(0,1));
+        JPanel jp = new JPanel();
         jp.add(new JLabel(){
             @Override
             protected void paintComponent(Graphics g) {
@@ -27,7 +27,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
                 g.drawImage(icon.getImage(), 0, 0, getWidth(),getHeight(),
                         icon.getImageObserver());
             }
-        });
+        }, BorderLayout.NORTH);
         jp.add(new JLabel("<html><b><em>"+account.toString()+"</em></b><br>"+
                 "USD: " + account.getAmount("USD") + "<br>" +
                 "CNY: " + account.getAmount("CNY") + "<br>" +
@@ -37,17 +37,34 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
     }
 
     private JPanel operationPanel(){
-        JPanel jp = new JPanel();
+        JPanel jp = new JPanel(new GridLayout(0,1));
         JButton transferToOthers = new JButton("Transfer To Other Customer");
         JButton transferToAccount = new JButton("Transfer To My Own Account");
+
         JButton withdraw = new JButton("Withdraw");
+        withdraw.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new WithdrawFrame(account);
+            }
+        });
+        jp.add(withdraw);
+
         JButton deposit = new JButton("Deposit");
         deposit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                new DepositFrame(account);
             }
         });
-        JButton transferToOther = new JButton("Transfer To Others");
+        jp.add(deposit);
+
+        JButton changeCurr = new JButton("Change Currency Type");
+
+        jp.add(changeCurr);
+
+        jp.add(transferToAccount);
+        jp.add(transferToOthers);
 
         return jp;
     }

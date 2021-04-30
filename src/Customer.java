@@ -12,7 +12,13 @@ public class Customer extends User implements Modifiable{
         super(name, pwd, "Customer", email);
     }
 
-    public Customer() {}
+    public Customer(String pwd, String email) {
+        super(pwd, "Customer", email);
+    }
+
+    public Customer() {
+        super();
+    }
 
     public String createAccountAndReturnMessage(String accountType){
         if (accountList.containsKey(accountType)){
@@ -29,17 +35,17 @@ public class Customer extends User implements Modifiable{
         return null;
     }
 
-    public String deposit(double val, String currency, String accountType){
-        return new Deposit(accountList.get(accountType), val, currency).execute();
-    }
-
-    public String deposit(double val, String currency){
-        return deposit(val, currency, "Saving");
-    }
-
-    public String deposit(double val){
-        return deposit(val, "USD");
-    }
+//    public String deposit(double val, String currency, String accountType){
+//        return new Deposit(accountList.get(accountType), val, currency).execute();
+//    }
+//
+//    public String deposit(double val, String currency){
+//        return deposit(val, currency, "Saving");
+//    }
+//
+//    public String deposit(double val){
+//        return deposit(val, "USD");
+//    }
 
     public String withdraw(double val, String currency, String accountType){
         return new Withdraw(accountList.get(accountType), val, currency).execute();

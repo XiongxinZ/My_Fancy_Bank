@@ -10,14 +10,10 @@ public class StringUtil {
 
     public static String getAccountInfoString(Account account){
 //        String type = account.getAccountType();
-        if (account.isMultiCurr()){
-            return "<html><b>" + account.getAccountType() + "Account:</b><br>" +
-                    "USD: " + account.getAmount("USD") + "<br>" +
-                    "CNY: " + account.getAmount("CNY") + "<br>" +
-                    "JPY: " + account.getAmount("JPY") + "<br>";
-        }else {
-            return "<html><b>" + account.getAccountType() + "Account:</b><br>" +
-                    "Balance: " + account.getAmount() + "<br>";
-        }
+        return "<html><b>" + account.getAccountType() + "Account:</b><br>" +
+                "USD: " + account.getAmount("USD") + "<br>" +
+                "CNY: " + account.getAmount("CNY") + "<br>" +
+                "JPY: " + account.getAmount("JPY") + "<br>";
+
     }
 }

@@ -15,16 +15,21 @@ public abstract class Transaction{
 
     private String transType;
 
-    public Transaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount) {
+    private String currencyFrom;
+    private String currencyTo;
+
+    public Transaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currencyFrom, String currencyTo) {
         this.fromWhom = fromWhom;
         this.toWhom = toWhom;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
         this.transTime = new Date().toString();
         this.amount = amount;
+        this.currencyFrom = currencyFrom;
+        this.currencyTo = currencyTo;
     }
 
-    public Transaction(Account from, Account to, double amount) {
+    public Transaction(Account from, Account to, double amount, String currencyFrom,String currencyTo) {
         this.from = from;
         this.to = to;
         this.fromWhom = from.getCustomer().getName();
@@ -33,6 +38,24 @@ public abstract class Transaction{
         this.toAccount = to.getAccountType();
         this.transTime = new Date().toString();
         this.amount = amount;
+        this.currencyFrom = currencyFrom;
+        this.currencyTo = currencyTo;
+    }
+
+    public Transaction(Account from, Account to, double amount, String currency) {
+        this(from,to,amount,currency,currency);
+    }
+
+    public Transaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currency) {
+        this(fromWhom,toWhom,fromAccount,toAccount,amount,currency,currency);
+    }
+
+    public Transaction(Account from, Account to, double amount) {
+        this(from,to,amount,"USD");
+    }
+
+    public Transaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount) {
+        this(fromWhom,toWhom,fromAccount,toAccount,amount,"USD");
     }
 
     public String showInfo(){
@@ -89,6 +112,14 @@ public abstract class Transaction{
 
     public Double getToBalance() {
         return to == null? null:to.getAmount();
+    }
+
+    public String getCurrencyFrom() {
+        return currencyFrom;
+    }
+
+    public String getCurrencyTo() {
+        return currencyTo;
     }
 
     public abstract String execute();
