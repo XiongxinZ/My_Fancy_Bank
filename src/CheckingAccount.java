@@ -1,6 +1,6 @@
 import java.io.Serial;
 
-public class CheckingAccount extends Account implements CanDeposit, CanWithdraw, CanChangeCurr{
+public class CheckingAccount extends Account implements CanDeposit, CanWithdraw, CanExchange, CanTransferWithin, CanTransferToOthers {
 
     @Serial
     private static final long serialVersionUid = -5974937777045507260L;
@@ -58,12 +58,22 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
         return new Withdraw(this,val,currency).execute();
     }
 
-    public String changeCurr(String fromType, String toType, double amount){
-        setAmount(getAmount(fromType) - amount, fromType);
-        setAmount(getAmount(toType) + amount * ConfigUtil.getConfigDouble(fromType+"To"+toType), toType);
-        AccountDao.updateAccountMoney(this, fromType);
-        AccountDao.updateAccountMoney(this,toType);
-        return "Successful! " + fromType + amount +" to " + toType + amount * ConfigUtil.getConfigDouble(fromType+"To"+toType);
+    public String exchange(String fromType, String toType, double amount){
+        return new Exchange(this,amount,fromType,toType).execute();
+    }
+
+    @Override
+    public String transfer(String account,double val, String curr){
+        return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();
+//        if (getCustomer().getAccount(account) == null){
+//            return "Sorry you don't have the " + account + " account";
+//        }
+//        return transfer(val, getCustomer().getAccount(account), "USD");
+    }
+
+    @Override
+    public String transfer(Account account, double val, String curr) {
+        return new Transfer(this,account,val,curr).execute();
     }
 
     public static String createAccountFromCash(Customer customer, double deposit){

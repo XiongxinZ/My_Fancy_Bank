@@ -3,10 +3,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ChangeCurrFrame extends PopupFrame {
+public class ExchangeFrame extends PopupFrame {
     private Account account;
-    public ChangeCurrFrame(Account account) {
-        super(account.toString() + " change currency type");
+    public ExchangeFrame(Account account) {
+        super(account.toString() + " exchange");
         this.account = account;
         setFrame();
         setVisible(true);
@@ -21,7 +21,6 @@ public class ChangeCurrFrame extends PopupFrame {
 
         JComboBox<String> box = new JComboBox<>(new String[]{"USD", "CNY", "JPY"});
         jPanel.add(box);
-
 
         JLabel toLabel = new JLabel("To Currency: ");
         jPanel.add(toLabel);
@@ -44,7 +43,8 @@ public class ChangeCurrFrame extends PopupFrame {
                     double amount = Double.parseDouble(amountText.getText().trim());
                     String from = ((String) box.getSelectedItem()).trim();
                     String to = ((String) box2.getSelectedItem()).trim();
-                    String message = ((CanChangeCurr) account).changeCurr(from, to, amount);
+                    String message = ((CanExchange) account).exchange(from, to, amount);
+                    dispose();
                     new MessageFrame("Change Success", message);
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");
@@ -63,9 +63,5 @@ public class ChangeCurrFrame extends PopupFrame {
         jPanel.add(back);
 
         add(jPanel);
-    }
-
-    public static void main(String[] args) {
-        new DepositFrame();
     }
 }

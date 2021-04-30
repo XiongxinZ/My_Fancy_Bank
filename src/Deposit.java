@@ -1,17 +1,17 @@
 public class Deposit extends Transaction{
-    private String currency = "USD";
+//    private String currency = "USD";
     public Deposit(Account to, double amount) {
         super(null, to, amount);
     }
 
     public Deposit(Account to, double amount, String currency) {
-        super(null, to, amount);
-        this.currency = currency;
+        super(null, to, amount,currency);
+//        this.currency = currency;
     }
 
     @Override
     public String showInfo() {
-        return getTransTime() + ": " + "Deposit " + getAmount() +" "+ currency +" to " + getTo().toString();
+        return getTransTime() + ": " + "Deposit " + getAmount() +" "+ getCurrencyTo() +" to " + getTo().toString();
     }
 
     @Override
@@ -21,19 +21,19 @@ public class Deposit extends Transaction{
         String ret;
         if (getTo() instanceof SavingAccount){
             SavingAccount savingAccount = (SavingAccount) getTo();
-            savingAccount.addCurrency(getAmount(), currency);
-            AccountDao.updateAccountMoney(savingAccount,currency);
+            savingAccount.addCurrency(getAmount(), getCurrencyTo());
+            AccountDao.updateAccountMoney(savingAccount,getCurrencyTo());
             TransactionDao.insertTransaction(this);
-            ret = "Deposit $" + getAmount() + ", amount $" + getAmount();
+            ret = "Deposit " + getAmount() + ", balance $" + savingAccount.getAmount(getCurrencyTo());
         }else if (getTo() instanceof CheckingAccount){
 //            ret = ((CheckingAccount) getTo()).deposit(getAmount(), currency);
 //            TransactionDao.insertTransaction(this);
 
             CheckingAccount checkingAccount = (CheckingAccount) getTo();
-            checkingAccount.addCurrency(getAmount(), currency);
-            AccountDao.updateAccountMoney(checkingAccount,currency);
+            checkingAccount.addCurrency(getAmount(), getCurrencyTo());
+            AccountDao.updateAccountMoney(checkingAccount,getCurrencyTo());
             TransactionDao.insertTransaction(this);
-            ret = "Deposit $" + getAmount() + ", amount $" + getAmount();
+            ret = "Deposit " + getAmount() + ", balance $" + checkingAccount.getAmount(getCurrencyTo());
         }else{
             ret = getTo().toString() + " can't deposit.";
         }

@@ -1,6 +1,6 @@
 import java.io.Serial;
 
-public class SavingAccount extends Account implements CanDeposit, CanTransfer{
+public class SavingAccount extends Account implements CanDeposit, CanTransferToOthers {
 
     public static final String TYPE = "Saving";
     @Serial

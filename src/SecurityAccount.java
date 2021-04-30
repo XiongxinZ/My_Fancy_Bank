@@ -1,6 +1,6 @@
 import java.io.Serial;
 
-public class SecurityAccount extends Account implements CanTransfer, CanTransferTo{
+public class SecurityAccount extends Account implements CanTransferToOthers, CanTransferWithin {
 
     public static final String TYPE = "Security";
     @Serial
@@ -61,16 +61,17 @@ public class SecurityAccount extends Account implements CanTransfer, CanTransfer
     }
 
     @Override
-    public String transfer(double val,String account){
-        if (getCustomer().getAccount(account) == null){
-            return "Sorry you don't have the " + account + " account";
-        }
-        return transfer(val, getCustomer().getAccount(account), "USD");
+    public String transfer(String account,double val, String curr){
+        return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();
+//        if (getCustomer().getAccount(account) == null){
+//            return "Sorry you don't have the " + account + " account";
+//        }
+//        return transfer(val, getCustomer().getAccount(account), "USD");
     }
 
     @Override
-    public String transfer(double val, Account account) {
-        return null;
+    public String transfer(Account account, double val, String curr) {
+        return new Transfer(this,account,val,curr).execute();
     }
 
     @Override

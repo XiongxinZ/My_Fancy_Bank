@@ -38,33 +38,64 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
 
     private JPanel operationPanel(){
         JPanel jp = new JPanel(new GridLayout(0,1));
-        JButton transferToOthers = new JButton("Transfer To Other Customer");
-        JButton transferToAccount = new JButton("Transfer To My Own Account");
+        if (account instanceof CanTransferToOthers){
+            JButton transferToOthers = new JButton("Transfer To Other Customer");
+            transferToOthers.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
 
-        JButton withdraw = new JButton("Withdraw");
-        withdraw.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new WithdrawFrame(account);
-            }
-        });
-        jp.add(withdraw);
+                }
+            });
+            jp.add(transferToOthers);
+        }
 
-        JButton deposit = new JButton("Deposit");
-        deposit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new DepositFrame(account);
-            }
-        });
-        jp.add(deposit);
+        if (account instanceof CanTransferWithin){
+            JButton transferToAccount = new JButton("Transfer To My Own Account");
+            transferToAccount.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
 
-        JButton changeCurr = new JButton("Change Currency Type");
+                }
+            });
+            jp.add(transferToAccount);
+        }
 
-        jp.add(changeCurr);
 
-        jp.add(transferToAccount);
-        jp.add(transferToOthers);
+        if (account instanceof CanWithdraw){
+            JButton withdraw = new JButton("Withdraw");
+            withdraw.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new WithdrawFrame(account);
+                }
+            });
+            jp.add(withdraw);
+        }
+
+
+        if (account instanceof CanDeposit){
+            JButton deposit = new JButton("Deposit");
+            deposit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new DepositFrame(account);
+                }
+            });
+            jp.add(deposit);
+        }
+
+
+        if (account instanceof CanExchange){
+            JButton exchange = new JButton("Exchange");
+            exchange.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new ExchangeFrame(account);
+                }
+            });
+
+            jp.add(exchange);
+        }
 
         return jp;
     }
