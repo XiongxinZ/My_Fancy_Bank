@@ -16,6 +16,10 @@ public class LoanAccount extends Account{
         super(customer,"Loan");
     }
 
+    public String repayment(double amount, String cur){
+        return new Repayment(this,amount,cur).execute();
+    }
+
     public static String createAccountFromAccount(Customer customer){
         // only pay from saving account
         if (customer.hasAccount("Saving") && customer.getAccount("Saving").getAmount() > temp){

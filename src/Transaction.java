@@ -10,7 +10,7 @@ public abstract class Transaction{
     private Account from;
     private Account to;
 
-    private String transTime;
+    private Date transTime;
     private double amount;
 
     private String transType;
@@ -18,53 +18,55 @@ public abstract class Transaction{
     private String currencyFrom;
     private String currencyTo;
 
-    public Transaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currencyFrom, String currencyTo) {
+    public Transaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currencyFrom, String currencyTo, Date date) {
         this.fromWhom = fromWhom;
         this.toWhom = toWhom;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
-        this.transTime = new Date().toString();
+        this.transTime = date;
+        this.amount = amount;
+        this.currencyFrom = currencyFrom;
+        this.currencyTo = currencyTo;
+    }
+
+    public Transaction(Account from, Account to, double amount, String currencyFrom,String currencyTo, Date date) {
+        this.from = from;
+        this.to = to;
+        this.fromWhom = from.getCustomer().getName();
+        this.toWhom = to.getCustomer().getName();
+        this.fromAccount = from.getAccountType();
+        this.toAccount = to.getAccountType();
+        this.transTime = date;
         this.amount = amount;
         this.currencyFrom = currencyFrom;
         this.currencyTo = currencyTo;
     }
 
     public Transaction(Account from, Account to, double amount, String currencyFrom,String currencyTo) {
-        this.from = from;
-        this.to = to;
-        this.fromWhom = from.getCustomer().getName();
-        this.toWhom = to.getCustomer().getName();
-        this.fromAccount = from.getAccountType();
-        this.toAccount = to.getAccountType();
-        this.transTime = new Date().toString();
-        this.amount = amount;
-        this.currencyFrom = currencyFrom;
-        this.currencyTo = currencyTo;
+        this(from,to,amount,currencyFrom,currencyTo,new Date());
+    }
+    public Transaction(Account from, Account to, double amount, String currency) {
+        this(from,to,amount,currency,currency);
     }
 
-    public Transaction(Account from, Account to, double amount, String currency) {
+    public Transaction(Account from, String toWhom, String toAccount, double amount, String currency, Date date) {
         this.from = from;
-        this.to = to;
         this.fromWhom = from.getCustomer().getName();
-        this.toWhom = to.getCustomer().getName();
+        this.toWhom = toWhom;
         this.fromAccount = from.getAccountType();
-        this.toAccount = to.getAccountType();
-        this.transTime = new Date().toString();
+        this.toAccount = toAccount;
+        this.transTime = date;
         this.amount = amount;
         this.currencyFrom = currency;
         this.currencyTo = currency;
     }
 
     public Transaction(Account from, String toWhom, String toAccount, double amount, String currency) {
-        this.from = from;
-        this.fromWhom = from.getCustomer().getName();
-        this.toWhom = toWhom;
-        this.fromAccount = from.getAccountType();
-        this.toAccount = toAccount;
-        this.transTime = new Date().toString();
-        this.amount = amount;
-        this.currencyFrom = currency;
-        this.currencyTo = currency;
+        this(from,toWhom,toAccount,amount,currency,new Date());
+    }
+
+    public Transaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currencyFrom, String currencyTo) {
+        this(fromWhom,toWhom,fromAccount,toAccount,amount,currencyFrom,currencyTo,new Date());
     }
 
     public Transaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currency) {
@@ -123,7 +125,7 @@ public abstract class Transaction{
         return transType;
     }
 
-    public String getTransTime() {
+    public Date getTransTime() {
         return transTime;
     }
 

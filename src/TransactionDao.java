@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -23,7 +20,7 @@ public class TransactionDao {
                     + "values(?,?,?,?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
-            ps.setString(1, transaction.getTransTime());
+            ps.setDate(1, new Date(transaction.getTransTime().getTime()));
             ps.setString(2, transaction.getTransType());
             ps.setString(3, transaction.getFromWhom()==null?"-": transaction.getFromWhom());
             ps.setString(4, transaction.getFromAccount()==null?"-": transaction.getFromAccount());

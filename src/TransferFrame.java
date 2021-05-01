@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class TransferFrame extends PopupFrame{
 
@@ -20,7 +22,7 @@ public class TransferFrame extends PopupFrame{
 
     private void setFrame(){
 
-        JPanel jPanel = new JPanel(new GridLayout(4,2));
+        JPanel jPanel = new JPanel(new GridLayout(0,2));
         jPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         JLabel typeLabel = new JLabel("Currency: ");
@@ -36,6 +38,14 @@ public class TransferFrame extends PopupFrame{
         JLabel balance = new JLabel(Double.toString(account.getAmount((String) box.getSelectedItem())));
 //        JLabel balance = new JLabel("0.0");
         jPanel.add(balance);
+
+        box.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                balance.setText(Double.toString(account.getAmount((String) box.getSelectedItem())));
+            }
+        });
+
 
         JLabel toLabel = new JLabel("ToWhom: ");
         jPanel.add(toLabel);

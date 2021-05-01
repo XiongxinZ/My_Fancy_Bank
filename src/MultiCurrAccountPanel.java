@@ -102,6 +102,16 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             jp.add(exchange);
         }
 
+        if (account instanceof LoanAccount){
+            JButton repayment = new JButton("Repayment");
+            repayment.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new RepaymentFrame(account);
+                }
+            });
+        }
+
         JButton back = new JButton("Back");
         back.addActionListener(new ActionListener() {
             @Override

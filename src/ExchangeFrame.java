@@ -13,7 +13,7 @@ public class ExchangeFrame extends PopupFrame {
     }
 
     private void setFrame(){
-        JPanel jPanel = new JPanel(new GridLayout(4,2));
+        JPanel jPanel = new JPanel(new GridLayout(0,2));
         jPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         JLabel fromLabel = new JLabel("From Currency: ");

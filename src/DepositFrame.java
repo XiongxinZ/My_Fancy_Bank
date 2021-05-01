@@ -12,12 +12,6 @@ public class DepositFrame extends PopupFrame {
         setVisible(true);
     }
 
-    public DepositFrame() {
-        super(" Deposit");
-//        this.account = account;
-        setFrame();
-        setVisible(true);
-    }
 
     private void setFrame(){
         JPanel jPanel = new JPanel(new GridLayout(3,2));
@@ -66,7 +60,7 @@ public class DepositFrame extends PopupFrame {
         add(jPanel);
     }
 
-    public static void main(String[] args) {
-        new DepositFrame();
-    }
+//    public static void main(String[] args) {
+//        new DepositFrame();
+//    }
 }
