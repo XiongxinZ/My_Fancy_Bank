@@ -39,7 +39,8 @@ public class DepositFrame extends PopupFrame {
                     String message = ((CanDeposit) account).deposit(amount, cur);
                     DepositFrame.this.dispose();
                     new MessageFrame("Deposit Success", message);
-                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(DepositFrame.this)).getContextPanel()).repaintPanel();
+                    new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+//                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(DepositFrame.this)).getContextPanel()).repaintPanel();
 
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");
@@ -53,6 +54,7 @@ public class DepositFrame extends PopupFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
             }
         });
         jPanel.add(back);

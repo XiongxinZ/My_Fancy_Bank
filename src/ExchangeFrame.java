@@ -44,7 +44,8 @@ public class ExchangeFrame extends PopupFrame {
                     String from = ((String) box.getSelectedItem()).trim();
                     String to = ((String) box2.getSelectedItem()).trim();
                     String message = ((CanExchange) account).exchange(from, to, amount);
-                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(ExchangeFrame.this)).getContextPanel()).repaintPanel();
+                    new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+//                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(ExchangeFrame.this)).getContextPanel()).repaintPanel();
 
                     ExchangeFrame.this.dispose();
                     new MessageFrame("Change Success", message);
@@ -61,6 +62,7 @@ public class ExchangeFrame extends PopupFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
             }
         });
         jPanel.add(back);

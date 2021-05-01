@@ -8,7 +8,7 @@ public class SellStock {
     }
 
     public String execute() {
-        stock.sell();
+//        stock.sell();
         return null;
     }
 }

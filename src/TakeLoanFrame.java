@@ -69,7 +69,8 @@ public class TakeLoanFrame  extends PopupFrame{
                     String message = ((LoanAccount) account).takeLoan(collateral1, cur);
                     TakeLoanFrame.this.dispose();
                     new MessageFrame("Repayment Success", message);
-                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(TakeLoanFrame.this)).getContextPanel()).repaintPanel();
+                    new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+//                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(TakeLoanFrame.this)).getContextPanel()).repaintPanel();
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");
                 }
@@ -82,6 +83,7 @@ public class TakeLoanFrame  extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
             }
         });
         jPanel.add(back);

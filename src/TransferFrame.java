@@ -92,7 +92,8 @@ public class TransferFrame extends PopupFrame{
                         TransferFrame.this.dispose();
                         new MessageFrame("Transfer Success", message);
                     }
-                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(TransferFrame.this)).getContextPanel()).repaintPanel();
+                    new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+//                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(TransferFrame.this)).getContextPanel()).repaintPanel();
 
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");
@@ -106,6 +107,7 @@ public class TransferFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
             }
         });
         jPanel.add(back);

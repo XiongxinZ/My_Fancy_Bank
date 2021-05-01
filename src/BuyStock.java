@@ -10,7 +10,7 @@ public class BuyStock {
     }
 
     public String execute() {
-        stock.buy();
+//        stock.buy();
         return null;
     }
 }

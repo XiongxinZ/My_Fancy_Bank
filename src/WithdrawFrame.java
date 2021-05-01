@@ -53,7 +53,8 @@ public class WithdrawFrame extends PopupFrame {
                     double amount = Double.parseDouble(amountText.getText().trim());
                     String cur = ((String) box.getSelectedItem()).trim();
                     String message = ((CanWithdraw) account).withdraw(amount, cur);
-                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(WithdrawFrame.this)).getContextPanel()).repaintPanel();
+                    new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+//                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(WithdrawFrame.this)).getContextPanel()).repaintPanel();
 
                     WithdrawFrame.this.dispose();
                     new MessageFrame("Deposit Success", message);
@@ -70,6 +71,7 @@ public class WithdrawFrame extends PopupFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
             }
         });
         jPanel.add(back);

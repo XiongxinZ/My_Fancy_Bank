@@ -48,6 +48,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             transferToOthers.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
                     new TransferFrame(account,1);
                 }
             });
@@ -59,6 +60,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             transferToAccount.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
                     new TransferFrame(account,0);
                 }
             });
@@ -71,6 +73,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             withdraw.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
                     new WithdrawFrame(account);
                 }
             });
@@ -83,6 +86,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             deposit.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
                     new DepositFrame(account);
                 }
             });
@@ -95,6 +99,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             exchange.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
                     new ExchangeFrame(account);
                 }
             });
@@ -107,25 +112,31 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             repayment.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
                     new RepaymentFrame(account);
                 }
             });
+            jp.add(repayment);
 
             JButton takeLoan = new JButton("Take Loan");
             takeLoan.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
+                    new TakeLoanFrame(account);
                 }
             });
+            jp.add(takeLoan);
 
             JButton uploadCollateral = new JButton("Upload Collateral");
             uploadCollateral.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
+                    new UploadCollateralFrame(account.getCustomer());
                 }
             });
+            jp.add(uploadCollateral);
         }
 
         JButton back = new JButton("Back");

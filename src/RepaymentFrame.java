@@ -52,7 +52,8 @@ public class RepaymentFrame extends PopupFrame{
                     String message = ((LoanAccount) account).repayment(amount, cur);
                     RepaymentFrame.this.dispose();
                     new MessageFrame("Repayment Success", message);
-                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(RepaymentFrame.this)).getContextPanel()).repaintPanel();
+                    new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+//                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(RepaymentFrame.this)).getContextPanel()).repaintPanel();
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");
                 }
@@ -65,6 +66,7 @@ public class RepaymentFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
             }
         });
         jPanel.add(back);

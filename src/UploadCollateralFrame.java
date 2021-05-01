@@ -41,7 +41,8 @@ public class UploadCollateralFrame extends PopupFrame{
                     String message = Collateral.valuateCollateral(customer, name, file.getSelectedFile());
                     UploadCollateralFrame.this.dispose();
                     new MessageFrame("Request upload", message);
-                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(UploadCollateralFrame.this)).getContextPanel()).repaintPanel();
+                    new CustomerFrame(customer).setContextPanel(new MultiCurrAccountPanel(customer.getAccount("Security")));
+//                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(UploadCollateralFrame.this)).getContextPanel()).repaintPanel();
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");
                 }
@@ -54,6 +55,7 @@ public class UploadCollateralFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                new CustomerFrame(customer).setContextPanel(new MultiCurrAccountPanel(customer.getAccount("Security")));
             }
         });
         jPanel.add(back);
