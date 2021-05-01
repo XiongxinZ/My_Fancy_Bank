@@ -14,6 +14,7 @@ public class Transfer extends Transaction{
         }else if (getTo() == null){
             getFrom().removeCurrency(getAmount(), getCurrencyFrom());
             AccountDao.updateAccountMoney(getToWhom(), getToAccount(), getAmount(), getCurrencyTo());
+            TransactionDao.insertTransaction(this);
             ret = "Transfer success";
         }else{
             getFrom().removeCurrency(getAmount(), getCurrencyFrom());

@@ -5,7 +5,7 @@ import java.util.List;
 public class Banker extends User{
     @Serial
     private static final long serialVersionUid = 1951449345466306912L;
-    private List<Order> orderList = SystemDatabase.getOrderList();
+    private List<Order> orderList = new ArrayList<>();
 
     public Banker(String name, String pwd, String email) {
         super(name, pwd, "Banker", email);

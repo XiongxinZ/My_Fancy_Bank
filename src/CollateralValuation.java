@@ -1,5 +1,5 @@
-import java.io.File;
-import java.io.Serial;
+import java.io.*;
+import java.nio.channels.FileChannel;
 
 public class CollateralValuation implements Order{
 
@@ -7,21 +7,32 @@ public class CollateralValuation implements Order{
     private static final long serialVersionUid = 8331184208579642887L;
     Customer customer;
 
-    String certificateName;
+    String name;
     File file;
 
-    public CollateralValuation(Customer customer, File file) {
+    public CollateralValuation(Customer customer, String name, File file) {
         this.customer = customer;
-        file = file;
+        this.file = file;
+        this.name = name;
     }
 
-    public CollateralValuation(Customer customer, String filename) {
-        this.customer = customer;
-        certificateName = filename;
+
+    @Override
+    public String apply() {
+        try(FileChannel fis = new FileInputStream(file).getChannel();
+            FileChannel fos = new FileOutputStream("/certificate/"+file.getName()).getChannel()
+        ){
+            fos.transferFrom(fis, 0, fis.size());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public void execute() {
-
+    public String execute() {
+        return null;
     }
 }

@@ -15,6 +15,7 @@ public class Repayment extends Transaction{
             getTo().removeCurrency(getAmount(),getCurrencyTo());
             AccountDao.updateAccountMoney(getFrom(), getCurrencyFrom());
             AccountDao.updateAccountMoney(getTo(), getCurrencyTo());
+            TransactionDao.insertTransaction(this);
             ret = "Repay " + getAmount() + getCurrencyTo() + ", " +
                     getTo().getAmount(getCurrencyTo()) + getCurrencyTo() + " remaining";
         }else{

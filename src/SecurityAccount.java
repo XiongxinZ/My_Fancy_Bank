@@ -1,10 +1,10 @@
 import java.io.Serial;
+import java.util.HashSet;
 
 public class SecurityAccount extends Account implements CanTransferWithin {
 
     public static final String TYPE = "Security";
-    @Serial
-    private static final long serialVersionUid = 637490753922657801L;
+    private HashSet<Stock> pool = new HashSet<>();
 
     static int temp = 5000;
 
@@ -14,6 +14,14 @@ public class SecurityAccount extends Account implements CanTransferWithin {
 
     public SecurityAccount(Customer customer) {
         super(customer,"Security");
+    }
+
+    public String buyStock(){
+        return null;
+    }
+
+    public String sellStock(){
+        return null;
     }
 
     public static String createAccountFromAccount(Customer customer){
@@ -32,24 +40,6 @@ public class SecurityAccount extends Account implements CanTransferWithin {
         }
     }
 
-    public String transferIn(double val){
-        assert getCustomer().getAccount("Saving") != null;
-        SavingAccount sa = (SavingAccount) getCustomer().getAccount("Saving");
-        if (sa.getAmount() < 5000){
-            return "Sorry, you can transfer only when you have more than $5000 " +
-                    "in your saving account. Now you only have $" + sa.getAmount();
-        }else if (val < 1000){
-            return "Sorry, you should transfer at least $1000";
-        }else if (sa.getAmount() - val < 2500){
-            return "Sorry, after transfer your saving account only have $"
-                    + (sa.getAmount() - val) + " remaining. It should remain at least $2500";
-        }else{
-            sa.removeCurrency(val);
-            this.addCurrency(val);
-            return "Transfer $" + val + "from Saving account to Security account.\n Saving account: $"
-                    +sa.getAmount() + "\n Security account: $" + this.getAmount();
-        }
-    }
 
     public String transfer(double val, Account account, String currency){
         if (val > getAmount(currency)){
@@ -63,22 +53,7 @@ public class SecurityAccount extends Account implements CanTransferWithin {
     @Override
     public String transfer(String account,double val, String curr){
         return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();
-//        if (getCustomer().getAccount(account) == null){
-//            return "Sorry you don't have the " + account + " account";
-//        }
-//        return transfer(val, getCustomer().getAccount(account), "USD");
     }
-
-//    @Override
-//    public String transfer(Account account, double val, String curr) {
-//        return new Transfer(this,account,val,curr).execute();
-//    }
-
-//    @Override
-//    public String transfer(String email, String accountType, double val, String curr) {
-//        String c_id = Customer.getId(email);
-//        return new Transfer(this, c_id, accountType,val,curr).execute();
-//    }
 
     @Override
     public boolean isMultiCurr() {

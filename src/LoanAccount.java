@@ -20,6 +20,10 @@ public class LoanAccount extends Account{
         return new Repayment(this,amount,cur).execute();
     }
 
+    public String takeLoan(Collateral collateral, String curr){
+        return new TakeLoan(this, collateral, curr).execute();
+    }
+
     public static String createAccountFromAccount(Customer customer){
         // only pay from saving account
         if (customer.hasAccount("Saving") && customer.getAccount("Saving").getAmount() > temp){
@@ -35,10 +39,10 @@ public class LoanAccount extends Account{
         }
     }
 
-    public String requestLoan(Collateral collateral){
-        SystemDatabase.getOrderList().add(new TakeLoan(getCustomer(), collateral));
-        return "Submit application! The collateral worth $"+ collateral.getPrice() +  ". Waiting manager to approve";
-    }
+//    public String requestLoan(Collateral collateral){
+//        SystemDatabase.getOrderList().add(new TakeLoan(getCustomer(), collateral));
+//        return "Submit application! The collateral worth $"+ collateral.getPrice() +  ". Waiting manager to approve";
+//    }
 
     @Override
     public boolean isMultiCurr() {

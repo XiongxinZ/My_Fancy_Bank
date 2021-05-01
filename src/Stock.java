@@ -1,12 +1,14 @@
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Stock implements Serializable {
 
     @Serial
     private static final long serialVersionUid = 2200435301494082440L;
     private String name;
-    private int quantity = 10;
+    private int quantity;
+    private Customer customer;
 
     public Stock(){ }
 
@@ -15,11 +17,29 @@ public class Stock implements Serializable {
         this.quantity = quantity;
     }
 
-    public void buy(){
-        System.out.println("Stock [ Name: "+name+", Quantity: " + quantity +" ] bought");
+    public Stock(Customer customer, String name, int quantity) {
+        this(name,quantity);
+        this.customer = customer;
     }
 
-    public void sell(){
-        System.out.println("Stock [ Name: "+name+", Quantity: " + quantity +" ] sold");
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Stock stock = (Stock) o;
+        if (stock.customer == null){
+            return Objects.equals(name, stock.name);
+        }else{
+            return Objects.equals(name, stock.name) && customer.getId().equals(stock.customer.getId());
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        if (customer != null){
+            return Objects.hash(name, customer.getId());
+        }else{
+            return Objects.hash(name);
+        }
     }
 }

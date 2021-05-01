@@ -1,15 +1,14 @@
-import java.io.Serial;
 
-public class SellStock implements Order {
-    @Serial
-    private static final long serialVersionUid = -1097931013329809778L;
+public class SellStock {
     private Stock stock;
 
-    public SellStock(Stock stock){
+    public SellStock(Account account, Stock stock){
+//        super();
         this.stock = stock;
     }
 
-    public void execute() {
+    public String execute() {
         stock.sell();
+        return null;
     }
 }

@@ -1,23 +1,29 @@
 import java.io.Serial;
 
-public class TakeLoan implements Order{
+public class TakeLoan extends Transaction{
 
     @Serial
     private static final long serialVersionUid = -6531033077785053223L;
-    private Customer customer;
+//    private Customer customer;
     private Collateral collateral;
+//    private String curr;
 
-    public TakeLoan(Customer customer, Collateral collateral) {
-        this.customer = customer;
+    public TakeLoan(Account from, Collateral collateral, String curr) {
+        super(from, from.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")),
+                collateral.getPrice()* ConfigUtil.getConfigDouble("USDTo"+curr), curr);
         this.collateral = collateral;
+//        this.curr = curr;
     }
 
-    public TakeLoan(Customer customer) {
-        this.customer = customer;
-    }
 
     @Override
-    public void execute() {
-
+    public String execute() {
+        getTo().addCurrency(getAmount(),getCurrencyTo());
+        getFrom().addCurrency(getAmount(), getCurrencyFrom());
+        AccountDao.updateAccountMoney(getFrom(),getCurrencyFrom());
+        AccountDao.updateAccountMoney(getTo(),getCurrencyTo());
+        CollateralDao.updateUsed(collateral);
+        TransactionDao.insertTransaction(this);
+        return "Success! " + ConfigUtil.getConfig("LoanTarget") + "Account add " + getAmount() + getCurrencyTo();
     }
 }

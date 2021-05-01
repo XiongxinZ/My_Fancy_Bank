@@ -84,7 +84,7 @@ public class User{
         return id;
     }
 
-    public void sendMessage(String message){
-        TransactionLog.showMessage(this,message);
-    }
+//    public void sendMessage(String message){
+//        TransactionLog.showMessage(this,message);
+//    }
 }

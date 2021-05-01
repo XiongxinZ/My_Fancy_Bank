@@ -23,7 +23,8 @@ public class CustomerDao {
 			String c_name = customer.getName();
 			String c_pswd = customer.getPassword();
 			String c_email = customer.getEmail();
-			
+
+
 			String sql = "insert into customer(c_id, c_name, c_pswd,c_email, a_saving, a_checking, a_loan, a_security) "
 					+ "values(?,?,?,?,?,?,?,?)";
 			
@@ -32,59 +33,22 @@ public class CustomerDao {
 			ps.setString(2, c_name);
 			ps.setString(3, c_pswd);
 			ps.setString(4, c_email);
-			ps.setString(5, Boolean.toString(customer.hasAccount("Saving")));
-			ps.setString(6, Boolean.toString(customer.hasAccount("Checking")));
-			ps.setString(7, Boolean.toString(customer.hasAccount("Loan")));
-			ps.setString(8, Boolean.toString(customer.hasAccount("Security")));
+			int i = 5;
+			for (String s : SystemDatabase.accType) {
+				ps.setString(i,
+						customer.hasAccount(s)?customer.getAccount(s).getId():null);
+				i++;
+			}
 			flag = ps.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			JDBCUtil.closeResource(conn, ps, rs);
-			return flag;
 		}
-		
+		return flag;
 	}
 
-
-	public static int updateCustomer(Customer customer) {
-		
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		int flag = 0;
-		
-		try {
-			conn = JDBCUtil.getConnection();
-			
-			String c_id = customer.getId();
-			String c_pswd = customer.getPassword();
-			
-			StringBuffer sql = new StringBuffer("update customer set");
-			
-			if(!("".equals(c_pswd)) && c_pswd != null) {
-				sql.append(" c_pswd = '" + c_pswd + "'");
-			}
-//
-//			if(!("".equals(c_status)) && c_status != null) {
-//				sql.append(" , c_status = '" + c_status + "'");
-//			}
-			
-			if(!"".equals(c_id) && c_id != null) {
-				sql.append(" where c_id = '" + c_id + "'");
-			}
-			
-			ps = conn.prepareStatement(String.valueOf(sql));
-			flag = ps.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
-			return flag;
-		}
-	}
 
 	public static int updateCustomerPSW(String id, String pwd) {
 
@@ -250,6 +214,7 @@ public class CustomerDao {
 				user.setId(rs.getString("c_id"));
 				user.setName(rs.getString("c_Name"));
 				user.setPassword(rs.getString("c_PSWD"));
+				user.setEmail(rs.getString("c_email"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -297,6 +262,7 @@ public class CustomerDao {
 				user.setId(rs.getString("c_id"));
 				user.setName(rs.getString("c_Name"));
 				user.setPassword(rs.getString("c_PSWD"));
+				user.setEmail(rs.getString("c_email"));
 				
 				list.add(user);
 			}
@@ -304,7 +270,7 @@ public class CustomerDao {
 			e.printStackTrace();
 		} finally {
 			JDBCUtil.closeResource(conn, ps, rs);
-			return list;
 		}
+		return list;
 	}
 }

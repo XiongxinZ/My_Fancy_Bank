@@ -110,6 +110,22 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
                     new RepaymentFrame(account);
                 }
             });
+
+            JButton takeLoan = new JButton("Take Loan");
+            takeLoan.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+
+            JButton uploadCollateral = new JButton("Upload Collateral");
+            uploadCollateral.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
         }
 
         JButton back = new JButton("Back");

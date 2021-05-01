@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Currency;
 import java.util.HashMap;
 
-public class Account implements Serializable, Modifiable {
+public class Account implements Modifiable {
     @Serial
     private static final long serialVersionUid = 4155194950008766436L;
     private HashMap<String, Double> amount = new HashMap<>();

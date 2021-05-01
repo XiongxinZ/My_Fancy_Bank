@@ -206,22 +206,7 @@ public class AccountDao {
                     list.put(s, selectAccount(customer, s));
                 }
             }
-//
-//            if (selectCheckingWithCid(customer) != null){
-//                list.put("Checking", selectCheckingWithCid(customer));
-//            }
-//
-//            if (selectAccountWithCid(customer) != null){
-//                list.put("Saving", selectAccountWithCid(customer));
-//            }
-//
-//            if (selectSecurityWithCid(customer) != null){
-//                list.put("Security", selectSecurityWithCid(customer));
-//            }
-//
-//            if (selectLoanWithCid(customer) != null){
-//                list.put("Loan", selectLoanWithCid(customer));
-//            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

@@ -9,6 +9,7 @@ public class Exchange extends Transaction{
         getFrom().setAmount(getFrom().getAmount(getCurrencyTo()) + getAmount() * ConfigUtil.getConfigDouble(getCurrencyFrom()+"To"+getCurrencyTo()), getCurrencyTo());
         AccountDao.updateAccountMoney(getFrom(), getCurrencyFrom());
         AccountDao.updateAccountMoney(getFrom(),getToAccount());
+        TransactionDao.insertTransaction(this);
         return "Successful! " + getCurrencyFrom() + getAmount() +" to " + getCurrencyTo() + getAmount() * ConfigUtil.getConfigDouble(getCurrencyFrom()+"To"+getCurrencyTo());
     }
 }
