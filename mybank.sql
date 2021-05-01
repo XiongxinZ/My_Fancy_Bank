@@ -49,17 +49,18 @@ CREATE TABLE IF NOT EXISTS `customer`  (
   `c_Name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Name',
   `c_PSWD` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'password',
   `c_email` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'email',
-  `a_Saving` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Saving Account',
-  `a_Checking` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Checking Account',
-  `a_Loan` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Loan Account',
-  `a_Security` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Security Account',
+--  `a_Saving` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Saving Account',
+--  `a_Checking` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Checking Account',
+--  `a_Loan` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Loan Account',
+--  `a_Security` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Security Account',
   PRIMARY KEY (`c_ID`) USING BTREE,
-  CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`a_Saving`) REFERENCES `saving` (`a_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`a_Checking`) REFERENCES `checking` (`a_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `customer_ibfk_3` FOREIGN KEY (`a_Loan`) REFERENCES `loan` (`a_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `customer_ibfk_4` FOREIGN KEY (`a_Security`) REFERENCES `security` (`a_ID`) ON DELETE SET NULL ON UPDATE CASCADE
+--  CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`a_Saving`) REFERENCES `saving` (`a_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
+--  CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`a_Checking`) REFERENCES `checking` (`a_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
+--  CONSTRAINT `customer_ibfk_3` FOREIGN KEY (`a_Loan`) REFERENCES `loan` (`a_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
+--  CONSTRAINT `customer_ibfk_4` FOREIGN KEY (`a_Security`) REFERENCES `security` (`a_ID`) ON NULL SET FALSE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
+  CONSTRAINT `customer_ibfk_4` FOREIGN KEY (`a`) REFERENCES `test` (`a`) ON DELETE SET 0 ON UPDATE CASCADE
 
 -- ----------------------------
 -- Table structure for account
@@ -76,63 +77,17 @@ CREATE TABLE IF NOT EXISTS `account`  (
   PRIMARY KEY (`a_id`) USING BTREE,
   CONSTRAINT `account_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
---  ----------------------------
---  Table structure for transfer
---  ----------------------------
---  DROP TABLE IF EXISTS `security`;
--- CREATE TABLE IF NOT EXISTS `security`  (
---   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
---   `a_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account ID',
---   `c_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account Type',
---   `c_Balance` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'Balance',
---   INDEX `c_ID`(`c_ID`) USING BTREE,
---   INDEX `c_account`(`c_account`) USING BTREE,
---   PRIMARY KEY (`c_ID`, `c_account`) USING BTREE,
---   CONSTRAINT `security_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
--- ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
---
--- -- ----------------------------
--- -- Table structure for account
--- -- ----------------------------
--- -- DROP TABLE IF EXISTS `saving`;
--- CREATE TABLE IF NOT EXISTS `account`  (
---   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
---   `a_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account ID',
---   `c_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account Type',
---   `c_Balance_USD` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'USD',
---   `c_Balance_CNY` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'CNY',
---   `c_Balance_JPY` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'JPY',
---   INDEX `c_ID`(`c_ID`) USING BTREE,
---   PRIMARY KEY (`c_ID`, `c_account`) USING BTREE,
---   CONSTRAINT `account_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
--- ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
---
--- -- ----------------------------
--- -- Table structure for account
--- -- ----------------------------
--- -- DROP TABLE IF EXISTS `checking`;
--- CREATE TABLE IF NOT EXISTS `checking`  (
---   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
---   `a_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account ID',
---   `c_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account Type',
---   `c_Balance_USD` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'USD',
---   `c_Balance_CNY` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'CNY',
---   `c_Balance_JPY` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'JPY',
---   INDEX `c_ID`(`c_ID`) USING BTREE,
---   CONSTRAINT `checking_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
--- ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
---
--- -- ----------------------------
--- -- Table structure for transfer
--- -- ----------------------------
--- -- DROP TABLE IF EXISTS `loan`;
--- CREATE TABLE IF NOT EXISTS `loan`  (
---   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
---   `a_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account ID',
---   `c_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account Type',
---   `c_Balance` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'Balance',
---   INDEX `c_ID`(`c_ID`) USING BTREE,
---   INDEX `c_account`(`c_account`) USING BTREE,
---   PRIMARY KEY (`c_ID`, `c_account`) USING BTREE,
---   CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
--- ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for collateral
+-- ----------------------------
+-- DROP TABLE IF EXISTS `collateral`;
+CREATE TABLE IF NOT EXISTS `collateral`  (
+  `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `co_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Name',
+  `co_value` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral value',
+  `co_used` TINYINT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'used',
+  INDEX `c_ID`(`c_ID`) USING BTREE,
+  PRIMARY KEY (`co_id`) USING BTREE,
+  CONSTRAINT `collateral_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
