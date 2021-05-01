@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class MultiCurrAccountPanel extends CustomerContentPanel{
     private Account account;
@@ -141,8 +142,32 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
 
         if (account instanceof SecurityAccount){
             JButton buy = new JButton("Buy Stock");
+            buy.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    List<StockInfo> stockInfos = StockDao.selectStockInfoList();
+                    if (stockInfos.size() == 0){
+                        new MessageFrame("Error", "No Stock available");
+                    }else{
+                        GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
+                        new BuyStockFrame((SecurityAccount) account, stockInfos);
+                    }
+                }
+            });
             jp.add(buy);
             JButton sell = new JButton("Sell Stock");
+            sell.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    List<StockInfo> list = StockDao.selectPositionList(account.getCustomer());
+                    if (list.size() == 0){
+                        new MessageFrame("Error", "No Stock available");
+                    }else{
+                        GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
+                        new SellStockFrame((SecurityAccount) account, list);
+                    }
+                }
+            });
             jp.add(sell);
         }
 

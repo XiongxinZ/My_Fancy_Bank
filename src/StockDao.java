@@ -2,6 +2,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StockDao {
     public static int updateStockPosition(CustomerStock stock) {
@@ -89,5 +91,100 @@ public class StockDao {
             JDBCUtil.closeResource(conn,ps,rs);
         }
         return flag;
+    }
+
+    public static List<StockInfo> selectStockInfoList(){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<StockInfo> list = new ArrayList<>();
+
+        try{
+            conn = JDBCUtil.getConnection();
+
+            String sql = "select * from stockInfo";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                String name = rs.getString("s_name");
+                String curr = rs.getString("s_curr");
+                double price = rs.getDouble("c_price");
+
+                StockInfo stock = new StockInfo(name, price,curr);
+                list.add(stock);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn,ps,rs);
+        }
+        return list;
+    }
+
+
+    public static StockInfo selectStockInfo(String name){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        StockInfo stockInfo = null;
+
+        try{
+            conn = JDBCUtil.getConnection();
+
+            String sql = "select * from stockInfo where s_name = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                String sname = rs.getString("s_name");
+                String curr = rs.getString("s_curr");
+                double price = rs.getDouble("c_price");
+
+                stockInfo = new StockInfo(name, price,curr);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn,ps,rs);
+        }
+        return stockInfo;
+    }
+
+    public static StockInfo selectStockInfo(CustomerStock customerStock){
+        return selectStockInfo(customerStock.getName());
+    }
+
+    public static List<StockInfo> selectPositionList(Customer customer){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<StockInfo> list = new ArrayList<>();
+
+        try{
+            conn = JDBCUtil.getConnection();
+
+            String sql = "select * from stock where c_id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, customer.getId());
+
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                String name = rs.getString("s_name");
+
+                StockInfo stock = selectStockInfo(name);
+                list.add(stock);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn,ps,rs);
+        }
+        return list;
     }
 }

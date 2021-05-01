@@ -74,4 +74,10 @@ public class CustomerStock {
     public String getCurr() {
         return curr;
     }
+
+    @Override
+    public String toString() {
+        return  name +
+                ": " + currentPrice + curr + ", Quantity:" + quantity;
+    }
 }
