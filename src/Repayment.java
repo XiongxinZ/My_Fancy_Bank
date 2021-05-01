@@ -1,4 +1,4 @@
-public class Repayment extends Transaction{
+public class Repayment extends AbstractTransaction {
 
     public static final String target = "Checking";
 

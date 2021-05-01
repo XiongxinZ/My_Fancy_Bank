@@ -1,4 +1,4 @@
-public class Transfer extends Transaction{
+public class Transfer extends AbstractTransaction {
     public Transfer(Account from, Account to, double amount, String currency) {
         super(from, to, amount, currency);
     }

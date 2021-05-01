@@ -91,3 +91,42 @@ CREATE TABLE IF NOT EXISTS `collateral`  (
   PRIMARY KEY (`co_id`) USING BTREE,
   CONSTRAINT `collateral_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for stock
+-- ----------------------------
+-- DROP TABLE IF EXISTS `stock`;
+CREATE TABLE IF NOT EXISTS `stock`  (
+  `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `s_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Name',
+  `s_curr` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Currency',
+  `s_quantity` INT(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Quantity',
+  `b_price` decimal(8,2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Buy Price',
+  `c_price` decimal(8,2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Current Price',
+  INDEX `c_ID`(`c_ID`) USING BTREE,
+  INDEX `s_name`(`s_name`) USING BTREE
+--  PRIMARY KEY (`co_id`) USING BTREE,
+--  CONSTRAINT `stock_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for stockInfo
+-- ----------------------------
+-- DROP TABLE IF EXISTS `stockInfo`;
+CREATE TABLE IF NOT EXISTS `stockInfo`  (
+  `s_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Name',
+  `s_curr` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Currency',
+  `c_price` decimal(8,2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Current Price',
+--  INDEX `s_name`(`s_name`) USING BTREE,
+  PRIMARY KEY (`s_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+
+DROP TRIGGER IF EXISTS `updateStockPrice`;
+delimiter ;;
+CREATE TRIGGER `updateStockPrice` AFTER UPDATE ON `stockInfo` FOR EACH ROW BEGIN
+    UPDATE stock SET stock.c_price = NEW.c_price
+    WHERE stock.s_name = OLD.s_name;
+END
+;;
+delimiter ;

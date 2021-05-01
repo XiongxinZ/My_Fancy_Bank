@@ -1,4 +1,4 @@
-public class AutoSolve extends Transaction{
+public class AutoSolve extends AbstractTransaction {
     public AutoSolve(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount) {
         super(fromWhom, toWhom, fromAccount, toAccount, amount);
     }

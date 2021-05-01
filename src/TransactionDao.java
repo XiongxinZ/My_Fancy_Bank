@@ -6,7 +6,7 @@ import java.util.Vector;
 public class TransactionDao {
     private static String dbName = "transactionLog";
 
-    public static int  insertTransaction(Transaction transaction){
+    public static int  insertTransaction(AbstractTransaction transaction){
 
         Connection conn = null;
         PreparedStatement ps = null;

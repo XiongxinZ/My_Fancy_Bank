@@ -139,6 +139,13 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             jp.add(uploadCollateral);
         }
 
+        if (account instanceof SecurityAccount){
+            JButton buy = new JButton("Buy Stock");
+            jp.add(buy);
+            JButton sell = new JButton("Sell Stock");
+            jp.add(sell);
+        }
+
         JButton back = new JButton("Back");
         back.addActionListener(new ActionListener() {
             @Override

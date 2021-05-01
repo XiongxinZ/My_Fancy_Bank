@@ -1,6 +1,6 @@
 import java.io.Serial;
 
-public class TakeLoan extends Transaction{
+public class TakeLoan extends AbstractTransaction {
 
     @Serial
     private static final long serialVersionUid = -6531033077785053223L;

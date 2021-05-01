@@ -1,4 +1,4 @@
-public class Withdraw extends Transaction{
+public class Withdraw extends AbstractTransaction {
 //    private String currency = "USD";
     public Withdraw(Account from, double amount) {
         super(from, null, amount);

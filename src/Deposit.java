@@ -1,4 +1,4 @@
-public class Deposit extends Transaction{
+public class Deposit extends AbstractTransaction {
 //    private String currency = "USD";
     public Deposit(Account to, double amount) {
         super(null, to, amount);

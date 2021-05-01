@@ -1,10 +1,9 @@
-import java.io.Serial;
-import java.util.HashSet;
+import java.util.HashMap;
 
 public class SecurityAccount extends Account implements CanTransferWithin {
 
     public static final String TYPE = "Security";
-    private HashSet<Stock> pool = new HashSet<>();
+    private HashMap<String, CustomerStock> pool = new HashMap<>();
 
     static int temp = 5000;
 
@@ -16,12 +15,17 @@ public class SecurityAccount extends Account implements CanTransferWithin {
         super(customer,"Security");
     }
 
-    public String buyStock(){
-        return null;
+    public String buyStock(StockInfo stockInfo,  int num){
+        CustomerStock stock = new CustomerStock(stockInfo,getCustomer(), num);
+        return new BuyStock(this, stock).execute();
     }
 
     public String sellStock(){
         return null;
+    }
+
+    public HashMap<String, CustomerStock> getPool() {
+        return pool;
     }
 
     public static String createAccountFromAccount(Customer customer){
