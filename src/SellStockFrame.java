@@ -8,12 +8,13 @@ import java.util.List;
 
 public class SellStockFrame extends PopupFrame{
     private SecurityAccount account;
-    private List<StockInfo> info;
-    public SellStockFrame(SecurityAccount account, List<StockInfo> info) {
+    private List<CustomerStock> info;
+    public SellStockFrame(SecurityAccount account, List<CustomerStock> info) {
         super("Sell Stock");
         this.account = account;
         this.info = info;
         setFrame();
+        setVisible(true);
     }
 
     private void setFrame(){
@@ -24,7 +25,7 @@ public class SellStockFrame extends PopupFrame{
         JLabel typeLabel = new JLabel("Stock: ");
         jPanel.add(typeLabel);
 
-        JComboBox<StockInfo> box = new JComboBox<>(info.toArray(new StockInfo[0]));
+        JComboBox<CustomerStock> box = new JComboBox<>(info.toArray(new CustomerStock[0]));
         jPanel.add(box);
 
         JLabel amountLabel = new JLabel("Price: ");
@@ -53,7 +54,7 @@ public class SellStockFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 CustomerStock stock = (CustomerStock) box.getSelectedItem();
-                quantity.setText(String.valueOf((int) stock.getQuantity() * 0.1));
+                quantity.setText(String.valueOf((int) (stock.getQuantity() * 0.1)));
             }
         });
         JButton pct20 = new JButton("20%");
@@ -61,7 +62,7 @@ public class SellStockFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 CustomerStock stock = (CustomerStock) box.getSelectedItem();
-                quantity.setText(String.valueOf(stock.getQuantity() * 0.2));
+                quantity.setText(String.valueOf((int)(stock.getQuantity() * 0.2)));
             }
         });
         JButton pct50 = new JButton("50%");
@@ -69,7 +70,7 @@ public class SellStockFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 CustomerStock stock = (CustomerStock) box.getSelectedItem();
-                quantity.setText(String.valueOf(stock.getQuantity() * 0.5));
+                quantity.setText(String.valueOf((int)(stock.getQuantity() * 0.5)));
             }
         });
         JButton pct100 = new JButton("100%");
@@ -80,6 +81,10 @@ public class SellStockFrame extends PopupFrame{
                 quantity.setText(String.valueOf(stock.getQuantity()));
             }
         });
+        jPanel.add(pct10);
+        jPanel.add(pct20);
+        jPanel.add(pct50);
+        jPanel.add(pct100);
 
         JButton ok = new JButton("OK");
         ok.addActionListener(new ActionListener() {
@@ -87,12 +92,11 @@ public class SellStockFrame extends PopupFrame{
             public void actionPerformed(ActionEvent e) {
                 try {
                     int amount = Integer.parseInt(quantity.getText().trim());
-                    StockInfo stock = ((StockInfo) box.getSelectedItem());
+                    CustomerStock stock = ((CustomerStock) box.getSelectedItem());
                     String message = account.sellStock(stock, amount);
                     SellStockFrame.this.dispose();
                     new MessageFrame("Success", message);
                     new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
-//                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(DepositFrame.this)).getContextPanel()).repaintPanel();
 
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a integer");

@@ -119,7 +119,7 @@ public class Account implements Modifiable {
         this.amount.put("USD", this.amount.get("USD")+amount);
     }
     public void setAmount(double amount, String curr) {
-        this.amount.put(curr, this.amount.get(curr)+amount);
+        this.amount.put(curr, amount);
     }
 
     public boolean isMultiCurr() {

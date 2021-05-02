@@ -15,6 +15,7 @@ public class BuyStockFrame extends PopupFrame{
         this.account = account;
         this.info = info;
         setFrame();
+        setVisible(true);
     }
 
     private void setFrame(){
@@ -56,7 +57,7 @@ public class BuyStockFrame extends PopupFrame{
                 StockInfo stock = (StockInfo) box.getSelectedItem();
                 double balance = account.getAmount(stock.getCurrency());
                 double price = stock.getCurrentPrice();
-                quantity.setText(String.valueOf((int) (balance / price) * 0.1));
+                quantity.setText(String.valueOf((int) ((balance / price) * 0.1)));
             }
         });
         JButton pct20 = new JButton("20%");
@@ -66,7 +67,7 @@ public class BuyStockFrame extends PopupFrame{
                 StockInfo stock = (StockInfo) box.getSelectedItem();
                 double balance = account.getAmount(stock.getCurrency());
                 double price = stock.getCurrentPrice();
-                quantity.setText(String.valueOf((int) (balance / price) * 0.2));
+                quantity.setText(String.valueOf((int) ((balance / price) * 0.2)));
             }
         });
         JButton pct50 = new JButton("50%");
@@ -76,7 +77,7 @@ public class BuyStockFrame extends PopupFrame{
                 StockInfo stock = (StockInfo) box.getSelectedItem();
                 double balance = account.getAmount(stock.getCurrency());
                 double price = stock.getCurrentPrice();
-                quantity.setText(String.valueOf((int) (balance / price) * 0.5));
+                quantity.setText(String.valueOf((int) ((balance / price) * 0.5)));
             }
         });
         JButton pct100 = new JButton("100%");
@@ -89,6 +90,10 @@ public class BuyStockFrame extends PopupFrame{
                 quantity.setText(String.valueOf((int) (balance / price) ));
             }
         });
+        jPanel.add(pct10);
+        jPanel.add(pct20);
+        jPanel.add(pct50);
+        jPanel.add(pct100);
 
         JButton ok = new JButton("OK");
         ok.addActionListener(new ActionListener() {

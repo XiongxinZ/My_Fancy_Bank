@@ -23,8 +23,8 @@ public class SecurityAccount extends Account implements CanTransferWithin {
         return new BuyStock(this, stock).execute();
     }
 
-    public String sellStock(StockInfo stockInfo, int num){
-        CustomerStock stock = new CustomerStock(stockInfo, getCustomer(), num);
+    public String sellStock(CustomerStock customerStock, int num){
+        CustomerStock stock = new CustomerStock(customerStock, getCustomer(), num);
         return new SellStock(this,stock).execute();
     }
 

@@ -161,7 +161,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             sell.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    List<StockInfo> list = StockDao.selectOwnedInfoList(account.getCustomer());
+                    List<CustomerStock> list = StockDao.selectOwnedInfoList(account.getCustomer());
                     if (list.size() == 0){
                         new MessageFrame("Error", "No Stock available");
                     }else{

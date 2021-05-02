@@ -18,6 +18,7 @@ public class BuyStock extends StockTransaction{
                         getStock().getCurrency());
                 cs.merge(getStock());
                 StockDao.updateStockPosition(cs);
+                AccountDao.updateAccountMoney(getAccount(), getStock().getCurrency());
                 return "Buy "+ getStock().getQuantity() + getStock().getName();
             }
         }else{

@@ -24,7 +24,6 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
         return "Deposit $" + val + ", amount $" + getAmount();
     }
 
-    // Transfer to customer's another account
     @Override
     public String transfer(String account,double val, String curr){
         return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();

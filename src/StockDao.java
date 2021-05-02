@@ -74,7 +74,7 @@ public class StockDao {
             conn = JDBCUtil.getConnection();
 
             String sql = "insert into stock(c_id, s_name,s_curr,s_quantity,b_price,c_price) " +
-                    "values(?,?,?,?,,?)";
+                    "values(?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1,stock.getCustomer().getId());
@@ -159,12 +159,12 @@ public class StockDao {
         return selectStockInfo(customerStock.getName());
     }
 
-    public static List<StockInfo> selectOwnedInfoList(Customer customer){
+    public static List<CustomerStock> selectOwnedInfoList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        List<StockInfo> list = new ArrayList<>();
+        List<CustomerStock> list = new ArrayList<>();
 
         try{
             conn = JDBCUtil.getConnection();
@@ -177,8 +177,11 @@ public class StockDao {
 
             while(rs.next()){
                 String name = rs.getString("s_name");
+                int quantity = rs.getInt("s_quantity");
+                double buyPrice = rs.getDouble("b_price");
 
-                StockInfo stock = selectStockInfo(name);
+                StockInfo info = selectStockInfo(name);
+                CustomerStock stock = new CustomerStock(info, customer, quantity,buyPrice);
                 list.add(stock);
             }
         } catch (SQLException throwables) {
@@ -232,7 +235,7 @@ public class StockDao {
         try{
             conn = JDBCUtil.getConnection();
 
-            String sql = "select * from realizedProfit where c_id = ?";
+            String sql = "select * from realizedStock where c_id = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, customer.getId());
 
