@@ -28,7 +28,7 @@ public class Collateral implements Serializable, Modifiable {
     }
 
     public static String valuateCollateral(Customer customer, String name, File file){
-        return new CollateralValuation(customer, name, file).apply();
+        return new CollateralValuation(customer.getId(), name, file).apply();
     }
 
     public double getPrice() {

@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,8 +30,16 @@ public class UploadCollateralFrame extends PopupFrame{
         JLabel collLabel = new JLabel("Certificate: ");
         jPanel.add(collLabel);
 
-        JFileChooser file = new JFileChooser();
-        jPanel.add(file);
+//        JFileChooser file = new JFileChooser(System.getProperty("user.dir"));
+//        file.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        JFileChooser fc = new JFileChooser();
+        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));//设置默认显示为当前文件夹
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);//设置选择模式（只选文件、只选文件夹、文件和文件均可选）
+        fc.setMultiSelectionEnabled(false);//是否允许多选
+//        fc.addChoosableFileFilter(new FileNameExtensionFilter("zip(*.zip, *.rar)", "zip", "rar"));//文件过滤器
+        fc.setFileFilter(new FileNameExtensionFilter("image(*.jpg,*.jpeg, *.png, *.gif)", "jpg","jpeg", "png", "gif"));
+        fc.showOpenDialog(null);
+        jPanel.add(fc);
 
         JButton ok = new JButton("OK");
         ok.addActionListener(new ActionListener() {
@@ -38,11 +47,11 @@ public class UploadCollateralFrame extends PopupFrame{
             public void actionPerformed(ActionEvent e) {
                 try {
                     String name = collName.getText().trim();
-                    String message = Collateral.valuateCollateral(customer, name, file.getSelectedFile());
+                    String message = Collateral.valuateCollateral(customer, name, fc.getSelectedFile());
                     UploadCollateralFrame.this.dispose();
+                    new CustomerFrame(customer).setContextPanel(new MultiCurrAccountPanel(customer.getAccount("Loan")));
                     new MessageFrame("Request upload", message);
-                    new CustomerFrame(customer).setContextPanel(new MultiCurrAccountPanel(customer.getAccount("Security")));
-//                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(UploadCollateralFrame.this)).getContextPanel()).repaintPanel();
+                    //                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(UploadCollateralFrame.this)).getContextPanel()).repaintPanel();
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");
                 }
