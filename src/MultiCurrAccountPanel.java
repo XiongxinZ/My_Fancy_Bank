@@ -39,6 +39,8 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
                 "CNY: " + account.getAmount("CNY") + "<br>" +
                 "JPY: " + account.getAmount("JPY") + "<br>" ));
 
+        // Stock List/profit.
+
         return jp;
     }
 
@@ -159,7 +161,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             sell.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    List<StockInfo> list = StockDao.selectPositionList(account.getCustomer());
+                    List<StockInfo> list = StockDao.selectOwnedInfoList(account.getCustomer());
                     if (list.size() == 0){
                         new MessageFrame("Error", "No Stock available");
                     }else{

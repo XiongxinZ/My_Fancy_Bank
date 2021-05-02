@@ -31,14 +31,14 @@ public class BuyStockFrame extends PopupFrame{
         JLabel amountLabel = new JLabel("Price: ");
         jPanel.add(amountLabel);
 
-        double val = ((StockInfo)box.getSelectedItem()).getPrice();
+        double val = ((StockInfo)box.getSelectedItem()).getCurrentPrice();
         JLabel price = new JLabel(Double.toString(val));
         jPanel.add(price);
 
         box.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                double val = ((StockInfo)box.getSelectedItem()).getPrice();
+                double val = ((StockInfo)box.getSelectedItem()).getCurrentPrice();
                 price.setText(Double.toString(val));
             }
         });
@@ -55,7 +55,7 @@ public class BuyStockFrame extends PopupFrame{
             public void actionPerformed(ActionEvent e) {
                 StockInfo stock = (StockInfo) box.getSelectedItem();
                 double balance = account.getAmount(stock.getCurrency());
-                double price = stock.getPrice();
+                double price = stock.getCurrentPrice();
                 quantity.setText(String.valueOf((int) (balance / price) * 0.1));
             }
         });
@@ -65,7 +65,7 @@ public class BuyStockFrame extends PopupFrame{
             public void actionPerformed(ActionEvent e) {
                 StockInfo stock = (StockInfo) box.getSelectedItem();
                 double balance = account.getAmount(stock.getCurrency());
-                double price = stock.getPrice();
+                double price = stock.getCurrentPrice();
                 quantity.setText(String.valueOf((int) (balance / price) * 0.2));
             }
         });
@@ -75,7 +75,7 @@ public class BuyStockFrame extends PopupFrame{
             public void actionPerformed(ActionEvent e) {
                 StockInfo stock = (StockInfo) box.getSelectedItem();
                 double balance = account.getAmount(stock.getCurrency());
-                double price = stock.getPrice();
+                double price = stock.getCurrentPrice();
                 quantity.setText(String.valueOf((int) (balance / price) * 0.5));
             }
         });
@@ -85,7 +85,7 @@ public class BuyStockFrame extends PopupFrame{
             public void actionPerformed(ActionEvent e) {
                 StockInfo stock = (StockInfo) box.getSelectedItem();
                 double balance = account.getAmount(stock.getCurrency());
-                double price = stock.getPrice();
+                double price = stock.getCurrentPrice();
                 quantity.setText(String.valueOf((int) (balance / price) ));
             }
         });

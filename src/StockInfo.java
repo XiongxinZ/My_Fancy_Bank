@@ -1,12 +1,17 @@
 public class StockInfo {
 
     private String name;
-    private double price;
+    private double currentPrice;
     private String currency;
 
-    public StockInfo(String name, double price, String currency) {
+    public StockInfo(String name, double currentPrice, String currency) {
         this.name = name;
-        this.price = price;
+        this.currentPrice = currentPrice;
+        this.currency = currency;
+    }
+
+    public StockInfo(String name, String currency) {
+        this.name = name;
         this.currency = currency;
     }
 
@@ -18,12 +23,12 @@ public class StockInfo {
         this.name = name;
     }
 
-    public double getPrice() {
-        return price;
+    public double getCurrentPrice() {
+        return currentPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setCurrentPrice(double currentPrice) {
+        this.currentPrice = currentPrice;
     }
 
     public String getCurrency() {
@@ -36,6 +41,6 @@ public class StockInfo {
 
     @Override
     public String toString() {
-        return name + ": " + price + currency;
+        return name + ": " + currentPrice + currency;
     }
 }

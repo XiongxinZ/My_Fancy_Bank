@@ -180,6 +180,11 @@ public class AccountDao {
                 account.setAmount(Double.parseDouble(rs.getString("c_Balance_USD")),"USD");
                 account.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"CNY");
                 account.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"JPY");
+
+                if (account instanceof SecurityAccount){
+                    ((SecurityAccount) account).setProfitPool(StockDao.selectProfitList(customer));
+                    ((SecurityAccount) account).setStockPool(StockDao.selectCustomerStockList(customer));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

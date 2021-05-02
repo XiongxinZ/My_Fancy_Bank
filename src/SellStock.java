@@ -7,23 +7,23 @@ public class SellStock extends StockTransaction{
 
     public String execute() {
 //        stock.sell();
-        if (getAccount().getPool().containsKey(getStock().getName())){
-            CustomerStock cs = getAccount().getPool().get(getStock().getName());
+        if (getAccount().getStockPool().containsKey(getStock().getName())){
+            CustomerStock cs = getAccount().getStockPool().get(getStock().getName());
             if (cs.getQuantity() < getStock().getQuantity()){
                 return "You only have " + cs.getQuantity() +" " + cs.getName();
             }else{
                 getAccount().setAmount(
-                        getAccount().getAmount(getStock().getCurr())
+                        getAccount().getAmount(getStock().getCurrency())
                                 + getStock().getQuantity() * getStock().getCurrentPrice(),
-                        getStock().getCurr());
+                        getStock().getCurrency());
                 cs.remove(getStock());
                 if (cs.getQuantity() == 0){
-                    getAccount().getPool().remove(cs.getName());
+                    getAccount().getProfitPool().remove(cs.getName());
                     StockDao.removeCustomerStock(cs);
                 }else{
                     StockDao.updateStockPosition(cs);
                 }
-                AccountDao.updateAccountMoney(getAccount(), getStock().getCurr());
+                AccountDao.updateAccountMoney(getAccount(), getStock().getCurrency());
                 return "Sold "+ getStock().getQuantity() + getStock().getName();
             }
         }else{
