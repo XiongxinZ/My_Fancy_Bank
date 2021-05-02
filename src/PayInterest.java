@@ -1,7 +1,7 @@
 public class PayInterest extends AbstractTransaction {
     private double originAmount;
     public PayInterest(String toWhom, double amount, String currency) {
-        super(null, toWhom, null, "Saving", amount * ConfigUtil.getConfigInt("SavingRate"), currency);
+        super(null, toWhom, null, "Saving", amount * ConfigUtil.getConfigInt("SavingRate"), currency,"PayInterest");
         originAmount = amount;
     }
 

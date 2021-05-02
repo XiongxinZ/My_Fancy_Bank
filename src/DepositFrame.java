@@ -38,8 +38,8 @@ public class DepositFrame extends PopupFrame {
                     String cur = ((String) box.getSelectedItem()).trim();
                     String message = ((CanDeposit) account).deposit(amount, cur);
                     DepositFrame.this.dispose();
-                    new MessageFrame("Deposit Success", message);
                     new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+                    new MessageFrame("Deposit Success", message);
 //                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(DepositFrame.this)).getContextPanel()).repaintPanel();
 
                 }catch (NumberFormatException e1){

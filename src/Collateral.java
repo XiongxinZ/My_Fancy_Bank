@@ -6,25 +6,21 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Collateral implements Serializable, Modifiable {
-    @Serial
-    private static final long serialVersionUid = -1636951387557509685L;
+public class Collateral implements  Modifiable {
     private double price;
     private String name;
     private Customer customer;
     private String id;
 
-    private boolean used = false;
+    private boolean used;
     private boolean isDirty = false;
 
-    public Collateral(Customer customer,String name, double price) {
+    public Collateral(Customer customer,String name, double price, boolean used, String id) {
         this.customer = customer;
         this.name = name;
         this.price = price;
-        this.id = Long.toString(customer.getId().hashCode() * 31L + new Date().hashCode());
-    }
-
-    public Collateral() {
+        this.used = used;
+        this.id = id;
     }
 
     public static String valuateCollateral(Customer customer, String name, File file){

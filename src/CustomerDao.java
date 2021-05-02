@@ -136,8 +136,9 @@ public class CustomerDao {
 
 			rs = ps.executeQuery();
 
-			rs.next();
-			userName = rs.getString("c_name");
+			while(rs.next()){
+				userName = rs.getString("c_name");
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

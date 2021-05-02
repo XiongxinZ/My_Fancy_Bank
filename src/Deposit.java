@@ -1,11 +1,11 @@
 public class Deposit extends AbstractTransaction {
 //    private String currency = "USD";
     public Deposit(Account to, double amount) {
-        super(null, to, amount);
+        super(null, to, amount, "Deposit");
     }
 
     public Deposit(Account to, double amount, String currency) {
-        super(null, to, amount,currency);
+        super(null, to, amount,currency,"Deposit");
 //        this.currency = currency;
     }
 

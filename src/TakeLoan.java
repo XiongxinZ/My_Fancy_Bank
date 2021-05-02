@@ -10,7 +10,7 @@ public class TakeLoan extends AbstractTransaction {
 
     public TakeLoan(Account from, Collateral collateral, String curr) {
         super(from, from.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")),
-                collateral.getPrice()* ConfigUtil.getConfigDouble("USDTo"+curr), curr);
+                collateral.getPrice()* ConfigUtil.getConfigDouble("USDTo"+curr), curr, "Take Loan");
         this.collateral = collateral;
 //        this.curr = curr;
     }
@@ -20,6 +20,7 @@ public class TakeLoan extends AbstractTransaction {
     public String execute() {
         getTo().addCurrency(getAmount(),getCurrencyTo());
         getFrom().addCurrency(getAmount(), getCurrencyFrom());
+        collateral.setUsed(true);
         AccountDao.updateAccountMoney(getFrom(),getCurrencyFrom());
         AccountDao.updateAccountMoney(getTo(),getCurrencyTo());
         CollateralDao.updateUsed(collateral);

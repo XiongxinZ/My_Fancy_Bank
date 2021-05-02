@@ -18,7 +18,7 @@ public abstract class AbstractTransaction implements Transaction {
     private String currencyFrom;
     private String currencyTo;
 
-    public AbstractTransaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currencyFrom, String currencyTo, Date date) {
+    public AbstractTransaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currencyFrom, String currencyTo, Date date, String transType) {
         this.fromWhom = fromWhom;
         this.toWhom = toWhom;
         this.fromAccount = fromAccount;
@@ -27,31 +27,33 @@ public abstract class AbstractTransaction implements Transaction {
         this.amount = amount;
         this.currencyFrom = currencyFrom;
         this.currencyTo = currencyTo;
+        this.transType = transType;
     }
 
-    public AbstractTransaction(Account from, Account to, double amount, String currencyFrom, String currencyTo, Date date) {
+    public AbstractTransaction(Account from, Account to, double amount, String currencyFrom, String currencyTo, Date date, String transType) {
         this.from = from;
         this.to = to;
-        this.fromWhom = from.getCustomer().getName();
-        this.toWhom = to.getCustomer().getName();
+        this.fromWhom = from.getCustomer().getId();
+        this.toWhom = to.getCustomer().getId();
         this.fromAccount = from.getAccountType();
         this.toAccount = to.getAccountType();
         this.transTime = date;
         this.amount = amount;
         this.currencyFrom = currencyFrom;
         this.currencyTo = currencyTo;
+        this.transType = transType;
     }
 
-    public AbstractTransaction(Account from, Account to, double amount, String currencyFrom, String currencyTo) {
-        this(from,to,amount,currencyFrom,currencyTo,new Date());
+    public AbstractTransaction(Account from, Account to, double amount, String currencyFrom, String currencyTo,String transType) {
+        this(from,to,amount,currencyFrom,currencyTo,new Date(), transType);
     }
-    public AbstractTransaction(Account from, Account to, double amount, String currency) {
-        this(from,to,amount,currency,currency);
+    public AbstractTransaction(Account from, Account to, double amount, String currency,String transType) {
+        this(from,to,amount,currency,currency,transType);
     }
 
-    public AbstractTransaction(Account from, String toWhom, String toAccount, double amount, String currency, Date date) {
+    public AbstractTransaction(Account from, String toWhom, String toAccount, double amount, String currency, Date date,String transType) {
         this.from = from;
-        this.fromWhom = from.getCustomer().getName();
+        this.fromWhom = from.getCustomer().getId();
         this.toWhom = toWhom;
         this.fromAccount = from.getAccountType();
         this.toAccount = toAccount;
@@ -59,26 +61,27 @@ public abstract class AbstractTransaction implements Transaction {
         this.amount = amount;
         this.currencyFrom = currency;
         this.currencyTo = currency;
+        this.transType = transType;
     }
 
-    public AbstractTransaction(Account from, String toWhom, String toAccount, double amount, String currency) {
-        this(from,toWhom,toAccount,amount,currency,new Date());
+    public AbstractTransaction(Account from, String toWhom, String toAccount, double amount, String currency,String transType) {
+        this(from,toWhom,toAccount,amount,currency,new Date(),transType);
     }
 
-    public AbstractTransaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currencyFrom, String currencyTo) {
-        this(fromWhom,toWhom,fromAccount,toAccount,amount,currencyFrom,currencyTo,new Date());
+    public AbstractTransaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currencyFrom, String currencyTo, String transType) {
+        this(fromWhom,toWhom,fromAccount,toAccount,amount,currencyFrom,currencyTo,new Date(),transType);
     }
 
-    public AbstractTransaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currency) {
-        this(fromWhom,toWhom,fromAccount,toAccount,amount,currency,currency);
+    public AbstractTransaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currency, String transType) {
+        this(fromWhom,toWhom,fromAccount,toAccount,amount,currency,currency, transType);
     }
 
-    public AbstractTransaction(Account from, Account to, double amount) {
-        this(from,to,amount,"USD");
+    public AbstractTransaction(Account from, Account to, double amount, String transType) {
+        this(from,to,amount,"USD",transType);
     }
 
-    public AbstractTransaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount) {
-        this(fromWhom,toWhom,fromAccount,toAccount,amount,"USD");
+    public AbstractTransaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String transType) {
+        this(fromWhom,toWhom,fromAccount,toAccount,amount,"USD", transType);
     }
 
     public String showInfo(){

@@ -95,9 +95,8 @@ public class SellStockFrame extends PopupFrame{
                     CustomerStock stock = ((CustomerStock) box.getSelectedItem());
                     String message = account.sellStock(stock, amount);
                     SellStockFrame.this.dispose();
-                    new MessageFrame("Success", message);
                     new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
-
+                    new MessageFrame("Success", message);
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a integer");
                 }

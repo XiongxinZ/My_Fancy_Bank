@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.sql.Connection;
 
 public class RepaymentFrame extends PopupFrame{
     private Account account;
@@ -21,8 +22,14 @@ public class RepaymentFrame extends PopupFrame{
         JLabel targetLabel = new JLabel(Repayment.target+" Balance: ");
         jPanel.add(targetLabel);
 
-        JLabel target = new JLabel(Double.toString(account.getAmount(Repayment.target)));
+        JLabel target = new JLabel(Double.toString(account.getCustomer().getAccount(Repayment.target).getAmount()));
         jPanel.add(target);
+
+        JLabel loanLabel = new JLabel("Loan Balance: ");
+        jPanel.add(loanLabel);
+
+        JLabel loan = new JLabel(Double.toString(account.getAmount()));
+        jPanel.add(loan);
 
         JLabel typeLabel = new JLabel("Currency: ");
         jPanel.add(typeLabel);
@@ -31,7 +38,10 @@ public class RepaymentFrame extends PopupFrame{
         box.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                target.setText(Double.toString(account.getAmount((String) box.getSelectedItem())));
+                target.setText(Double.toString(
+                        account.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")).getAmount((String) box.getSelectedItem())));
+                loan.setText(Double.toString(
+                        account.getAmount((String) box.getSelectedItem())));
             }
         });
         jPanel.add(box);
@@ -51,8 +61,8 @@ public class RepaymentFrame extends PopupFrame{
                     String cur = ((String) box.getSelectedItem()).trim();
                     String message = ((LoanAccount) account).repayment(amount, cur);
                     RepaymentFrame.this.dispose();
-                    new MessageFrame("Repayment Success", message);
                     new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+                    new MessageFrame("Repayment Success", message);
 //                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(RepaymentFrame.this)).getContextPanel()).repaintPanel();
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");

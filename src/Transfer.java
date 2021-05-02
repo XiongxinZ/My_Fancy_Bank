@@ -1,9 +1,9 @@
 public class Transfer extends AbstractTransaction {
     public Transfer(Account from, Account to, double amount, String currency) {
-        super(from, to, amount, currency);
+        super(from, to, amount, currency,"Transfer");
     }
     public Transfer(Account from, String to,String toAccount, double amount, String currency) {
-        super(from, to,toAccount, amount, currency);
+        super(from, to,toAccount, amount, currency,"Transfer");
     }
 
     @Override

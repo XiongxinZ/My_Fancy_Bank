@@ -28,12 +28,14 @@ public class CollateralDao {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                Collateral collateral = new Collateral();
 
-                collateral.setName(rs.getString("co_id"));
-                collateral.setPrice(Double.parseDouble(rs.getString("co_value")));
-                collateral.setCustomer(customer);
-                collateral.setUsed(rs.getInt("co_used") != 0);
+                String coName = rs.getString("co_name");
+                String coId = rs.getString("co_id");
+                boolean used = rs.getInt("co_used") != 0;
+                double price = rs.getDouble("co_value");
+
+
+                Collateral collateral = new Collateral(customer, coName, price, used, coId);
 
                 list.add(collateral);
             }
@@ -46,7 +48,7 @@ public class CollateralDao {
         return list;
     }
 
-    public static void insertCollateral(String id, String name, double price, int used){
+    public static void insertCollateral(String id, String name, double price, int used, String coId){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -54,13 +56,14 @@ public class CollateralDao {
         try {
             conn = JDBCUtil.getConnection();
 
-            String sql = "insert into collateral(c_id,co_id,co_price,co_used) values(?,?,?,?)";
+            String sql = "insert into collateral(c_id,co_id,co_name,co_price,co_used) values(?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, id);
-            ps.setString(2, name);
-            ps.setDouble(3,price);
-            ps.setInt(4, used);
+            ps.setString(2, coId);
+            ps.setString(3, name);
+            ps.setDouble(4,price);
+            ps.setInt(5, used);
 
             ps.executeUpdate();
 
@@ -93,7 +96,7 @@ public class CollateralDao {
             conn = JDBCUtil.getConnection();
 
             String sql = "update collateral set co_used = " + (collateral.isUsed()?1:0) +
-                    " where co_id = '" + collateral.getId() + "'";
+                    " where co_name = '" + collateral.getName() + "'";
             ps = conn.prepareStatement(String.valueOf(sql));
             flag = ps.executeUpdate();
 

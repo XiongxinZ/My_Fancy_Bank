@@ -85,15 +85,16 @@ public class TransferFrame extends PopupFrame{
                     if (transType == 0){
                         String message = ((CanTransferWithin) account).transfer(accType, amount, cur);
                         TransferFrame.this.dispose();
+                        new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
                         new MessageFrame("Transfer Success", message);
                     }else{
                         String email = finalTo.getText().trim();
                         String message = ((CanTransferToOthers) account).transfer(email, accType, amount, cur);
                         TransferFrame.this.dispose();
+                        new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
                         new MessageFrame("Transfer Success", message);
                     }
-                    new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
-//                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(TransferFrame.this)).getContextPanel()).repaintPanel();
+                    //                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(TransferFrame.this)).getContextPanel()).repaintPanel();
 
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a number");

@@ -1,6 +1,6 @@
 public class Exchange extends AbstractTransaction {
     public Exchange(Account from,  double amount, String currencyFrom, String currencyTo) {
-        super(from, from, amount, currencyFrom, currencyTo);
+        super(from, from, amount, currencyFrom, currencyTo,"Exchange");
     }
 
     @Override

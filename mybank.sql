@@ -79,9 +79,10 @@ CREATE TABLE IF NOT EXISTS `account`  (
 -- ----------------------------
 -- Table structure for collateral
 -- ----------------------------
--- DROP TABLE IF EXISTS `collateral`;
+ DROP TABLE IF EXISTS `collateral`;
 CREATE TABLE IF NOT EXISTS `collateral`  (
   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `co_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral ID',
   `co_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Name',
   `co_value` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral value',
   `co_used` TINYINT NOT NULL COMMENT 'used',
@@ -131,6 +132,18 @@ CREATE TABLE IF NOT EXISTS `realizedStock`  (
   INDEX `s_name`(`s_name`) USING BTREE,
 --  PRIMARY KEY (`co_id`) USING BTREE,
   CONSTRAINT `realizedStock_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for collateralValuation
+-- ----------------------------
+-- DROP TABLE IF EXISTS `collateralValuation`;
+CREATE TABLE IF NOT EXISTS `collateralValuation`  (
+  `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `co_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Name',
+  `f_path` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'File Path',
+  INDEX `c_ID`(`c_ID`) USING BTREE,
+  CONSTRAINT `collateralValuation_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 DROP TRIGGER IF EXISTS `updateStockPrice`;

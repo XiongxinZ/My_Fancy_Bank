@@ -1,5 +1,6 @@
 import java.io.*;
 import java.nio.channels.FileChannel;
+import java.util.Date;
 
 public class CollateralValuation implements Order{
 
@@ -43,7 +44,8 @@ public class CollateralValuation implements Order{
     @Override
     public String execute() {
         assert price != null;
-        CollateralDao.insertCollateral(customerId, name, price, 0);
+        String coId = Long.toString(customerId.hashCode() * 31L + new Date().hashCode());
+        CollateralDao.insertCollateral(customerId, name, price, 0, coId);
         return "Success";
     }
 

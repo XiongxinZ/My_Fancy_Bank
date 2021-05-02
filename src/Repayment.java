@@ -3,7 +3,7 @@ public class Repayment extends AbstractTransaction {
     public static final String target = "Checking";
 
     public Repayment(Account to, double amount, String curr) {
-        super(to.getCustomer().getAccount(target),to, amount, curr);
+        super(to.getCustomer().getAccount(target),to, amount, curr,"Repayment");
     }
 
     @Override

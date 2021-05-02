@@ -1,11 +1,11 @@
 public class Withdraw extends AbstractTransaction {
 //    private String currency = "USD";
     public Withdraw(Account from, double amount) {
-        super(from, null, amount);
+        super(from, null, amount, "Withdraw");
     }
 
     public Withdraw(Account from, double amount, String currency) {
-        super(from, null, amount,currency);
+        super(from, null, amount,currency,"Withdraw");
 //        this.currency = currency;
     }
 
