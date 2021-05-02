@@ -53,14 +53,12 @@ CREATE TABLE IF NOT EXISTS `customer`  (
 --  `a_Checking` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Checking Account',
 --  `a_Loan` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Loan Account',
 --  `a_Security` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Security Account',
-  PRIMARY KEY (`c_ID`) USING BTREE,
+  PRIMARY KEY (`c_ID`) USING BTREE
 --  CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`a_Saving`) REFERENCES `saving` (`a_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
 --  CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`a_Checking`) REFERENCES `checking` (`a_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
 --  CONSTRAINT `customer_ibfk_3` FOREIGN KEY (`a_Loan`) REFERENCES `loan` (`a_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
 --  CONSTRAINT `customer_ibfk_4` FOREIGN KEY (`a_Security`) REFERENCES `security` (`a_ID`) ON NULL SET FALSE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
-  CONSTRAINT `customer_ibfk_4` FOREIGN KEY (`a`) REFERENCES `test` (`a`) ON DELETE SET 0 ON UPDATE CASCADE
 
 -- ----------------------------
 -- Table structure for account
@@ -86,9 +84,8 @@ CREATE TABLE IF NOT EXISTS `collateral`  (
   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
   `co_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Name',
   `co_value` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral value',
-  `co_used` TINYINT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'used',
+  `co_used` TINYINT NOT NULL COMMENT 'used',
   INDEX `c_ID`(`c_ID`) USING BTREE,
-  PRIMARY KEY (`co_id`) USING BTREE,
   CONSTRAINT `collateral_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -100,13 +97,13 @@ CREATE TABLE IF NOT EXISTS `stock`  (
   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
   `s_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Name',
   `s_curr` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Currency',
-  `s_quantity` INT(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Quantity',
-  `b_price` decimal(8,2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Buy Price',
-  `c_price` decimal(8,2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Current Price',
+  `s_quantity` INT(16) NOT NULL COMMENT 'Stock Quantity',
+  `b_price` decimal(8,2) NOT NULL COMMENT 'Buy Price',
+  `c_price` decimal(8,2) NOT NULL COMMENT 'Current Price',
   INDEX `c_ID`(`c_ID`) USING BTREE,
-  INDEX `s_name`(`s_name`) USING BTREE
+  INDEX `s_name`(`s_name`) USING BTREE,
 --  PRIMARY KEY (`co_id`) USING BTREE,
---  CONSTRAINT `stock_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `stock_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -116,11 +113,25 @@ CREATE TABLE IF NOT EXISTS `stock`  (
 CREATE TABLE IF NOT EXISTS `stockInfo`  (
   `s_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Name',
   `s_curr` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Currency',
-  `c_price` decimal(8,2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Current Price',
+  `c_price` decimal(8,2) NOT NULL COMMENT 'Current Price',
 --  INDEX `s_name`(`s_name`) USING BTREE,
   PRIMARY KEY (`s_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for stock
+-- ----------------------------
+-- DROP TABLE IF EXISTS `realizedStock`;
+CREATE TABLE IF NOT EXISTS `realizedStock`  (
+  `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `s_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Name',
+  `s_curr` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Currency',
+  `r_profit` decimal(8,2) NOT NULL COMMENT 'Realized Profit',
+  INDEX `c_ID`(`c_ID`) USING BTREE,
+  INDEX `s_name`(`s_name`) USING BTREE,
+--  PRIMARY KEY (`co_id`) USING BTREE,
+  CONSTRAINT `realizedStock_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 DROP TRIGGER IF EXISTS `updateStockPrice`;
 delimiter ;;
