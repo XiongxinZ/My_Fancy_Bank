@@ -25,6 +25,10 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
         if (account instanceof SecurityAccount){
             add(new StockPositionPanel(getCustomer()));
         }
+
+        if (account instanceof LoanAccount){
+            add(new LoanPanel(getCustomer()));
+        }
         add(operationPanel);
     }
 

@@ -12,4 +12,10 @@ public class TableColumns {
                 "Stock Name", "Currency","Current Price", "Buy Price", "Quantity", "Amount", "Profit"
         };
     }
+
+    public static String[] getLoanPoolColumns(){
+        return new String[] {
+                "Loan ID", "Customer","Collateral ID","Balance", "Currency"
+        };
+    }
 }
