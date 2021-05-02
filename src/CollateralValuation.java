@@ -33,6 +33,7 @@ public class CollateralValuation implements Order{
             FileChannel fos = new FileOutputStream(filePath).getChannel();
             fos.transferFrom(fis, 0, fis.size());
             file = out;
+            CollateralDao.insertCollateralRequest(this);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

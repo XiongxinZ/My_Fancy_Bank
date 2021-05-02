@@ -9,11 +9,21 @@ public class SystemDatabase {
 
     public static final String[] transType = {"Withdraw", "Deposit", "Transfer"};
     public static final String[] accType = {"Saving", "Checking", "Loan", "Security"};
+    public static final String[] month = {"All","Jan.", "Feb.", "Mar.", "Apr.", "May.", "Jun.", "Jul.",
+            "Aug.","Sept.","Oct.","Nov.","Dec."};
+    public static final String[] day = new String[32];
+    public static final HashMap<String, Integer> monthMap = new HashMap<>();
 
-    private HashSet<String> _currencyList;
-    private ArrayList<Customer> _customerList;
-    private ArrayList<Banker> _bankerList;
-    private ArrayList<Order> _orderList;
+    static {
+        day[0] = "All";
+        for (int i = 1; i < day.length; i++) {
+            day[i] = String.valueOf(i);
+        }
+
+        for (int i = 1; i < month.length; i++) {
+            monthMap.put(month[i], i-1);
+        }
+    }
 
     private HashMap<String, Serializable> _used;
 

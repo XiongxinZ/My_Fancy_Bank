@@ -5,8 +5,8 @@ public class SecurityAccount extends Account implements CanTransferWithin {
 
     public static final String TYPE = "Security";
 
-    private StockPool<CustomerStock> stockPool = new StockPool<>();
-    private StockPool<StockProfit> profitPool = new StockPool<>();
+    private ValuePool<CustomerStock> stockPool = new ValuePool<>();
+    private ValuePool<StockProfit> profitPool = new ValuePool<>();
 
     static int temp = 5000;
 
@@ -28,33 +28,33 @@ public class SecurityAccount extends Account implements CanTransferWithin {
         return new SellStock(this,stock).execute();
     }
 
-    public StockPool<CustomerStock> getStockPool() {
+    public ValuePool<CustomerStock> getStockPool() {
         return stockPool;
     }
 
-    public void setStockPool(StockPool<CustomerStock> stockPool) {
+    public void setStockPool(ValuePool<CustomerStock> stockPool) {
         this.stockPool = stockPool;
     }
 
-    public StockPool<StockProfit> getProfitPool() {
+    public ValuePool<StockProfit> getProfitPool() {
         return profitPool;
     }
 
-    public void setProfitPool(StockPool<StockProfit> profitPool) {
+    public void setProfitPool(ValuePool<StockProfit> profitPool) {
         this.profitPool = profitPool;
     }
 
     public HashMap<String, Double> getProfit() {
-        return profitPool.calTotal(new StockValCounter<StockProfit>() {
+        return profitPool.calTotal(new ValCounter<StockProfit>() {
             @Override
             public double getCountedPrice(StockProfit target) {
-                return target.getProfit();
+                return target.getValue();
             }
         });
     }
 
     public HashMap<String, Double> getStockAmount() {
-        return stockPool.calTotal(new StockValCounter<CustomerStock>() {
+        return stockPool.calTotal(new ValCounter<CustomerStock>() {
             @Override
             public double getCountedPrice(CustomerStock target) {
                 return target.getCurrentPrice() * target.getQuantity();

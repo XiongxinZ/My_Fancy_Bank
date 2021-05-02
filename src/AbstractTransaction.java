@@ -33,10 +33,10 @@ public abstract class AbstractTransaction implements Transaction {
     public AbstractTransaction(Account from, Account to, double amount, String currencyFrom, String currencyTo, Date date, String transType) {
         this.from = from;
         this.to = to;
-        this.fromWhom = from.getCustomer().getId();
-        this.toWhom = to.getCustomer().getId();
-        this.fromAccount = from.getAccountType();
-        this.toAccount = to.getAccountType();
+        this.fromWhom = from == null?null: from.getCustomer().getId();
+        this.toWhom = to==null?null:to.getCustomer().getId();
+        this.fromAccount = from==null? null:from.getAccountType();
+        this.toAccount = to==null?null:to.getAccountType();
         this.transTime = date;
         this.amount = amount;
         this.currencyFrom = currencyFrom;
@@ -146,6 +146,10 @@ public abstract class AbstractTransaction implements Transaction {
 
     public String getCurrencyTo() {
         return currencyTo;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public abstract String execute();

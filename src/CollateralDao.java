@@ -129,7 +129,41 @@ public class CollateralDao {
         } finally {
             JDBCUtil.closeResource(conn, ps, rs);
         }
+    }
 
+    public static Collateral selectCollateralWithId(String id, Customer customer){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Collateral collateral = null;
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            String sql = "select * from collateral where co_id = ?";
+
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                String coName = rs.getString("co_name");
+                String coId = rs.getString("co_id");
+                boolean used = rs.getInt("co_used") != 0;
+                double price = rs.getDouble("co_value");
+
+                collateral = new Collateral(customer, coName, price, used, coId);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return collateral;
     }
 
     public static List<CollateralValuation> selectCollateralRequestList(){

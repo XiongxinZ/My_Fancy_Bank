@@ -1,12 +1,14 @@
-import java.io.Serial;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class LoanAccount extends Account{
 
     public static final String TYPE = "Loan";
-    @Serial
-    private static final long serialVersionUid = -864260430747385621L;
 
-    static int temp = 10;
+    private static int temp = 10;
+
+    private ValuePool<Loan> loanPool = new ValuePool<>();
+//    private HashMap<String,Double> loanAmount;
 
     public LoanAccount(Customer customer, double amount) {
         super(customer, amount, "Loan");
@@ -16,9 +18,9 @@ public class LoanAccount extends Account{
         super(customer,"Loan");
     }
 
-    public String repayment(double amount, String cur){
-        return new Repayment(this,amount,cur).execute();
-    }
+//    public String repayment(Loan loan, double amount){
+//        return new Repayment(loan,amount).execute();
+//    }
 
     public String takeLoan(Collateral collateral, String curr){
         return new TakeLoan(this, collateral, curr).execute();
@@ -39,13 +41,41 @@ public class LoanAccount extends Account{
         }
     }
 
-//    public String requestLoan(Collateral collateral){
-//        SystemDatabase.getOrderList().add(new TakeLoan(getCustomer(), collateral));
-//        return "Submit application! The collateral worth $"+ collateral.getPrice() +  ". Waiting manager to approve";
-//    }
+    public ValuePool<Loan> getLoanPool() {
+        return loanPool;
+    }
+
+    public void setLoanPool(ValuePool<Loan> loanPool) {
+        this.loanPool = loanPool;
+    }
+
+    public HashMap<String, Double> getTotalLoan(){
+        return loanPool.calTotal(new ValCounter<Loan>() {
+            @Override
+            public double getCountedPrice(Loan target) {
+                return -target.getValue();
+            }
+        });
+    }
 
     @Override
-    public boolean isMultiCurr() {
-        return false;
+    public double getAmount(){
+        return loanPool.calTotal(new ValCounter<Loan>() {
+            @Override
+            public double getCountedPrice(Loan target) {
+                return -target.getValue();
+            }
+        }).get("USD");
     }
+
+    @Override
+    public double getAmount(String curr){
+        return loanPool.calTotal(new ValCounter<Loan>() {
+            @Override
+            public double getCountedPrice(Loan target) {
+                return -target.getValue();
+            }
+        }).get(curr);
+    }
+
 }

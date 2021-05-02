@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for transaction
 -- ----------------------------
--- DROP TABLE IF EXISTS `transactionLog`;
+ DROP TABLE IF EXISTS `transactionLog`;
 CREATE TABLE IF NOT EXISTS `transactionLog`  (
   `t_date` date NOT NULL COMMENT 'Transaction Time',
   `t_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Transaction Type',
@@ -29,16 +29,14 @@ CREATE TABLE IF NOT EXISTS `transactionLog`  (
   `f_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'FromAccount',
   `t_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'ToCustomer',
   `t_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'ToAccount',
-  `t_money` decimal(8, 2) NOT NULL COMMENT 'Amount',
-  `f_balance` decimal(8, 2)  COMMENT 'FromBalance',
-  `t_balance` decimal(8, 2)  COMMENT 'ToBalance',
+  `t_money` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Amount',
+  `f_balance` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  COMMENT 'FromBalance',
+  `f_currency` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'FromCurrency',
+  `t_balance` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  COMMENT 'ToBalance',
+  `t_currency` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'ToCurrency',
   INDEX `f_id`(`f_id`) USING BTREE,
   INDEX `t_id`(`t_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of transfer
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for customer
@@ -134,6 +132,21 @@ CREATE TABLE IF NOT EXISTS `realizedStock`  (
   CONSTRAINT `realizedStock_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for loan
+-- ----------------------------
+-- DROP TABLE IF EXISTS `loan`;
+CREATE TABLE IF NOT EXISTS `loan`  (
+  `l_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Loan ID',
+  `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `co_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral ID',
+  `l_currency` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Currency',
+  `l_balance` decimal(8,2) NOT NULL COMMENT 'Balance',
+  INDEX `c_ID`(`c_ID`) USING BTREE,
+  INDEX `co_id`(`co_id`) USING BTREE,
+  PRIMARY KEY (`l_id`) USING BTREE,
+  CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Table structure for collateralValuation
 -- ----------------------------

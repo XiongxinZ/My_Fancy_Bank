@@ -1,4 +1,4 @@
-public class CustomerStock extends StockInfo{
+public class CustomerStock extends StockInfo implements Valuable{
 
     private int quantity;
     private Customer customer;
@@ -53,9 +53,16 @@ public class CustomerStock extends StockInfo{
         return buyPrice;
     }
 
+
+
     @Override
     public String toString() {
         return  getName() +
                 ": " + getCurrentPrice() + getCurrency() + ", Quantity:" + quantity;
+    }
+
+    @Override
+    public double getValue() {
+        return quantity * getCurrentPrice();
     }
 }

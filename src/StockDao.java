@@ -3,7 +3,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class StockDao {
@@ -192,12 +191,12 @@ public class StockDao {
         return list;
     }
 
-    public static StockPool<CustomerStock> selectCustomerStockList(Customer customer){
+    public static ValuePool<CustomerStock> selectCustomerStockList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        StockPool<CustomerStock> list = new StockPool<>();
+        ValuePool<CustomerStock> list = new ValuePool<>();
 
         try{
             conn = JDBCUtil.getConnection();
@@ -225,12 +224,12 @@ public class StockDao {
         return list;
     }
 
-    public static StockPool<StockProfit> selectProfitList(Customer customer){
+    public static ValuePool<StockProfit> selectProfitList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        StockPool<StockProfit> list = new StockPool<>();
+        ValuePool<StockProfit> list = new ValuePool<>();
 
         try{
             conn = JDBCUtil.getConnection();

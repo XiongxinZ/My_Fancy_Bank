@@ -119,9 +119,9 @@ public class CustomerDao {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String userName = null;
+		String userName = "-";
 		if (id == null){
-			return null;
+			return userName;
 		}
 
 		try {

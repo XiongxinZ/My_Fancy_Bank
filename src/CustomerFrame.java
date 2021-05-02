@@ -35,8 +35,8 @@ public class CustomerFrame extends CoreFrame {
         JMenuItem homepage = new JMenuItem("HomePage");
         JMenuItem transHis = new JMenuItem("Transaction History");
         JMenuItem item2 = new JMenuItem("12");
-        JMenuItem item3 = new JMenuItem("13");
-        JMenuItem item4 = new JMenuItem("14");
+        JMenuItem item3 = new JMenuItem("Logout");
+        JMenuItem item4 = new JMenuItem("Exit");
         homepage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,18 +62,15 @@ public class CustomerFrame extends CoreFrame {
         item3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                label.setText("pick 13");
-//                button8.setText("¡ø"+ item3.getText());
-//                button8.setSelected(false);
+                CustomerFrame.this.dispose();
+                new LoginFrame();
             }
         });
 
         item4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                label.setText("pick 14");
-//                button8.setText("¡ø"+ item4.getText());
-//                button8.setSelected(false);
+                CustomerFrame.this.dispose();
             }
         });
         menu.add(homepage);

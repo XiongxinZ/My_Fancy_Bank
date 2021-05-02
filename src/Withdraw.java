@@ -16,23 +16,23 @@ public class Withdraw extends AbstractTransaction {
 
     @Override
     public String execute() {
-        assert getTo() instanceof CheckingAccount;
+        assert getFrom() instanceof CheckingAccount;
 
         String ret;
-        if (getTo() instanceof SavingAccount){
+        if (getFrom() instanceof SavingAccount){
             SavingAccount savingAccount = (SavingAccount) getFrom();
             savingAccount.removeCurrency(getAmount(), getCurrencyFrom());
             AccountDao.updateAccountMoney(savingAccount, getCurrencyFrom());
             TransactionDao.insertTransaction(this);
             ret =  "Withdraw $" + getAmount() + ", balance $" + savingAccount.getAmount(getCurrencyFrom());
-        }else if (getTo() instanceof CheckingAccount){
+        }else if (getFrom() instanceof CheckingAccount){
             CheckingAccount checkingAccount = (CheckingAccount) getFrom();
             checkingAccount.removeCurrency(getAmount(), getCurrencyFrom());
-            AccountDao.updateAccountMoney(checkingAccount,getFromAccount());
+            AccountDao.updateAccountMoney(checkingAccount,getCurrencyFrom());
             TransactionDao.insertTransaction(this);
             ret = "Withdraw $" + getAmount() + ", amount $" + checkingAccount.getAmount(getCurrencyFrom());
         }else{
-            ret = getTo().toString() + " can't withdraw.";
+            ret = getFrom().toString() + " can't withdraw.";
         }
         return ret;
     }

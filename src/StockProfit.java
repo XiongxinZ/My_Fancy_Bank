@@ -1,4 +1,4 @@
-public class StockProfit extends StockInfo {
+public class StockProfit extends StockInfo implements Valuable{
     private double profit;
     private Customer customer;
     public StockProfit(Customer customer,String name, double profit, String currency) {
@@ -7,7 +7,7 @@ public class StockProfit extends StockInfo {
         this.customer = customer;
     }
 
-    public double getProfit() {
+    public double getValue() {
         return profit;
     }
 

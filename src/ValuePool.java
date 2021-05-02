@@ -1,8 +1,8 @@
 import java.util.HashMap;
 
-public class StockPool<T extends StockInfo> extends HashMap<String, T>{
+public class ValuePool<T extends Valuable> extends HashMap<String, T>{
 
-    public HashMap<String, Double> calTotal(StockValCounter<T> v){
+    public HashMap<String, Double> calTotal(ValCounter<T> v){
         HashMap<String, Double> ret = new HashMap<>();
         ret.put("USD", 0.0);
         ret.put("CNY", 0.0);

@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -16,8 +17,8 @@ public class TransactionDao {
         try {
             conn = JDBCUtil.getConnection();
 
-            String sql = "insert into transactionLog(t_date, t_type, f_id, f_account, t_id, t_account, t_money, f_balance, t_balance) "
-                    + "values(?,?,?,?,?,?,?,?,?)";
+            String sql = "insert into transactionLog(t_date, t_type, f_id, f_account, t_id, t_account, t_money, f_balance,f_currency, t_balance, t_currency) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             ps.setDate(1, new Date(transaction.getTransTime().getTime()));
@@ -26,9 +27,11 @@ public class TransactionDao {
             ps.setString(4, transaction.getFromAccount()==null?"-": transaction.getFromAccount());
             ps.setString(5, transaction.getToWhom()==null?"-": transaction.getToWhom());
             ps.setString(6, transaction.getToAccount()==null?"-": transaction.getToAccount());
-            ps.setDouble(7, transaction.getAmount());
-            ps.setDouble(8, transaction.getFromBalance());
-            ps.setDouble(9, transaction.getToBalance());
+            ps.setString(7, String.valueOf(transaction.getAmount()));
+            ps.setString(8, transaction.getFromBalance()==null?"-":String.valueOf(transaction.getFromBalance()));
+            ps.setString(9, transaction.getFromBalance()==null?"-":transaction.getCurrencyFrom());
+            ps.setString(10, transaction.getToBalance()==null?"-": String.valueOf(transaction.getToBalance()));
+            ps.setString(11, transaction.getToBalance()==null?"-": transaction.getCurrencyTo());
             flag = ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -79,7 +82,9 @@ public class TransactionDao {
                 dataRow.add(rs.getString("t_account"));
                 dataRow.add(rs.getString("t_money"));
                 dataRow.add(rs.getString("f_balance"));
+                dataRow.add(rs.getString("f_currency"));
                 dataRow.add(rs.getString("t_balance"));
+                dataRow.add(rs.getString("t_currency"));
 
                 list.add(dataRow);
             }
@@ -116,16 +121,6 @@ public class TransactionDao {
 
             }
 
-//            if(!("".equals(name)) && name != null) {
-////                sql.append(" and (f_name = '").append(name).append("' or t_name = '").append(name).append("')");
-//
-//                sql.append(" and");
-//
-//                sql.append(" (");
-//                sql.append(QueryUtil.appendConstrain("f_name",name)).append(" or ").append(QueryUtil.appendConstrain("t_name", name));
-//                sql.append(")");
-//            }
-
             sql.append(" and");
 
             sql.append(QueryUtil.appendConstrain("t_type",type));
@@ -145,7 +140,9 @@ public class TransactionDao {
                 dataRow.add(rs.getString("t_account"));
                 dataRow.add(rs.getString("t_money"));
                 dataRow.add(rs.getString("f_balance"));
+                dataRow.add(rs.getString("f_currency"));
                 dataRow.add(rs.getString("t_balance"));
+                dataRow.add(rs.getString("t_currency"));
 
                 list.add(dataRow);
             }
@@ -206,7 +203,93 @@ public class TransactionDao {
                 dataRow.add(rs.getString("t_account"));
                 dataRow.add(rs.getString("t_money"));
                 dataRow.add(rs.getString("f_balance"));
+                dataRow.add(rs.getString("f_currency"));
                 dataRow.add(rs.getString("t_balance"));
+                dataRow.add(rs.getString("t_currency"));
+
+                list.add(dataRow);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return list;
+    }
+
+    public static List<Vector<String>> getTransactionList(Customer customer, String type, String direction, String year, String month, String day){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        ArrayList<Vector<String>> list = new ArrayList<>();
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            String id = customer.getId();
+            String name = customer.getName();
+//            String c_pswd = customer.getPassword();
+
+            StringBuilder sql = QueryUtil.getPartAll(dbName);
+
+            if(!"".equals(id) && id != null) {
+                sql.append(" and");
+                if ("All".equalsIgnoreCase(direction)){
+                    sql.append(" (");
+                    sql.append (QueryUtil.appendConstrain("f_id",id)).append(" or ").append(QueryUtil.appendConstrain("t_id", id));
+                    sql.append(")");
+                }else if ("out".equalsIgnoreCase(direction)){
+                    sql.append(QueryUtil.appendConstrain("f_id",id));
+                }else if ("in".equalsIgnoreCase(direction)){
+                    sql.append(QueryUtil.appendConstrain("t_id", id));
+                }
+            }
+
+            if (!"All".equalsIgnoreCase(type)){
+                sql.append(" and");
+                sql.append(QueryUtil.appendConstrain("t_type",type));
+            }
+
+
+            ps = conn.prepareStatement(String.valueOf(sql));
+
+            rs = ps.executeQuery();
+//            int size = rs.getFetchSize();
+            while(rs.next()) {
+                Vector<String> dataRow = new Vector<>();
+                Date date = rs.getDate("t_date");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                int transYear = calendar.get(Calendar.YEAR);
+                int transMonth = calendar.get(Calendar.MONTH);
+                int transDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+
+                if (!"All".equalsIgnoreCase(year) && transYear != Integer.parseInt(year)){
+                    continue;
+                }
+
+                if (!"All".equalsIgnoreCase(month) && transMonth != SystemDatabase.monthMap.get(month)){
+                    continue;
+                }
+
+                if (!"All".equalsIgnoreCase(day) && transDay != Integer.parseInt(day)){
+                    continue;
+                }
+
+                dataRow.add(rs.getString("t_date"));
+                dataRow.add(rs.getString("t_type"));
+                dataRow.add(CustomerDao.getCustomerName(rs.getString("f_id")));
+                dataRow.add(rs.getString("f_account"));
+                dataRow.add(CustomerDao.getCustomerName(rs.getString("t_id")));
+                dataRow.add(rs.getString("t_account"));
+                dataRow.add(rs.getString("t_money"));
+                dataRow.add(rs.getString("f_balance"));
+                dataRow.add(rs.getString("f_currency"));
+                dataRow.add(rs.getString("t_balance"));
+                dataRow.add(rs.getString("t_currency"));
 
                 list.add(dataRow);
             }

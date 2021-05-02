@@ -63,7 +63,7 @@ public class TransferFrame extends PopupFrame{
         JLabel toAccountLabel = new JLabel("ToAccount: ");
         jPanel.add(toAccountLabel);
 
-        JComboBox<String> toAccount = new JComboBox<>(SystemDatabase.accType);
+        JComboBox<String> toAccount = new JComboBox<>(new String[]{"Saving", "Checking","Security"});
 //        JLabel balance = new JLabel("0.0");
         jPanel.add(toAccount);
 

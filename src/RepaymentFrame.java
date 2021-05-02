@@ -25,26 +25,42 @@ public class RepaymentFrame extends PopupFrame{
         JLabel target = new JLabel(Double.toString(account.getCustomer().getAccount(Repayment.target).getAmount()));
         jPanel.add(target);
 
-        JLabel loanLabel = new JLabel("Loan Balance: ");
+        JLabel loanLabel = new JLabel("Loan: ");
         jPanel.add(loanLabel);
 
-        JLabel loan = new JLabel(Double.toString(account.getAmount()));
+        JComboBox<Loan> loan = new JComboBox<>(LoanDao.selectCustomerLoanList(account.getCustomer()).values().toArray(new Loan[0]));
         jPanel.add(loan);
+
+        JLabel balanceLabel = new JLabel("Loan Balance: ");
+        jPanel.add(balanceLabel);
+
+        JLabel balance = new JLabel(Double.toString(account.getAmount()));
+        jPanel.add(balance);
 
         JLabel typeLabel = new JLabel("Currency: ");
         jPanel.add(typeLabel);
-
-        JComboBox<String> box = new JComboBox<>(new String[]{"USD", "CNY", "JPY"});
-        box.addItemListener(new ItemListener() {
+//
+//        JComboBox<String> box = new JComboBox<>(new String[]{"USD", "CNY", "JPY"});
+//        box.addItemListener(new ItemListener() {
+//            @Override
+//            public void itemStateChanged(ItemEvent e) {
+//                target.setText(Double.toString(
+//                        account.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")).getAmount((String) box.getSelectedItem())));
+//                balance.setText(Double.toString(
+//                        account.getAmount((String) box.getSelectedItem())));
+//            }
+//        });
+//        jPanel.add(box);
+        loan.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
+                Loan selected = (Loan) loan.getSelectedItem();
                 target.setText(Double.toString(
-                        account.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")).getAmount((String) box.getSelectedItem())));
-                loan.setText(Double.toString(
-                        account.getAmount((String) box.getSelectedItem())));
+                        account.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")).getAmount(selected.getCurrency())));
+                balance.setText(Double.toString(selected.getBalance()));
             }
         });
-        jPanel.add(box);
+//        jPanel.add(loan);
 
         JLabel amountLabel = new JLabel("Amount: ");
         jPanel.add(amountLabel);
@@ -58,8 +74,8 @@ public class RepaymentFrame extends PopupFrame{
             public void actionPerformed(ActionEvent e) {
                 try {
                     double amount = Double.parseDouble(amountText.getText().trim());
-                    String cur = ((String) box.getSelectedItem()).trim();
-                    String message = ((LoanAccount) account).repayment(amount, cur);
+                    Loan selected = (Loan) loan.getSelectedItem();
+                    String message = selected.repayment(amount);
                     RepaymentFrame.this.dispose();
                     new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
                     new MessageFrame("Repayment Success", message);

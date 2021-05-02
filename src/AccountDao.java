@@ -185,6 +185,10 @@ public class AccountDao {
                     ((SecurityAccount) account).setProfitPool(StockDao.selectProfitList(customer));
                     ((SecurityAccount) account).setStockPool(StockDao.selectCustomerStockList(customer));
                 }
+
+                if (account instanceof LoanAccount){
+                    ((LoanAccount) account).setLoanPool(LoanDao.selectCustomerLoanList(customer));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

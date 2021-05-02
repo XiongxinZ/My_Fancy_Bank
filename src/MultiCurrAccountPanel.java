@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Random;
 
 public class MultiCurrAccountPanel extends CustomerContentPanel{
     private Account account;
@@ -16,31 +17,26 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
     }
 
     private void setPanel(){
-        setLayout(new GridLayout(2,1));
+        setLayout(new GridLayout(0,1));
 
         infoPanel = infoPanel();
         operationPanel = operationPanel();
         add(infoPanel);
+        if (account instanceof SecurityAccount){
+            add(new StockPositionPanel(getCustomer()));
+        }
         add(operationPanel);
     }
 
     private JPanel infoPanel(){
-        JPanel jp = new JPanel();
-        jp.add(new JLabel(){
-            @Override
-            protected void paintComponent(Graphics g) {
-                ImageIcon icon = new ImageIcon("img/back0.jpeg");
-                g.drawImage(icon.getImage(), 0, 0, getWidth(),getHeight(),
-                        icon.getImageObserver());
-            }
-        }, BorderLayout.NORTH);
-        jp.add(new JLabel("<html><b><em>"+account.toString()+"</em></b><br>"+
-                "USD: " + account.getAmount("USD") + "<br>" +
-                "CNY: " + account.getAmount("CNY") + "<br>" +
-                "JPY: " + account.getAmount("JPY") + "<br>" ));
-
+        JPanel jp = new JPanel(new GridLayout(0,1,0,0));
+        jp.add(new JLabel(new ImageIcon("img/back"+ new Random().nextInt(3) +".jpeg")));
+        jp.add(new JLabel("<html><b><em>"+account.toString()+"</em></b>", JLabel.CENTER ));
+        jp.add(new JLabel("USD: " + account.getAmount("USD") , JLabel.CENTER));
+        jp.add(new JLabel("CNY: " + account.getAmount("CNY") , JLabel.CENTER ));
+        jp.add(new JLabel("JPY: " + account.getAmount("JPY") , JLabel.CENTER ));
+//        core.add(jp,BorderLayout.BEFORE_FIRST_LINE);
         // Stock List/profit.
-
         return jp;
     }
 

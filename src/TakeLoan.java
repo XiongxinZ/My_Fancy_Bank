@@ -8,7 +8,7 @@ public class TakeLoan extends AbstractTransaction {
     private Collateral collateral;
 //    private String curr;
 
-    public TakeLoan(Account from, Collateral collateral, String curr) {
+    public TakeLoan(LoanAccount from, Collateral collateral, String curr) {
         super(from, from.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")),
                 collateral.getPrice()* ConfigUtil.getConfigDouble("USDTo"+curr), curr, "Take Loan");
         this.collateral = collateral;
@@ -18,11 +18,14 @@ public class TakeLoan extends AbstractTransaction {
 
     @Override
     public String execute() {
-        getTo().addCurrency(getAmount(),getCurrencyTo());
+        getTo().removeCurrency(getAmount(),getCurrencyTo());
         getFrom().addCurrency(getAmount(), getCurrencyFrom());
         collateral.setUsed(true);
+        Loan newLoan = new Loan(getFrom().getCustomer(), collateral, collateral.getPrice(), getCurrencyFrom());
+        ((LoanAccount)getFrom()).getLoanPool().put(newLoan.getId(), newLoan);
         AccountDao.updateAccountMoney(getFrom(),getCurrencyFrom());
         AccountDao.updateAccountMoney(getTo(),getCurrencyTo());
+        LoanDao.insertLoan(newLoan);
         CollateralDao.updateUsed(collateral);
         TransactionDao.insertTransaction(this);
         return "Success! " + ConfigUtil.getConfig("LoanTarget") + "Account add " + getAmount() + getCurrencyTo();

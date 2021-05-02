@@ -3,19 +3,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.ResultSet;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -24,26 +17,15 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 
 
-public class TransactionHistoryPanel extends CustomerContentPanel implements MouseListener {
+public class StockPositionPanel extends CustomerContentPanel implements MouseListener {
 
     private JTextField jtf_name;
     private JTextField jtf_id;
     private JTable jt_customer;
     private DefaultTableModel dm;
     private DefaultTableColumnModel dcm;
-//    private JLabel jl_add;
-//    private JLabel jl_del;
-//    private JLabel jl_update;
-//    private JLabel jl_refresh;
 
-//    private Customer customer;
-
-//    public static void main(String[] args) {
-//        JFrame jf = new JFrame();
-//        jf.add(new TransactionHistoryPanel(new Customer()));
-//        jf.setSize(750,500);
-//        jf.setVisible(true);
-//    }
+    private ValuePool<CustomerStock> stockList = null;
 
     /**
      * 将客户信息填入表格
@@ -53,34 +35,50 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        List<Vector<String>> list = TransactionDao.getTransactionList(getCustomer());
+        if (stockList == null){
+            stockList = StockDao.selectCustomerStockList(getCustomer());
+        }
 
-        for(Vector<String> data : list) {
-            dm.addRow(data);
+        for (CustomerStock value : stockList.values()) {
+//             "Stock Name", "Current Price", "Buy Price", "Quantity", "Amount", "Profit"
+            Vector<Object> v = new Vector<>();
+            v.add(value.getName());
+            v.add(value.getCurrentPrice());
+            v.add(value.getBuyPrice());
+            v.add(value.getQuantity());
+            v.add(value.getCurrentPrice()*value.getQuantity());
+            v.add((value.getCurrentPrice()-value.getBuyPrice())*value.getQuantity());
+
+            dm.addRow(v);
         }
     }
-
-    public void fillTable(String type, String direction,String year, String month, String day) {
+    public void fillTable(String currency) {
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        List<Vector<String>> list = TransactionDao.getTransactionList(getCustomer(), type, direction,year, month, day);
-
-        for(Vector<String> data : list) {
-            dm.addRow(data);
+        if (stockList == null){
+            stockList = StockDao.selectCustomerStockList(getCustomer());
         }
-    }
 
-    public void fillTable(List<String[]> data) {
-        dm = (DefaultTableModel) jt_customer.getModel();
-        dm.setRowCount(0);
+        for (CustomerStock value : stockList.values()) {
+//             "Stock Name", "Current Price", "Buy Price", "Quantity", "Amount", "Profit"
+            if (!value.getCurrency().equals(currency)){
+                continue;
+            }
+            Vector<Object> v = new Vector<>();
+            v.add(value.getName());
+            v.add(value.getCurrency());
+            v.add(value.getCurrentPrice());
+            v.add(value.getBuyPrice());
+            v.add(value.getQuantity());
+            v.add(value.getCurrentPrice()*value.getQuantity());
+            v.add((value.getCurrentPrice()-value.getBuyPrice())*value.getQuantity());
 
-        for(String[] v : data) {
             dm.addRow(v);
         }
     }
 
-    public TransactionHistoryPanel(Customer customer) {
+    public StockPositionPanel(Customer customer) {
         super(customer);
         setPanel();
     }
@@ -101,56 +99,13 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         add(jp_tool, BorderLayout.NORTH);
 //        jp_tool.setLayout(null);
 
-        JLabel jl_year = new JLabel("Year");
-        jp_tool.add(jl_year);
+        JLabel currencyLabel = new JLabel("Currency");
+        jp_tool.add(currencyLabel);
 
-        String[] year = new String[6];
-        year[0] = "All";
-        int j = Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = 1; i < 6; i++) {
-            year[i] = String.valueOf(j-i);
-        }
-        JComboBox<String> jc_year = new JComboBox<>(year);
-        jp_tool.add(jc_year);
+        JComboBox<String> currency = new JComboBox<>(new String[]{"USD","CNY","JPY"});
+        jp_tool.add(currency);
 
-        JLabel jl_month= new JLabel("Month");
-        jp_tool.add(jl_month);
-
-        JComboBox<String> jc_month = new JComboBox<>(SystemDatabase.month);
-        jp_tool.add(jc_month);
-
-        JLabel jl_day = new JLabel("Day");
-        jp_tool.add(jl_day);
-
-        JComboBox<String> jc_day = new JComboBox<>(SystemDatabase.day);
-        jp_tool.add(jc_day);
-
-        JLabel jl_type = new JLabel("Type");
-        jp_tool.add(jl_type);
-
-        JComboBox<String> jc_type = new JComboBox<>();
-//        jc_type.setBounds(750, 10, 100, 30);
-        jc_type.addItem("ALL");
-        String[] typeList = ComboList.getTransactionTypeList();
-        for(String data : typeList) {
-            jc_type.addItem(data);
-        }
-        jp_tool.add(jc_type);
-
-        JLabel jl_to = new JLabel("Direction");
-//        jl_to.setBounds(700, 10, 50, 30);
-        jp_tool.add(jl_to);
-
-        JComboBox<String> jc_direction = new JComboBox<>();
-//        jc_direction.setBounds(750, 10, 100, 30);
-        jc_direction.addItem("ALL");
-        String[] directionList = {"IN", "OUT"};
-        for(String data : directionList) {
-            jc_direction.addItem(data);
-        }
-        jp_tool.add(jc_direction);
-
-        jt_customer = new JTable(new DefaultTableModel(TableColumns.getTransactionColumns(), 0) {
+        jt_customer = new JTable(new DefaultTableModel(TableColumns.getStockPoolColumns(), 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -167,7 +122,6 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         this.add(js, BorderLayout.CENTER);
 
         JButton jb_submit = new JButton("Search");
-//        jb_submit.setBounds(890, 10, 80, 30);
         jp_tool.add(jb_submit);
 
         jb_submit.addActionListener(new ActionListener() {
@@ -175,14 +129,8 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                String type = ((String) jc_type.getSelectedItem()).trim();
-                String direction = ((String) jc_direction.getSelectedItem()).trim();
-                String year = ((String)jc_year.getSelectedItem()).trim();
-                String month = ((String)jc_month.getSelectedItem()).trim();
-                String day = ((String)jc_day.getSelectedItem()).trim();
-
-//                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
-                fillTable(type, direction,year,month,day);
+                String currType = ((String) currency.getSelectedItem()).trim();
+                fillTable(currType);
 
             }
         });
