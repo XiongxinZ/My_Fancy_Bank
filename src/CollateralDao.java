@@ -163,6 +163,8 @@ public class CollateralDao {
         }
     }
 
+
+
     public static Collateral selectCollateralWithId(String id, Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
@@ -226,6 +228,53 @@ public class CollateralDao {
                 if (sDate != null){
                     continue;
                 }
+
+                CollateralValuation collateralValuation = new CollateralValuation(id, coName, new File(filePath),cvID,rDate);
+                collateralValuation.setSolveDate(sDate);
+                collateralValuation.setStatus(approve);
+                if (approve.equals("Approve")){
+                    collateralValuation.setPrice(price);
+                }
+
+                list.add(collateralValuation);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return list;
+    }
+
+    public static List<CollateralValuation> selectCollateralRequestList(String c_id){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<CollateralValuation> list = new ArrayList<>();
+
+        try{
+            conn = JDBCUtil.getConnection();
+
+            String sql = "select * from collateralValuation where 1 = 1";
+
+            if (c_id!=null && !"".equals(c_id)){
+                sql = sql + " and c_id = " + c_id;
+            }
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                String cvID = rs.getString("cv_id");
+                String id = rs.getString("c_id");
+                String coName = rs.getString("co_name");
+                String filePath = rs.getString("f_path");
+                Double price = rs.getDouble("co_value");
+                String approve = rs.getString("cv_status");
+                Date rDate = rs.getDate("r_date");
+                Date sDate = rs.getDate("s_date");
 
                 CollateralValuation collateralValuation = new CollateralValuation(id, coName, new File(filePath),cvID,rDate);
                 collateralValuation.setSolveDate(sDate);
