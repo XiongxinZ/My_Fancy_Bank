@@ -37,20 +37,6 @@ public class RepaymentFrame extends PopupFrame{
         JLabel balance = new JLabel(Double.toString(account.getAmount()));
         jPanel.add(balance);
 
-        JLabel typeLabel = new JLabel("Currency: ");
-        jPanel.add(typeLabel);
-//
-//        JComboBox<String> box = new JComboBox<>(new String[]{"USD", "CNY", "JPY"});
-//        box.addItemListener(new ItemListener() {
-//            @Override
-//            public void itemStateChanged(ItemEvent e) {
-//                target.setText(Double.toString(
-//                        account.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")).getAmount((String) box.getSelectedItem())));
-//                balance.setText(Double.toString(
-//                        account.getAmount((String) box.getSelectedItem())));
-//            }
-//        });
-//        jPanel.add(box);
         loan.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -60,7 +46,6 @@ public class RepaymentFrame extends PopupFrame{
                 balance.setText(Double.toString(selected.getBalance()));
             }
         });
-//        jPanel.add(loan);
 
         JLabel amountLabel = new JLabel("Amount: ");
         jPanel.add(amountLabel);

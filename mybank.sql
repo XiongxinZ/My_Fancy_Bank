@@ -131,6 +131,7 @@ CREATE TABLE IF NOT EXISTS `stockInfo`  (
 INSERT INTO `stockInfo` VALUES ("Apple", "USD", 100.0);
 INSERT INTO `stockInfo` VALUES ("KWEICHOW MOUTAI ", "CNY", 2000.0);
 INSERT INTO `stockInfo` VALUES ("TOKYO ELECTRON", "JPY", 48320.0);
+
 -- ----------------------------
 -- Table structure for stock
 -- ----------------------------
@@ -166,10 +167,16 @@ CREATE TABLE IF NOT EXISTS `loan`  (
 -- ----------------------------
  DROP TABLE IF EXISTS `collateralValuation`;
 CREATE TABLE IF NOT EXISTS `collateralValuation`  (
+  `r_date` date NOT NULL COMMENT 'Request Time',
   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `cv_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Request ID',
   `co_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Name',
   `f_path` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'File Path',
+  `co_value` decimal(16,2) COMMENT 'Collateral value',
+  `cv_status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Request Status',
+  `s_date` date COMMENT 'Solve Time',
   INDEX `c_ID`(`c_ID`) USING BTREE,
+  PRIMARY KEY (`cv_id`) USING BTREE,
   CONSTRAINT `collateralValuation_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

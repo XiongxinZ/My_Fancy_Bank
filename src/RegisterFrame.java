@@ -121,7 +121,6 @@ public class RegisterFrame extends CoreFrame{
                 }else{
                     new MessageFrame("Error", "Email exists.");
                 }
-
             }
         });
         layout.setConstraints(registerButton,constraints);

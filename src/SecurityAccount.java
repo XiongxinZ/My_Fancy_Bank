@@ -8,7 +8,7 @@ public class SecurityAccount extends Account{
     private ValuePool<CustomerStock> stockPool = new ValuePool<>();
     private ValuePool<StockProfit> profitPool = new ValuePool<>();
 
-    static int temp = 5000;
+    static int temp = 10;
 
     public SecurityAccount(Customer customer, double amount) {
         super(customer, amount,"Security");

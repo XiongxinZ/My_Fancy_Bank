@@ -31,19 +31,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
     private JTable jt_customer;
     private DefaultTableModel dm;
     private DefaultTableColumnModel dcm;
-//    private JLabel jl_add;
-//    private JLabel jl_del;
-//    private JLabel jl_update;
-//    private JLabel jl_refresh;
 
-//    private Customer customer;
-
-//    public static void main(String[] args) {
-//        JFrame jf = new JFrame();
-//        jf.add(new TransactionHistoryPanel(new Customer()));
-//        jf.setSize(750,500);
-//        jf.setVisible(true);
-//    }
 
     /**
      * 将客户信息填入表格

@@ -1,8 +1,5 @@
 import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +53,7 @@ public class CollateralDao {
         try {
             conn = JDBCUtil.getConnection();
 
-            String sql = "insert into collateral(c_id,co_id,co_name,co_price,co_used) values(?,?,?,?,?)";
+            String sql = "insert into collateral(c_id,co_id,co_name,co_value,co_used) values(?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, id);
@@ -115,12 +112,43 @@ public class CollateralDao {
         try{
             conn = JDBCUtil.getConnection();
 
-            String sql = "insert into collateralValuation(c_id, co_name, f_path) values(?,?,?)";
+            String sql = "insert into collateralValuation(r_date,c_id,cv_id, co_name, f_path,co_value,cv_status,s_date) " +
+                    "values(?,?,?,?,?,?,?,?)";
+
 
             ps = conn.prepareStatement(sql);
-            ps.setString(1, collateralValuation.getCustomerId());
-            ps.setString(2, collateralValuation.getName());
-            ps.setString(3, collateralValuation.getFileName());
+            ps.setDate(1,new Date(collateralValuation.getRequestDate().getTime()));
+            ps.setString(2, collateralValuation.getCustomerId());
+            ps.setString(3, collateralValuation.getCvId());
+            ps.setString(4, collateralValuation.getName());
+            ps.setString(5, collateralValuation.getFileName());
+            ps.setNull(6, Types.DOUBLE);
+            ps.setString(7,collateralValuation.getStatus());
+            ps.setNull(8, Types.DATE);
+
+            ps.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+    }
+
+    public static void updateCollateralRequest(CollateralValuation collateralValuation){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            conn = JDBCUtil.getConnection();
+
+            String sql = "update collateralValuation set co_value = ?, cv_status = ?, s_date = ?  where cv_id = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setDouble(1, collateralValuation.getPrice());
+            ps.setString(2, collateralValuation.getStatus());
+            ps.setDate(3, new Date(collateralValuation.getSolveDate().getTime()));
+            ps.setString(4, collateralValuation.getCvId());
 
             ps.executeUpdate();
 
@@ -179,14 +207,25 @@ public class CollateralDao {
             String sql = "select * from collateralValuation";
 
             ps = conn.prepareStatement(sql);
-            ps.executeUpdate();
+            rs = ps.executeQuery();
 
             while(rs.next()){
+                String cvID = rs.getString("cv_id");
                 String id = rs.getString("c_id");
                 String coName = rs.getString("co_name");
                 String filePath = rs.getString("f_path");
+                Double price = rs.getDouble("co_value");
+                String approve = rs.getString("cv_status");
+                Date rDate = rs.getDate("r_date");
+                Date sDate = rs.getDate("s_date");
 
-                CollateralValuation collateralValuation = new CollateralValuation(id, coName, new File(filePath));
+                CollateralValuation collateralValuation = new CollateralValuation(id, coName, new File(filePath),cvID,rDate);
+                collateralValuation.setSolveDate(sDate);
+                collateralValuation.setStatus(approve);
+                if (approve.equals("Approve")){
+                    collateralValuation.setPrice(price);
+                }
+
                 list.add(collateralValuation);
             }
 
