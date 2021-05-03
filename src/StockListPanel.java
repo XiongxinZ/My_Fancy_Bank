@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.*;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,11 +18,11 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 
 
-public class StockPositionPanel extends TablePanel {
+public class StockListPanel extends TablePanel {
 
     private DefaultTableModel dm;
 
-    private ValuePool<CustomerStock> stockList = null;
+    private List<StockInfo> stockList = null;
 
     /**
      * 将客户信息填入表格
@@ -32,18 +33,15 @@ public class StockPositionPanel extends TablePanel {
         dm.setRowCount(0);
 
         if (stockList == null){
-            stockList = StockDao.selectCustomerStockList(getCustomer());
+            stockList = StockDao.selectStockInfoList();
         }
 
-        for (CustomerStock value : stockList.values()) {
+        for (StockInfo value : stockList) {
 //             "Stock Name", "Current Price", "Buy Price", "Quantity", "Amount", "Profit"
             Vector<Object> v = new Vector<>();
             v.add(value.getName());
             v.add(value.getCurrentPrice());
-            v.add(value.getBuyPrice());
-            v.add(value.getQuantity());
-            v.add(value.getCurrentPrice()*value.getQuantity());
-            v.add((value.getCurrentPrice()-value.getBuyPrice())*value.getQuantity());
+            v.add(value.getCurrency());
 
             dm.addRow(v);
         }
@@ -53,29 +51,25 @@ public class StockPositionPanel extends TablePanel {
         dm.setRowCount(0);
 
         if (stockList == null){
-            stockList = StockDao.selectCustomerStockList(getCustomer());
+            stockList = StockDao.selectStockInfoList();
         }
 
-        for (CustomerStock value : stockList.values()) {
-//             "Stock Name", "Current Price", "Buy Price", "Quantity", "Amount", "Profit"
+        for (StockInfo value : stockList) {
             if (!value.getCurrency().equals(currency)){
                 continue;
             }
+//             "Stock Name", "Current Price", "Buy Price", "Quantity", "Amount", "Profit"
             Vector<Object> v = new Vector<>();
             v.add(value.getName());
-            v.add(value.getCurrency());
             v.add(value.getCurrentPrice());
-            v.add(value.getBuyPrice());
-            v.add(value.getQuantity());
-            v.add(value.getCurrentPrice()*value.getQuantity());
-            v.add((value.getCurrentPrice()-value.getBuyPrice())*value.getQuantity());
+            v.add(value.getCurrency());
 
             dm.addRow(v);
         }
     }
 
-    public StockPositionPanel(Customer customer) {
-        super(customer, TableColumns.getStockPoolColumns());
+    public StockListPanel(Customer customer) {
+        super(customer, TableColumns.getStockListColumns());
     }
 
 }

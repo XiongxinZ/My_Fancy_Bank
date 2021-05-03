@@ -47,8 +47,8 @@ public class LoginFrame extends CoreFrame {
 
         imgLabel = new JLabel("Login img"){
             protected void paintComponent(Graphics g) {
-                ImageIcon icon = new ImageIcon("img/login.jpg");
-                g.drawImage(icon.getImage(), 0, 0, getWidth(),getHeight(),
+                ImageIcon icon = new ImageIcon("img/login.png");
+                g.drawImage(icon.getImage(), 0, -(icon.getIconHeight()*getWidth()/icon.getIconWidth()-getHeight())/3, getWidth(),icon.getIconHeight()*getWidth()/icon.getIconWidth(),
                         icon.getImageObserver());
             }
         };

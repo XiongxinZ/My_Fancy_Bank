@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +26,31 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
         operationPanel = operationPanel();
         add(infoPanel);
         if (account instanceof SecurityAccount){
-            add(new StockPositionPanel(getCustomer()));
+            JTabbedPane jTabbedPane = new JTabbedPane();
+
+            jTabbedPane.addTab("My Stock Position", new StockPositionPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(0, KeyEvent.VK_0);
+
+            jTabbedPane.addTab("Bank Stock Pool", new StockListPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(1, KeyEvent.VK_0);
+
+            add(jTabbedPane);
         }
 
         if (account instanceof LoanAccount){
-            add(new LoanPanel(getCustomer()));
+            JTabbedPane jTabbedPane = new JTabbedPane();
+
+            jTabbedPane.addTab("My Loan", new LoanPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(0, KeyEvent.VK_0);
+
+            jTabbedPane.addTab("My Collateral", new CollateralPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(1, KeyEvent.VK_0);
+
+            jTabbedPane.addTab("My Collateral Request", new CollateralRequestPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(2, KeyEvent.VK_0);
+
+            add(jTabbedPane);
+//            add(new LoanPanel(getCustomer()));
         }
         add(operationPanel);
     }
