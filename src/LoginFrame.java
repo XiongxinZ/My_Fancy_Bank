@@ -103,7 +103,7 @@ public class LoginFrame extends CoreFrame {
                 if (customer == null){
                     new MessageFrame("Login Error", "No user or password error");
                 }else{
-                    dispose();
+                    LoginFrame.this.dispose();
                     new CustomerFrame(customer);
                 }
             }
@@ -145,12 +145,12 @@ public class LoginFrame extends CoreFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-
+                register.setText("<html><b><em>Register</em></b>");
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-
+                register.setText("Register");
             }
         });
         register.setForeground(Color.BLUE);

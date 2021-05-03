@@ -6,6 +6,10 @@ public class Transfer extends AbstractTransaction {
         super(from, to,toAccount, amount, currency,"Transfer");
     }
 
+    public Transfer(Account from, Account to, double amount, String currency, String type) {
+        super(from, to, amount, currency,type);
+    }
+
     @Override
     public String execute() {
         String ret;

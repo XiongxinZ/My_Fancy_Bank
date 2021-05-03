@@ -70,7 +70,7 @@ public class CustomerFrame extends CoreFrame {
         item4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CustomerFrame.this.dispose();
+                System.exit(-1);
             }
         });
         menu.add(homepage);

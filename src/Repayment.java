@@ -17,7 +17,7 @@ public class Repayment extends AbstractTransaction {
 
         if (getFrom().getAmount(getCurrencyFrom()) >= getAmount()){
             getFrom().removeCurrency(getAmount(), getCurrencyFrom());
-            loan.repayment(getAmount());
+            loan.repay(getAmount());
             AccountDao.updateAccountMoney(getFrom(), getCurrencyFrom());
             AccountDao.updateAccountMoney(getTo(), getCurrencyTo());
             TransactionDao.insertTransaction(this);

@@ -25,20 +25,14 @@ public class CustomerDao {
 			String c_email = customer.getEmail();
 
 
-			String sql = "insert into customer(c_id, c_name, c_pswd,c_email, a_saving, a_checking, a_loan, a_security) "
-					+ "values(?,?,?,?,?,?,?,?)";
+			String sql = "insert into customer(c_id, c_name, c_pswd,c_email) "
+					+ "values(?,?,?,?)";
 			
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, c_id);
 			ps.setString(2, c_name);
 			ps.setString(3, c_pswd);
 			ps.setString(4, c_email);
-			int i = 5;
-			for (String s : SystemDatabase.accType) {
-				ps.setString(i,
-						customer.hasAccount(s)?customer.getAccount(s).getId():null);
-				i++;
-			}
 			flag = ps.executeUpdate();
 			
 		} catch (SQLException e) {

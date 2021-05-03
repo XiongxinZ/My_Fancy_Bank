@@ -43,8 +43,8 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
         customer.markDirty(true);
         AccountDao.insertAccount(newly);
         return "Create " + TYPE + " account successfully. Deposit "+deposit +
-                ", account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
-                ". Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"into the account. ";    }
+                "USD, account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
+                "USD. Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"USD nto the account. ";    }
 
     public static String createAccountFromAccount(Customer customer){
         customer.getAccount("Checking").removeCurrency(ConfigUtil.getConfigInt("AccountFee"));

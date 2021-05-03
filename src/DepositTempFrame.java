@@ -17,7 +17,7 @@ public class DepositTempFrame extends PopupFrame{
 
     private void setFrame(){
         setLayout(new GridLayout(4,1));
-        add(new JLabel("Deposit and then create the account:", JLabel.CENTER));
+        add(new JLabel("Deposit USD and then create the account:", JLabel.CENTER));
         JPanel jp = new JPanel(new GridLayout(1,2));
         jp.setBorder(BorderFactory.createEmptyBorder(0,10,0,10));
         JLabel label = new JLabel("Amount: ");
@@ -32,10 +32,10 @@ public class DepositTempFrame extends PopupFrame{
                 try {
                     double val = Double.parseDouble(jTextField.getText().trim());
                     if (type.equalsIgnoreCase("Saving")){
-                        dispose();
+                        DepositTempFrame.this.dispose();
                         new MessageFrame("Success Info",SavingAccount.createAccountFromCash(customer, val));
                     }else{
-                        dispose();
+                        DepositTempFrame.this.dispose();
                         new MessageFrame("Success Info", CheckingAccount.createAccountFromCash(customer, val));
                     }
                 } catch (NumberFormatException numberFormatException) {

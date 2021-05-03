@@ -1,7 +1,7 @@
 
 import java.util.HashMap;
 
-public class SecurityAccount extends Account implements CanTransferWithin {
+public class SecurityAccount extends Account{
 
     public static final String TYPE = "Security";
 
@@ -91,6 +91,14 @@ public class SecurityAccount extends Account implements CanTransferWithin {
     @Override
     public String transfer(String account,double val, String curr){
         return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();
+    }
+
+    public String transferIn(double val, String curr){
+        return new TransferIn(this, val, curr).execute();
+    }
+
+    public String transferOut(double val, String curr){
+        return new TransferOut(this, val, curr).execute();
     }
 
     @Override

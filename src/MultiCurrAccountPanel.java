@@ -2,7 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class MultiCurrAccountPanel extends CustomerContentPanel{
@@ -36,11 +38,14 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
         JPanel jp = new JPanel(new GridLayout(0,1,0,0));
         jp.add(new JLabel(new ImageIcon("img/back"+ new Random().nextInt(3) +".jpeg")));
         jp.add(new JLabel("<html><b><em>"+account.toString()+"</em></b>", JLabel.CENTER ));
-        jp.add(new JLabel("USD: " + account.getAmount("USD") , JLabel.CENTER));
-        jp.add(new JLabel("CNY: " + account.getAmount("CNY") , JLabel.CENTER ));
-        jp.add(new JLabel("JPY: " + account.getAmount("JPY") , JLabel.CENTER ));
-//        core.add(jp,BorderLayout.BEFORE_FIRST_LINE);
-        // Stock List/profit.
+        jp.add(new JLabel("<html>Balance: <b>USD:</b> " + account.getAmount("USD") +
+                "  <b>CNY</b>: " + account.getAmount("CNY") +
+                "  <b>JPY</b>: " + account.getAmount("JPY") , JLabel.CENTER ));
+        if (account instanceof SecurityAccount){
+            jp.add(new JLabel("<html>Realized Profit: "+getLabel(((SecurityAccount) account).getProfit()), JLabel.CENTER));
+            jp.add(new JLabel("<html>Stock Position"+getLabel(((SecurityAccount) account).getStockAmount()),JLabel.CENTER));
+        }
+
         return jp;
     }
 
@@ -143,6 +148,15 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
         }
 
         if (account instanceof SecurityAccount){
+            JButton stockPool = new JButton("Bank Stock Pool");
+            stockPool.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    List<StockInfo> stockInfos = StockDao.selectStockInfoList();
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
+                }
+            });
+
             JButton buy = new JButton("Buy Stock");
             buy.addActionListener(new ActionListener() {
                 @Override
@@ -171,6 +185,24 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
                 }
             });
             jp.add(sell);
+
+            JButton transferIn = new JButton("Transfer In");
+            transferIn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
+                    new TransferInFrame((SecurityAccount) account);
+                }
+            });
+
+            JButton transferOut = new JButton("Transfer Out");
+            transferOut.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
+                    new TransferOutFrame((SecurityAccount) account);
+                }
+            });
         }
 
         JButton back = new JButton("Back");
@@ -192,5 +224,13 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
         add(infoPanel);
         add(operationPanel);
         updateUI();
+    }
+
+    private String getLabel(HashMap<String, Double> valMap){
+        String ret = "";
+        for (Map.Entry<String, Double> stringDoubleEntry : valMap.entrySet()) {
+            ret = ret + "  <b>"+stringDoubleEntry.getKey() + "</b>: "+stringDoubleEntry.getValue();
+        }
+        return ret;
     }
 }
