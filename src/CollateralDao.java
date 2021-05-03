@@ -145,7 +145,11 @@ public class CollateralDao {
             String sql = "update collateralValuation set co_value = ?, cv_status = ?, s_date = ?  where cv_id = ?";
 
             ps = conn.prepareStatement(sql);
-            ps.setDouble(1, collateralValuation.getPrice());
+            if (collateralValuation.getPrice() == null){
+                ps.setNull(1, Types.DOUBLE);
+            }else{
+                ps.setDouble(1, collateralValuation.getPrice());
+            }
             ps.setString(2, collateralValuation.getStatus());
             ps.setDate(3, new Date(collateralValuation.getSolveDate().getTime()));
             ps.setString(4, collateralValuation.getCvId());
@@ -194,7 +198,7 @@ public class CollateralDao {
         return collateral;
     }
 
-    public static List<CollateralValuation> selectCollateralRequestList(){
+    public static List<CollateralValuation> selectUnsolvedCollateralRequestList(){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -218,6 +222,10 @@ public class CollateralDao {
                 String approve = rs.getString("cv_status");
                 Date rDate = rs.getDate("r_date");
                 Date sDate = rs.getDate("s_date");
+
+                if (sDate != null){
+                    continue;
+                }
 
                 CollateralValuation collateralValuation = new CollateralValuation(id, coName, new File(filePath),cvID,rDate);
                 collateralValuation.setSolveDate(sDate);

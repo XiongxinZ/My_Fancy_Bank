@@ -133,10 +133,9 @@ public class CollateralValuation implements Order{
     }
 
     public static void main(String[] args) {
-        List<CollateralValuation> list = CollateralDao.selectCollateralRequestList();
+        List<CollateralValuation> list = CollateralDao.selectUnsolvedCollateralRequestList();
         for (CollateralValuation collateralValuation : list) {
-            collateralValuation.setApprove();
-            collateralValuation.setPrice(1000);
+            collateralValuation.setReject();
             collateralValuation.execute();
         }
     }
