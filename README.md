@@ -11,6 +11,25 @@
 ---
 
 ---
+## BankManagementSystem Introduction
+* User(Both customer and banker) are identified by email address & user type, which means one email can only register once(You can use the same email to register as one customer and one banker, but you can't register as 2 different customers)
+* One customer can only have one saving account,one checking account,one loan account and one stock account.
+* The bank will pay interest to certain saving accounts every day.
+* All types of account can have 3 currencies, but only checking account can exchange.
+* About creating account:
+  * customer need to pay $10.
+  * Loan Account & Security Account can only be paid from Saving account, which means if customer want to create those accounts, they must have a saving account.
+  * Checking account & Saving account can be paid from the other account or cash(deposit).
+* About closing account:
+  * customer need to pay $10.
+  * Loan Account can be closed when there is no loan and saving account have enough USD to pay the fee.
+  * Security Account can be closed when there is no stock position, and the balance of all currencies should all be 0. And saving account have enough USD to pay the fee.
+  * Saving account can be closed when there is no loan account and security account, but there must be a checking account, and the balance should be all 0. And checking account have enough USD to pay the fee.
+  * Checking account can close if the balance of all currencies is 0 and saving account have enough USD to pay the fee. If the customer only have this one account and the money in this account can pay the fee(any currencies), then pay the fee and give the balance to the customer and close the account.
+* Customer can upload certificate of collateral to ask banker to valuate. And take loan using the valuated collateral.
+* Loan account can only be repaid by saving account. And the money customer get after take loan will transfer to saving account automatically.
+* Security account can only transfer in from and transfer out to saving account. But transfer in operation need to over 1000USD(or the equivalent in other currencies) & the saving account should have at least 5000USD before transfer and have at least 2500USD remaining after transfer.
+
 ## how to run
 1. add `mysql-connector-java-8.0.20.jar` to dependencies
 2. open mysql.Run following command.
@@ -126,11 +145,22 @@
 
 
 # Design Pattern
-1. MVC Pattern: Model-View-Controller
-2. Singleton Pattern: JDBCUtil is a singleton. There is only one Connection, and this connection is open once the program starts and will close if the program ends.
-3. DAO Pattern: 6 xxxDao class are Dao impl classes.
-4. Strategy Pattern: *`ValCounter` interface* is the Strategy Interface. `ValPool<T>` class is the Context Class. The concrete classes are anonymous classes. 
 
+1. Singleton : JDBCUtil is a singleton. There is only one Connection, and this connection is open once the program starts and will close if the program ends. 
+   * Benefit:
+       * make sure there is only one connection and easy to control.
+       * easy to access database and make sure the connection last until the program ends.
+
+2. DAO Pattern: 6 xxxDao class are Dao impl classes.
+3. Strategy Pattern: *`ValCounter` interface* is the Strategy Interface. `ValPool<T>` class is the Context Class. The concrete classes are anonymous classes.
+   * Benefit: 
+     * sum up the target value of the objects in the HashMap based on the Strategy concrete class.
+     * easy to sum up different attributes. easy to extend.
+4. MVC Pattern: The whole part is MVC pattern. Controller layer execute and return the message to view layer to update the frame info.
+   * Benefit:
+     * loose coupling.
+     * convenient to teamwork
+     * high scalability and re-usability, easy to maintain
 
 
 
