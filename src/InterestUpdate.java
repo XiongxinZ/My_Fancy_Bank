@@ -50,7 +50,7 @@ public class InterestUpdate {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
     }
 
@@ -75,7 +75,7 @@ public class InterestUpdate {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return date;
     }
@@ -101,7 +101,7 @@ public class InterestUpdate {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -123,12 +123,31 @@ public class InterestUpdate {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
 
     public static void main(String[] args) {
-        updateInterest();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int flag = 0;
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            String sql = "update timer set u_date = ? where u_id = 1";
+            ps = conn.prepareStatement(sql);
+            ps.setDate(1, new java.sql.Date(newDate.getTime()-1000 * 60 * 60 * 24 * 5));
+
+            flag = ps.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(ps, rs);
+        }
     }
 }

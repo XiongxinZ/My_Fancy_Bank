@@ -33,7 +33,7 @@ public class LoanDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -63,7 +63,7 @@ public class LoanDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
-            JDBCUtil.closeResource(conn,ps,rs);
+            JDBCUtil.closeResource(ps,rs);
         }
         return flag;
     }
@@ -97,7 +97,7 @@ public class LoanDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn,ps,rs);
+            JDBCUtil.closeResource(ps,rs);
         }
         return list;
     }
@@ -124,7 +124,7 @@ public class LoanDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }

@@ -9,22 +9,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 
 
-public class TransactionHistoryPanel extends CustomerContentPanel implements MouseListener {
+public class TransactionHistoryPanel extends CustomerContentPanel{
 
     private JTextField jtf_name;
     private JTextField jtf_id;
@@ -33,10 +24,6 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
     private DefaultTableColumnModel dcm;
 
 
-    /**
-     * 将客户信息填入表格
-     *
-     */
     public void fillTable() {
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
@@ -48,7 +35,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         }
     }
 
-    public void fillTable(String type, String direction,String year, String month, String day,String hide) {
+    public void fillTable(String type, String direction,String year, String month, String day,boolean hide) {
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
@@ -138,12 +125,29 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         }
         jp_tool.add(jc_direction);
 
-        JLabel jl_hide = new JLabel("Interest");
-//        jl_to.setBounds(700, 10, 50, 30);
-        jp_tool.add(jl_hide);
+//        JLabel jl_hide = new JLabel("Interest");
+////        jl_to.setBounds(700, 10, 50, 30);
+//        jp_tool.add(jl_hide);
+//
+//        JComboBox<String> jc_hide = new JComboBox<>(new String[]{"hide","show"});
+//        jp_tool.add(jc_hide);
 
-        JComboBox<String> jc_hide = new JComboBox<>(new String[]{"hide","show"});
-        jp_tool.add(jc_hide);
+        JCheckBox jCheckBox = new JCheckBox("hide interest", true);
+        jCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String type = ((String) jc_type.getSelectedItem()).trim();
+                String direction = ((String) jc_direction.getSelectedItem()).trim();
+                String y = ((String)jc_year.getSelectedItem()).trim();
+                String m = ((String)jc_month.getSelectedItem()).trim();
+                String d = ((String)jc_day.getSelectedItem()).trim();
+                boolean hide = jCheckBox.isSelected();
+
+//                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
+                fillTable(type, direction,y,m,d,hide);
+            }
+        });
+        jp_tool.add(jCheckBox);
 
         jt_customer = new JTable(new DefaultTableModel(TableColumns.getTransactionColumns(), 0) {
             public boolean isCellEditable(int row, int column) {
@@ -162,7 +166,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         String y = ((String)jc_year.getSelectedItem()).trim();
         String m = ((String)jc_month.getSelectedItem()).trim();
         String d = ((String)jc_day.getSelectedItem()).trim();
-        String hide = ((String)jc_hide.getSelectedItem()).trim();
+        boolean hide = jCheckBox.isSelected();
 
 //                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
         fillTable(type, direction,y,m,d,hide);
@@ -183,81 +187,13 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
                 String year = ((String)jc_year.getSelectedItem()).trim();
                 String month = ((String)jc_month.getSelectedItem()).trim();
                 String day = ((String)jc_day.getSelectedItem()).trim();
-                String hide = ((String)jc_hide.getSelectedItem()).trim();
+                boolean hide = jCheckBox.isSelected();
 
 //                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
                 fillTable(type, direction,year,month,day,hide);
 
             }
         });
-    }
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-        int row = jt_customer.getSelectedRow();
-//        if(e.getSource() == jl_del && row >= 0) {
-//            Customer cs = new Customer();
-//            cs.setId((String) jt_customer.getValueAt(row, 0));
-//            Customer c = new CustomerDao().selectCustomerWithCid(cs.getId());
-////            new CustomerInformationDialog(c, 1);
-//        } else if(e.getSource() == jl_update && row >= 0) {
-//            Customer cs = new Customer();
-//            cs.setId((String) jt_customer.getValueAt(row, 0));
-//            Customer c = new CustomerDao().selectCustomerWithCid(cs.getId());
-////            new CustomerInformationDialog(c, 2);
-//        } else if(e.getSource() == jl_refresh) {
-//            fillTable();
-//        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
-//        if (e.getSource() == jl_add) {
-//            jl_add.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//            jl_add.setText("<html><font color='#336699' style='font-weight:bold'>" + "添加" + "</font></html>");
-//        } else if (e.getSource() == jl_del) {
-//            jl_del.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//            jl_del.setText("<html><font color='#336699' style='font-weight:bold'>" + "删除" + "</font></html>");
-//        } else if (e.getSource() == jl_update) {
-//            jl_update.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//            jl_update.setText("<html><font color='#336699' style='font-weight:bold'>" + "修改" + "</font></html>");
-//        } else if (e.getSource() == jl_refresh) {
-//            jl_refresh.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//            jl_refresh.setText("<html><font color='#336699' style='font-weight:bold'>" + "刷新" + "</font></html>");
-//        } else {
-//
-//        }
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-//        // TODO Auto-generated method stub
-//        if (e.getSource() == jl_add) {
-//            jl_add.setText("添加");
-//        } else if (e.getSource() == jl_del) {
-//            jl_del.setText("删除");
-//        } else if (e.getSource() == jl_update) {
-//            jl_update.setText("修改");
-//        } else if (e.getSource() == jl_refresh) {
-//            jl_refresh.setText("刷新");
-//        } else {
-//
-//        }
     }
 }
 

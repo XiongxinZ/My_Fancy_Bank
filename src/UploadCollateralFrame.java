@@ -3,10 +3,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.geom.CubicCurve2D;
 import java.io.File;
 
+// upload collateral frame. request collateral valuation and upload corresponding certificate
 public class UploadCollateralFrame extends PopupFrame{
     private Customer customer;
+    private String fileName;
     public UploadCollateralFrame(Customer customer) {
         super("Upload collateral");
         this.customer = customer;
@@ -27,16 +32,28 @@ public class UploadCollateralFrame extends PopupFrame{
         JLabel collLabel = new JLabel("Certificate: ");
         jPanel.add(collLabel);
 
+
+        JButton chooseFile = new JButton("Choose File");
+        chooseFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fc.setMultiSelectionEnabled(false);//single choice
+                fc.setFileFilter(new FileNameExtensionFilter("image(*.jpg,*.jpeg, *.png, *.gif)", "jpg","jpeg", "png", "gif"));
+                fc.showDialog(new JLabel(),"choose");
+//                fc.showOpenDialog(null);
+
+                UploadCollateralFrame.this.fileName=fc.getSelectedFile().getAbsolutePath();
+                chooseFile.setText(fc.getSelectedFile().getName());
+            }
+        });
+        jPanel.add(chooseFile);
 //        JFileChooser file = new JFileChooser(System.getProperty("user.dir"));
 //        file.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));//����Ĭ����ʾΪ��ǰ�ļ���
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);//����ѡ��ģʽ��ֻѡ�ļ���ֻѡ�ļ��С��ļ����ļ�����ѡ��
-        fc.setMultiSelectionEnabled(false);//�Ƿ������ѡ
-//        fc.addChoosableFileFilter(new FileNameExtensionFilter("zip(*.zip, *.rar)", "zip", "rar"));//�ļ�������
-        fc.setFileFilter(new FileNameExtensionFilter("image(*.jpg,*.jpeg, *.png, *.gif)", "jpg","jpeg", "png", "gif"));
-        fc.showOpenDialog(null);
-        jPanel.add(fc);
+
+//        jPanel.add(fc);
 
         JButton ok = new JButton("OK");
         ok.addActionListener(new ActionListener() {
@@ -44,7 +61,7 @@ public class UploadCollateralFrame extends PopupFrame{
             public void actionPerformed(ActionEvent e) {
                 try {
                     String name = collName.getText().trim();
-                    String message = Collateral.valuateCollateral(customer, name, fc.getSelectedFile());
+                    String message = Collateral.valuateCollateral(customer, name, new File(fileName));
                     UploadCollateralFrame.this.dispose();
                     new CustomerFrame(customer).setContextPanel(new MultiCurrAccountPanel(customer.getAccount("Loan")));
                     new MessageFrame("Request upload", message);

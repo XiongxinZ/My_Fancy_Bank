@@ -1,3 +1,4 @@
+// store realized profit the customer gain from the stock
 public class StockProfit extends StockInfo implements Valuable{
     private double profit;
     private Customer customer;

@@ -43,7 +43,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -97,7 +97,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
@@ -155,7 +155,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
@@ -218,12 +218,12 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
 
-    public List<Vector<String>> getTransactionList(Customer customer, String type, String direction, String year, String month, String day, String hide){
+    public List<Vector<String>> getTransactionList(Customer customer, String type, String direction, String year, String month, String day, boolean hide){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -285,7 +285,7 @@ public class TransactionDao {
                     continue;
                 }
 
-                if ("hide".equalsIgnoreCase(hide) && rs.getString("t_type").equalsIgnoreCase("Pay Interest")){
+                if (hide && rs.getString("t_type").equalsIgnoreCase("Pay Interest")){
                     continue;
                 }
 
@@ -306,7 +306,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
@@ -337,7 +337,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -404,7 +404,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }

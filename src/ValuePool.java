@@ -1,5 +1,5 @@
 import java.util.HashMap;
-
+// Strategy pattern, this is the context class
 public class ValuePool<T extends Valuable> extends HashMap<String, T>{
 
     public HashMap<String, Double> calTotal(ValCounter<T> v){

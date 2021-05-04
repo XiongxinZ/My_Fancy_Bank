@@ -43,7 +43,7 @@ public class SellStock extends StockTransaction{
                 }
                 AccountDao.getInstance().updateAccountMoney(getAccount(), getStock().getCurrency());
                 TransactionDao.getInstance().insertStockTransaction(this);
-                return "Sold "+ getStock().getQuantity() + getStock().getName();
+                return "Sold "+ getStock().getQuantity() + " "+getStock().getName();
             }
         }else{
             return "You don't have " + getStock().getName();

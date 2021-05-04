@@ -20,7 +20,7 @@ public class BuyStock extends StockTransaction{
                 StockDao.getInstance().updateStockPosition(cs);
                 AccountDao.getInstance().updateAccountMoney(getAccount(), getStock().getCurrency());
                 TransactionDao.getInstance().insertStockTransaction(this);
-                return "Buy "+ getStock().getQuantity() + getStock().getName();
+                return "Buy "+ getStock().getQuantity() + " "+getStock().getName();
             }
         }else{
             getAccount().setAmount(
@@ -30,7 +30,7 @@ public class BuyStock extends StockTransaction{
             getAccount().getStockPool().put(getStock().getName(), getStock());
             StockDao.getInstance().insertCustomerStock(getStock());
             TransactionDao.getInstance().insertStockTransaction(this);
-            return "Buy "+ getStock().getQuantity() + getStock().getName();
+            return "Buy "+ getStock().getQuantity() + " "+getStock().getName();
         }
     }
 }

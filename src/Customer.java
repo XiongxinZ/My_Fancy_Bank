@@ -35,18 +35,6 @@ public class Customer extends User implements Modifiable{
         return null;
     }
 
-//    public String deposit(double val, String currency, String accountType){
-//        return new Deposit(accountList.get(accountType), val, currency).execute();
-//    }
-//
-//    public String deposit(double val, String currency){
-//        return deposit(val, currency, "Saving");
-//    }
-//
-//    public String deposit(double val){
-//        return deposit(val, "USD");
-//    }
-
     public String withdraw(double val, String currency, String accountType){
         return new Withdraw(accountList.get(accountType), val, currency).execute();
     }
@@ -81,6 +69,10 @@ public class Customer extends User implements Modifiable{
 
     public void setAccountList(HashMap<String, Account> accountList) {
         this.accountList = accountList;
+    }
+
+    public HashMap<String, Account> getAccountList() {
+        return accountList;
     }
 
     @Override

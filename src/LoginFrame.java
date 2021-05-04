@@ -280,9 +280,4 @@ public class LoginFrame extends CoreFrame {
         centerPanel.updateUI();
     }
 
-    public static void main(String[] args) {
-//        JPanel a = paintCustomerTextPanel();
-        JFrame jf = new LoginFrame();
-
-    }
 }

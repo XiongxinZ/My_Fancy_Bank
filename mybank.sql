@@ -214,22 +214,32 @@ CREATE TABLE IF NOT EXISTS `realizedStock`
 -- ----------------------------
 -- Table structure for loan
 -- ----------------------------
-DROP TABLE IF EXISTS `loan`;
-CREATE TABLE IF NOT EXISTS `loan`
-(
-    `l_id`       varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Loan ID',
-    `c_id`       varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
-    `co_id`      varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral ID',
-    `l_currency` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Currency',
-    `l_balance`  decimal(16, 2)                                         NOT NULL COMMENT 'Balance',
-    INDEX `c_ID` (`c_ID`) USING BTREE,
-    INDEX `co_id` (`co_id`) USING BTREE,
-    PRIMARY KEY (`l_id`) USING BTREE,
-    CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB
-  CHARACTER SET = utf8
-  COLLATE = utf8_general_ci
-  ROW_FORMAT = Dynamic;
+ DROP TABLE IF EXISTS `loan`;
+CREATE TABLE IF NOT EXISTS `loan`  (
+  `l_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Loan ID',
+  `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `co_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral ID',
+  `l_currency` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Currency',
+  `l_balance` decimal(16,2) NOT NULL COMMENT 'Balance',
+  INDEX `c_ID`(`c_ID`) USING BTREE,
+  INDEX `co_id`(`co_id`) USING BTREE,
+  PRIMARY KEY (`l_id`) USING BTREE,
+  CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+ DROP TABLE IF EXISTS `stockTransactionLog`;
+CREATE TABLE IF NOT EXISTS `stockTransactionLog`  (
+  `t_date` date NOT NULL COMMENT 'Transaction Time',
+  `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `s_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Name',
+  `t_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Trade Type',
+  `t_price` decimal(8,2) NOT NULL COMMENT 'Trade Price',
+  `t_quantity` INT(16) NOT NULL COMMENT 'Trade Quantity',
+  `t_amount` decimal(8,2) NOT NULL COMMENT 'Trade Amount',
+  INDEX `c_id`(`c_id`) USING BTREE,
+  INDEX `s_name`(`s_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
 -- ----------------------------
 -- Table structure for collateralValuation
 -- ----------------------------

@@ -1,3 +1,4 @@
+// only for security account
 public class TransferIn extends Transfer {
     public TransferIn(Account to, double amount, String currency) {
         super(to.getCustomer().getAccount("Saving"), to, amount, currency,"Transfer In");
@@ -11,17 +12,17 @@ public class TransferIn extends Transfer {
         double amountBar = ConfigUtil.getConfigInt("TransferInBar") * ConfigUtil.getConfigDouble("USDTo"+getCurrencyTo());
 
         if (getFrom().getAmount(getCurrencyFrom()) < fromBar){
-            ret = "Your saving account should have at least " + fromBar + getCurrencyFrom();
+            ret = "Your saving account should have at least " + "<font color = \"red\">"+fromBar + "</font>" + getCurrencyFrom();
         }else if(getFrom().getAmount(getCurrencyFrom()) - getAmount() < fromRemainingBar){
-            ret = "Your saving account should remain at least " + fromRemainingBar + getCurrencyFrom();
+            ret = "Your saving account should remain at least " + "<font color = \"red\">"+fromRemainingBar +"</font>" + getCurrencyFrom();
         }else if (getAmount() < amountBar){
-            ret = "Your should transfer in at least " + amountBar + getCurrencyFrom();
+            ret = "Your should transfer in at least " + "<font color = \"red\">"+amountBar +"</font>" + getCurrencyFrom();
         }else if (getAmount() > getFrom().getAmount(getCurrencyFrom())){
-            ret =  "Sorry you only have $" + getFrom().getAmount("USD") + " in your " + getFrom().getAccountType() + "account";
+            ret =  "Sorry you only have $" + "<font color=\"red\">"+PrintUtil.printDouble(getFrom().getAmount("USD"))+"</font>" + " in your " + getFrom().getAccountType() + " account";
         }else{
             getFrom().removeCurrency(getAmount(), getCurrencyFrom());
             getTo().addCurrency(getAmount(), getCurrencyTo());
-            ret = "Transfer " + getAmount() + " from "+ getFrom().toString() +" to "+ getTo().toString();
+            ret = "Transfer " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" + " from "+ getFrom().toString() +" to "+ getTo().toString();
             TransactionDao.getInstance().insertTransaction(this);
             AccountDao.getInstance().updateAccountMoney(getTo(),getCurrencyTo());
             AccountDao.getInstance().updateAccountMoney(getFrom(),getCurrencyFrom());

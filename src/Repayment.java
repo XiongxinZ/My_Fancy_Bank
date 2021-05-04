@@ -1,9 +1,9 @@
 public class Repayment extends AbstractTransaction {
 
-    public static final String target = "Checking";
+    public static final String target = "Saving";
     private Loan loan;
     public Repayment(Loan loan,Account to, double amount, String curr) {
-        super(to.getCustomer().getAccount(target),to, amount, curr,"Repayment");
+        super(to.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")),to, amount, curr,"Repayment");
         this.loan = loan;
     }
 
@@ -23,17 +23,17 @@ public class Repayment extends AbstractTransaction {
             TransactionDao.getInstance().insertTransaction(this);
             if (loan.getBalance()<0){
                 LoanDao.getInstance().updateLoanBalance(loan);
-                ret = "Repay " + getAmount() + getCurrencyTo() + ", " +
+                ret = "Repay " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount()) +"</font>"+ getCurrencyTo() + ", " +
                         getTo().getAmount(getCurrencyTo()) + getCurrencyTo() + " remaining";
             }else{
                 ((LoanAccount) getTo()).getLoanPool().remove(loan.getId());
                 LoanDao.getInstance().removeLoan(loan);
                 loan.getCollateral().setUsed(false);
                 CollateralDao.getInstance().updateUsed(loan.getCollateral());
-                ret = "Repay " + getAmount() + getCurrencyTo() + ", clear!!!";
+                ret = "Repay " +"<font color=\"red\">"+PrintUtil.printDouble( getAmount())+"</font>" + getCurrencyTo() + ", clear!!!";
             }
         }else{
-            ret = "You don't have enough money in " + target + " account. Please deposit first";
+            ret = "You don't have enough money in " + ConfigUtil.getConfig("LoanTarget") + " account. Please deposit first";
         }
         return ret;
     }

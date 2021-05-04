@@ -18,6 +18,16 @@ public class LoanAccount extends Account{
         super(customer,"Loan");
     }
 
+    @Override
+    public boolean canClose() {
+        for (String s : SystemDatabase.currType) {
+            if (getAmount(s) < 0){
+                return false;
+            }
+        }
+        return getCustomer().getAccount("Saving").getAmount() >= 10;
+    }
+
     public String takeLoan(Collateral collateral, String curr){
         return new TakeLoan(this, collateral, curr).execute();
     }
@@ -28,7 +38,6 @@ public class LoanAccount extends Account{
             customer.getAccount("Saving").removeCurrency(temp);
             LoanAccount loan = new LoanAccount(customer);
             customer.addAccount(TYPE, loan);
-            customer.markDirty(true);
             AccountDao.getInstance().insertAccount(loan);
             AccountDao.getInstance().updateAccountMoney(customer.getAccount("Saving"),"USD");
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";

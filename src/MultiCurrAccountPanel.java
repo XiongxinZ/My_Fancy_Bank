@@ -60,14 +60,14 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
 
     private JPanel infoPanel(){
         JPanel jp = new JPanel(new GridLayout(0,1,0,0));
-        jp.add(new JLabel(new ImageIcon("img/back"+ new Random().nextInt(3) +".jpeg")));
-        jp.add(new JLabel("<html><b><em>"+account.toString()+"</em></b>", JLabel.CENTER ));
-        jp.add(new JLabel("<html>Balance: <b>USD:</b> " + account.getAmount("USD") +
+        jp.add(new JLabel(new ImageIcon("img/back"+ new Random().nextInt(5) +".jpeg")));
+        jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\"><b><em>"+account.toString()+"</em></b>", JLabel.CENTER ));
+        jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\">Balance: <b>USD:</b> " + account.getAmount("USD") +
                 "  <b>CNY</b>: " + account.getAmount("CNY") +
                 "  <b>JPY</b>: " + account.getAmount("JPY") , JLabel.CENTER ));
         if (account instanceof SecurityAccount){
-            jp.add(new JLabel("<html><font color=\"green\">Realized Profit: </font>"+getLabel(((SecurityAccount) account).getProfit()), JLabel.CENTER));
-            jp.add(new JLabel("<html>Stock Position"+getLabel(((SecurityAccount) account).getStockAmount()),JLabel.CENTER));
+            jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\" color=\"green\">Realized Profit: </font><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\">"+getLabel(((SecurityAccount) account).getProfit()), JLabel.CENTER));
+            jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\">Stock Position"+getLabel(((SecurityAccount) account).getStockAmount()),JLabel.CENTER));
         }
 
         return jp;
@@ -223,6 +223,19 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             jp.add(transferOut);
         }
 
+        if (account.canClose()){
+            JButton close = new JButton("Close Account");
+            close.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
+                    doubleCheck();
+                }
+            });
+            jp.add(close);
+        }
+
+
         JButton back = new JButton("Back");
         back.addActionListener(new ActionListener() {
             @Override
@@ -250,5 +263,38 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             ret = ret + "  <b>"+stringDoubleEntry.getKey() + "</b>: "+stringDoubleEntry.getValue();
         }
         return ret;
+    }
+
+    private void doubleCheck(){
+        JFrame jFrame = new PopupFrame("Double Check");
+        JPanel jPanel = new JPanel(new GridLayout(0,1));
+        jPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+
+        JLabel targetLabel = new JLabel(" Are you sure to close the "+account.getAccountType() + " account?");
+        jPanel.add(targetLabel);
+
+        JButton yes = new JButton("I'm sure");
+        yes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String message = account.close();
+
+                new CustomerFrame(account.getCustomer());
+                new MessageFrame("Success!", message);
+            }
+        });
+        jPanel.add(yes);
+
+        JButton cancel = new JButton("Cancel");
+        cancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jFrame.dispose();
+                new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+            }
+        });
+        jPanel.add(cancel);
+        jFrame.add(jPanel);
+        jFrame.setVisible(true);
     }
 }

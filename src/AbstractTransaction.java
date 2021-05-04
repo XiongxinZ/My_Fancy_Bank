@@ -18,6 +18,8 @@ public abstract class AbstractTransaction implements Transaction {
     private String currencyFrom;
     private String currencyTo;
 
+    private double fee = 0;
+
     public AbstractTransaction(String fromWhom, String toWhom, String fromAccount, String toAccount, double amount, String currencyFrom, String currencyTo, Date date, String transType) {
         this.fromWhom = fromWhom;
         this.toWhom = toWhom;
@@ -158,6 +160,11 @@ public abstract class AbstractTransaction implements Transaction {
         this.transTime = transTime;
     }
 
+    public double getFee() {
+        return fee;
+    }
 
-
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
 }

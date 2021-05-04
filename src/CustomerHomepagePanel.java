@@ -15,7 +15,7 @@ public class CustomerHomepagePanel extends CustomerContentPanel{
         setLayout(gridLayout);
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
-        JButton checking = new JButton(StringUtil.getHomepageButtonString(getCustomer(),"Checking"));
+        JButton checking = new JButton(PrintUtil.getHomepageButtonString(getCustomer(),"Checking"));
         checking.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -30,7 +30,7 @@ public class CustomerHomepagePanel extends CustomerContentPanel{
         });
         add(checking);
 
-        JButton saving = new JButton(StringUtil.getHomepageButtonString(getCustomer(),"Saving"));
+        JButton saving = new JButton(PrintUtil.getHomepageButtonString(getCustomer(),"Saving"));
         saving.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,7 +46,7 @@ public class CustomerHomepagePanel extends CustomerContentPanel{
         });
         add(saving);
 
-        JButton loan = new JButton(StringUtil.getHomepageButtonString(getCustomer(),"Loan"));
+        JButton loan = new JButton(PrintUtil.getHomepageButtonString(getCustomer(),"Loan"));
         loan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,7 +60,7 @@ public class CustomerHomepagePanel extends CustomerContentPanel{
         });
         add(loan);
 
-        JButton security = new JButton(StringUtil.getHomepageButtonString(getCustomer(),"Security"));
+        JButton security = new JButton(PrintUtil.getHomepageButtonString(getCustomer(),"Security"));
         security.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

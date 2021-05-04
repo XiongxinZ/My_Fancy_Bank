@@ -37,7 +37,7 @@ public class StockDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -65,7 +65,7 @@ public class StockDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -95,7 +95,7 @@ public class StockDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
-            JDBCUtil.closeResource(conn,ps,rs);
+            JDBCUtil.closeResource(ps,rs);
         }
         return flag;
     }
@@ -125,7 +125,7 @@ public class StockDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn,ps,rs);
+            JDBCUtil.closeResource(ps,rs);
         }
         return list;
     }
@@ -156,7 +156,7 @@ public class StockDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn,ps,rs);
+            JDBCUtil.closeResource(ps,rs);
         }
         return stockInfo;
     }
@@ -193,7 +193,7 @@ public class StockDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn,ps,rs);
+            JDBCUtil.closeResource(ps,rs);
         }
         return list;
     }
@@ -226,7 +226,7 @@ public class StockDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn,ps,rs);
+            JDBCUtil.closeResource(ps,rs);
         }
         return list;
     }

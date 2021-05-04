@@ -9,9 +9,6 @@ public class RegisterFrame extends CoreFrame{
 
     private JPanel centerPanel;
 
-    public static void main(String[] args) {
-        new RegisterFrame();
-    }
 
     public RegisterFrame() {
         super("Customer Registration");

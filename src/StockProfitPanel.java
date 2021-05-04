@@ -7,10 +7,7 @@ public class StockProfitPanel extends TablePanel {
 
     private ValuePool<StockProfit> profitList = null;
 
-    /**
-     * 将客户信息填入表格
-     *
-     */
+
     public void fillTable() {
         dm = (DefaultTableModel) getJt_customer().getModel();
         dm.setRowCount(0);

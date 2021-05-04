@@ -69,7 +69,6 @@ public class SecurityAccount extends Account{
             customer.getAccount("Saving").removeCurrency(temp);
             SecurityAccount newly = new SecurityAccount(customer);
             customer.addAccount(TYPE, newly);
-            customer.markDirty(true);
             AccountDao.getInstance().insertAccount(newly);
             AccountDao.getInstance().updateAccountMoney(customer.getAccount("Saving"),"USD");
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully. ";
@@ -81,16 +80,31 @@ public class SecurityAccount extends Account{
 
     public String transfer(double val, Account account, String currency){
         if (val > getAmount(currency)){
-            return "Sorry you only have " + getAmount() + currency + " in your " + getAccountType() + "account";
+            return "Sorry you only have " + getAmount() + currency + " in your " + getAccountType() + " account";
         }
         account.addCurrency(val);
         this.removeCurrency(val);
-        return "Transfer " + val + " from "+ toString() +" account to "+ account.toString()+"account.";
+        return "Transfer " + val + " from "+ toString() +" account to "+ account.toString()+" account.";
     }
 
     @Override
     public String transfer(String account,double val, String curr){
         return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();
+    }
+
+    @Override
+    public boolean canClose() {
+        if (stockPool.values().size() > 0){
+            return false;
+        }
+
+        for (Double value : getAmountTotal().values()) {
+            if (value > 0){
+                return false;
+            }
+        }
+
+        return getCustomer().getAccount("Saving").getAmount() >= 10;
     }
 
     public String transferIn(double val, String curr){

@@ -14,7 +14,7 @@ public class Transfer extends AbstractTransaction {
     public String execute() {
         String ret;
         if (getAmount() > getFrom().getAmount(getCurrencyFrom())){
-            ret =  "Sorry you only have $" + getFrom().getAmount("USD") + " in your " + getFrom().getAccountType() + "account";
+            ret =  "Sorry you only have $" + "<font color=\"red\">"+PrintUtil.printDouble(getFrom().getAmount("USD"))+"</font>" + " in your " + getFrom().getAccountType() + " account";
         }else if (getTo() == null){
             getFrom().removeCurrency(getAmount(), getCurrencyFrom());
             AccountDao.getInstance().updateAccountMoney(getToWhom(), getToAccount(), getAmount(), getCurrencyTo());
@@ -25,7 +25,7 @@ public class Transfer extends AbstractTransaction {
                 if (getFrom().getAmount(getCurrencyFrom()) >= getAmount() * (1 + ConfigUtil.getConfigDouble("CheckingRate"))){
                     getFrom().removeCurrency(getAmount()* (1 + ConfigUtil.getConfigDouble("CheckingRate")), getCurrencyFrom());
                     getTo().addCurrency(getAmount(), getCurrencyTo());
-                    ret = "Transfer " + getAmount() + " from "+ getFrom().toString() +" to "+ getTo().toString();
+                    ret = "Transfer " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" + " from "+ getFrom().toString() +" to "+ getTo().toString();
                     TransactionDao.getInstance().insertTransaction(this);
                     AccountDao.getInstance().updateAccountMoney(getTo(),getCurrencyTo());
                     AccountDao.getInstance().updateAccountMoney(getFrom(),getCurrencyFrom());
@@ -35,7 +35,7 @@ public class Transfer extends AbstractTransaction {
             }else{
                 getFrom().removeCurrency(getAmount(), getCurrencyFrom());
                 getTo().addCurrency(getAmount(), getCurrencyTo());
-                ret = "Transfer " + getAmount() + " from "+ getFrom().toString() +" to "+ getTo().toString();
+                ret = "Transfer " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" + " from "+ getFrom().toString() +" to "+ getTo().toString();
                 TransactionDao.getInstance().insertTransaction(this);
                 AccountDao.getInstance().updateAccountMoney(getTo(),getCurrencyTo());
                 AccountDao.getInstance().updateAccountMoney(getFrom(),getCurrencyFrom());

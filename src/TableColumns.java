@@ -1,3 +1,4 @@
+// store the column name used in table panel
 public class TableColumns {
 
     public static String[] getBankerColumns() {

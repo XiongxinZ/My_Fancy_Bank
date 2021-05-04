@@ -23,10 +23,6 @@ public class StockPositionPanel extends TablePanel {
 
     private ValuePool<CustomerStock> stockList = null;
 
-    /**
-     * 将客户信息填入表格
-     *
-     */
     public void fillTable() {
         dm = (DefaultTableModel) getJt_customer().getModel();
         dm.setRowCount(0);
