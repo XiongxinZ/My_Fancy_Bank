@@ -1,3 +1,4 @@
+
 public class Withdraw extends AbstractTransaction {
 //    private String currency = "USD";
     public Withdraw(Account from, double amount) {

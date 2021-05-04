@@ -12,13 +12,11 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
     }
 
     public String deposit(double val){
-        return deposit(val,"USD");
+        return deposit(val, "USD");
     }
 
     public String deposit(double val,String currency){
-        addCurrency(val, currency);
-        AccountDao.getInstance().updateAccountMoney(this,currency);
-        return "Deposit $" + val + ", amount $" + getAmount();
+        return new Deposit(this, val, currency).execute();
     }
 
     @Override

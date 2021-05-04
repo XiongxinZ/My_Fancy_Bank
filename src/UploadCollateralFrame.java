@@ -8,6 +8,7 @@ import java.awt.event.ItemListener;
 import java.awt.geom.CubicCurve2D;
 import java.io.File;
 
+// upload collateral frame. request collateral valuation and upload corresponding certificate
 public class UploadCollateralFrame extends PopupFrame{
     private Customer customer;
     private String fileName;

@@ -34,7 +34,8 @@
 * **StockDao**: Stock DAO. Get Data from stock table.
 * **CollateralDao**: Collateral DAO. Get Data from collateral & collateralValuation table.
 * **LoanDao**: Collateral DAO. Get Data from Loan table.
-* **TransactionDao**: : Collateral DAO. Get Data from Transaction table.<br><br>
+* **TransactionDao**: : Collateral DAO. Get Data from Transaction table.
+* **InterestUpdate**: InterestUpdate class. Update data. Pay interest to saving account and add interest to loan account.<br><br>
 
 * **User**: User class. Generate an unique id.
 * **Customer extends User**: Customer class. 
@@ -57,6 +58,7 @@
       * **Deposit extends AbstractTransaction**: Deposit transaction.For CanDeposit account.
       * **Exchange extends AbstractTransaction**: Exchange transaction.For CanExchange account.
       * **TakeLoan extends AbstractTransaction**: TakeLoan transaction. For Loan account.
+      * **PayInterest extends AbstractTransaction**: Pay Interest transaction. The bank will pay interest to saving account every day automatically
       * **Transfer extends AbstractTransaction**: Transfer transaction. For CaTransfer account.
          * **TransferIn extends Transfer**: Transfer In transaction. For Security account
          * **TransferOut extends Transfer**: Transfer Out transaction. For Security account
@@ -65,11 +67,11 @@
       * **SellStock extends StockTransaction**: Sell Stock Transaction.
   * ***order extends Transaction**: order interface. Transaction that need manager to solve*
       * **CollateralValuation implements order**: CollateralValuation. upload certificate and ask manager to valuate, using `apply()` method. Manager will solve the request, using `setPrice(double)` `setApprove()` `setReject()` method<br><br>
-   
+    
 
 * ***ValCounter<T extends Valuable>**: ValCounter interface. Strategy Pattern, strategy interface*
 * ***Valuable**: Valuable interface. Object that has value.*
-* **ValuePool<T extends Valuable> extends HashMap<String, T>**: An hashmap that store valuable object<br><br>
+* **ValuePool<T extends Valuable> extends HashMap<String, T>**: An hashmap that store valuable object. Context class in Strategy pattern. Can execute Strategy impl class. In our code the concrete class is anymous class<br><br>
 
 * **Loan implements Valuable**:  Loan class. store balance and collateral.
 * **Collateral implements Valuable**: Collateral class, store collateral value.
@@ -115,6 +117,8 @@
       * **StockProfitPanel extends TablePanel**: Stock profit info Table, show realized profit of the customer from each stock.
 
 * **MyMenuButton extends JToggleButton**: MyMenuButton class. Implemented a toggle menu button.   
+* **TableSetting**: set table design, the color of table.
+* **TableColumn**: store the column name of different table.
 
 
 
@@ -122,10 +126,10 @@
 
 
 # Design Pattern
-1. MVC Pattern: 
+1. MVC Pattern: Model-View-Controller
 2. Singleton Pattern: JDBCUtil is a singleton. There is only one Connection, and this connection is open once the program starts and will close if the program ends.
-3. DAO Pattern: 6 xxxDao class
-4. Strategy Pattern:
+3. DAO Pattern: 6 xxxDao class are Dao impl classes.
+4. Strategy Pattern: *`ValCounter` interface* is the Strategy Interface. `ValPool<T>` class is the Context Class. The concrete classes are anonymous classes. 
 
 
 

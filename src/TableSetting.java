@@ -3,7 +3,7 @@ import java.awt.Component;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-
+// set table that show infos.
 public class TableSetting {
 
     public static void makeFace(JTable table) {

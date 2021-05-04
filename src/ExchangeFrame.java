@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class ExchangeFrame extends PopupFrame {
     private Account account;
@@ -22,11 +24,39 @@ public class ExchangeFrame extends PopupFrame {
         JComboBox<String> box = new JComboBox<>(new String[]{"USD", "CNY", "JPY"});
         jPanel.add(box);
 
+        JLabel balanceLabel = new JLabel("From Balance: ");
+        jPanel.add(balanceLabel);
+
+        JLabel balance = new JLabel(Double.toString(account.getAmount((String) box.getSelectedItem())));
+//        JLabel balance = new JLabel("0.0");
+        jPanel.add(balance);
+
+        box.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                balance.setText(Double.toString(account.getAmount((String) box.getSelectedItem())));
+            }
+        });
+
+
         JLabel toLabel = new JLabel("To Currency: ");
         jPanel.add(toLabel);
 
         JComboBox<String> box2 = new JComboBox<>(new String[]{"USD", "CNY", "JPY"});
         jPanel.add(box2);
+
+        JLabel balanceToLabel = new JLabel("From Balance: ");
+        jPanel.add(balanceToLabel);
+
+        JLabel balanceTo = new JLabel(Double.toString(account.getAmount((String) box2.getSelectedItem())));
+        jPanel.add(balanceTo);
+
+        box2.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                balanceTo.setText(Double.toString(account.getAmount((String) box2.getSelectedItem())));
+            }
+        });
 
 
         JLabel amountLabel = new JLabel("Amount: ");

@@ -1,5 +1,5 @@
 import java.util.Date;
-
+// bank will pay interest to customer's account.
 public class PayInterest extends AbstractTransaction {
     private double originAmount;
     public PayInterest(String toWhom, double amount, String currency, Date date) {

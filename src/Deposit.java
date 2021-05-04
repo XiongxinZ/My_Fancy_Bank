@@ -24,13 +24,13 @@ public class Deposit extends AbstractTransaction {
             savingAccount.addCurrency(getAmount(), getCurrencyTo());
             AccountDao.getInstance().updateAccountMoney(savingAccount,getCurrencyTo());
             TransactionDao.getInstance().insertTransaction(this);
-            ret = "Deposit " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount() )+"</font>"+getCurrencyTo()+ "<br>Balance " + "<font color=\"red\">"+PrintUtil.printDouble(savingAccount.getAmount(getCurrencyTo()))+"</font>"+getCurrencyTo();
+            ret = "<html>Deposit " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount() )+"</font>"+getCurrencyTo()+ "<br>Balance " + "<font color=\"red\">"+PrintUtil.printDouble(savingAccount.getAmount(getCurrencyTo()))+"</font>"+getCurrencyTo();
         }else if (getTo() instanceof CheckingAccount){
             CheckingAccount checkingAccount = (CheckingAccount) getTo();
             checkingAccount.addCurrency(getAmount(), getCurrencyTo());
             AccountDao.getInstance().updateAccountMoney(checkingAccount,getCurrencyTo());
             TransactionDao.getInstance().insertTransaction(this);
-            ret = "Deposit " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" + getCurrencyTo()  +
+            ret = "<html>Deposit " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" + getCurrencyTo()  +
                     "<br>Balance " + "<font color=\"red\">"+PrintUtil.printDouble(checkingAccount.getAmount(getCurrencyTo()))+"</font>" + getCurrencyTo();
         }else{
             ret = getTo().toString() + " can't deposit.";
