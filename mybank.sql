@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for transaction
 -- ----------------------------
- DROP TABLE IF EXISTS `transactionLog`;
+DROP TABLE IF EXISTS `transactionLog`;
 CREATE TABLE IF NOT EXISTS `transactionLog`  (
   `t_date` date NOT NULL COMMENT 'Transaction Time',
   `t_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Transaction Type',
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `transactionLog`  (
 -- ----------------------------
 -- Table structure for customer
 -- ----------------------------
--- DROP TABLE IF EXISTS `customer`;
+DROP TABLE IF EXISTS `customer`;
 CREATE TABLE IF NOT EXISTS `customer`  (
   `c_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'id',
   `c_Name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Name',
