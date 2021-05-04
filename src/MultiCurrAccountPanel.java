@@ -2,7 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class MultiCurrAccountPanel extends CustomerContentPanel{
@@ -23,11 +26,34 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
         operationPanel = operationPanel();
         add(infoPanel);
         if (account instanceof SecurityAccount){
-            add(new StockPositionPanel(getCustomer()));
+            JTabbedPane jTabbedPane = new JTabbedPane();
+
+            jTabbedPane.addTab("My Stock Position", new StockPositionPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(0, KeyEvent.VK_0);
+
+            jTabbedPane.addTab("Bank Stock Pool", new StockListPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(1, KeyEvent.VK_0);
+
+            jTabbedPane.addTab("My Stock Profit", new StockProfitPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(2, KeyEvent.VK_0);
+
+            add(jTabbedPane);
         }
 
         if (account instanceof LoanAccount){
-            add(new LoanPanel(getCustomer()));
+            JTabbedPane jTabbedPane = new JTabbedPane();
+
+            jTabbedPane.addTab("My Loan", new LoanPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(0, KeyEvent.VK_0);
+
+            jTabbedPane.addTab("My Collateral", new CollateralPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(1, KeyEvent.VK_0);
+
+            jTabbedPane.addTab("My Collateral Request", new CollateralRequestPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(2, KeyEvent.VK_0);
+
+            add(jTabbedPane);
+//            add(new LoanPanel(getCustomer()));
         }
         add(operationPanel);
     }
@@ -36,11 +62,14 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
         JPanel jp = new JPanel(new GridLayout(0,1,0,0));
         jp.add(new JLabel(new ImageIcon("img/back"+ new Random().nextInt(3) +".jpeg")));
         jp.add(new JLabel("<html><b><em>"+account.toString()+"</em></b>", JLabel.CENTER ));
-        jp.add(new JLabel("USD: " + account.getAmount("USD") , JLabel.CENTER));
-        jp.add(new JLabel("CNY: " + account.getAmount("CNY") , JLabel.CENTER ));
-        jp.add(new JLabel("JPY: " + account.getAmount("JPY") , JLabel.CENTER ));
-//        core.add(jp,BorderLayout.BEFORE_FIRST_LINE);
-        // Stock List/profit.
+        jp.add(new JLabel("<html>Balance: <b>USD:</b> " + account.getAmount("USD") +
+                "  <b>CNY</b>: " + account.getAmount("CNY") +
+                "  <b>JPY</b>: " + account.getAmount("JPY") , JLabel.CENTER ));
+        if (account instanceof SecurityAccount){
+            jp.add(new JLabel("<html><font color=\"green\">Realized Profit: </font>"+getLabel(((SecurityAccount) account).getProfit()), JLabel.CENTER));
+            jp.add(new JLabel("<html>Stock Position"+getLabel(((SecurityAccount) account).getStockAmount()),JLabel.CENTER));
+        }
+
         return jp;
     }
 
@@ -143,11 +172,12 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
         }
 
         if (account instanceof SecurityAccount){
+
             JButton buy = new JButton("Buy Stock");
             buy.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    List<StockInfo> stockInfos = StockDao.selectStockInfoList();
+                    List<StockInfo> stockInfos = StockDao.getInstance().selectStockInfoList();
                     if (stockInfos.size() == 0){
                         new MessageFrame("Error", "No Stock available");
                     }else{
@@ -161,7 +191,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             sell.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    List<CustomerStock> list = StockDao.selectOwnedInfoList(account.getCustomer());
+                    List<CustomerStock> list = StockDao.getInstance().selectOwnedInfoList(account.getCustomer());
                     if (list.size() == 0){
                         new MessageFrame("Error", "No Stock available");
                     }else{
@@ -171,6 +201,26 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
                 }
             });
             jp.add(sell);
+
+            JButton transferIn = new JButton("Transfer In");
+            transferIn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
+                    new TransferInFrame((SecurityAccount) account);
+                }
+            });
+            jp.add(transferIn);
+
+            JButton transferOut = new JButton("Transfer Out");
+            transferOut.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
+                    new TransferOutFrame((SecurityAccount) account);
+                }
+            });
+            jp.add(transferOut);
         }
 
         JButton back = new JButton("Back");
@@ -192,5 +242,13 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
         add(infoPanel);
         add(operationPanel);
         updateUI();
+    }
+
+    private String getLabel(HashMap<String, Double> valMap){
+        String ret = "";
+        for (Map.Entry<String, Double> stringDoubleEntry : valMap.entrySet()) {
+            ret = ret + "  <b>"+stringDoubleEntry.getKey() + "</b>: "+stringDoubleEntry.getValue();
+        }
+        return ret;
     }
 }

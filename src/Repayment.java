@@ -17,19 +17,19 @@ public class Repayment extends AbstractTransaction {
 
         if (getFrom().getAmount(getCurrencyFrom()) >= getAmount()){
             getFrom().removeCurrency(getAmount(), getCurrencyFrom());
-            loan.repayment(getAmount());
-            AccountDao.updateAccountMoney(getFrom(), getCurrencyFrom());
-            AccountDao.updateAccountMoney(getTo(), getCurrencyTo());
-            TransactionDao.insertTransaction(this);
+            loan.repay(getAmount());
+            AccountDao.getInstance().updateAccountMoney(getFrom(), getCurrencyFrom());
+            AccountDao.getInstance().updateAccountMoney(getTo(), getCurrencyTo());
+            TransactionDao.getInstance().insertTransaction(this);
             if (loan.getBalance()<0){
-                LoanDao.updateLoanBalance(loan);
+                LoanDao.getInstance().updateLoanBalance(loan);
                 ret = "Repay " + getAmount() + getCurrencyTo() + ", " +
                         getTo().getAmount(getCurrencyTo()) + getCurrencyTo() + " remaining";
             }else{
                 ((LoanAccount) getTo()).getLoanPool().remove(loan.getId());
-                LoanDao.removeLoan(loan);
+                LoanDao.getInstance().removeLoan(loan);
                 loan.getCollateral().setUsed(false);
-                CollateralDao.updateUsed(loan.getCollateral());
+                CollateralDao.getInstance().updateUsed(loan.getCollateral());
                 ret = "Repay " + getAmount() + getCurrencyTo() + ", clear!!!";
             }
         }else{

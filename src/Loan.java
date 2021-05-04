@@ -47,7 +47,7 @@ public class Loan implements Valuable{
     }
 
     public void repay(double amount){
-        this.balance = this.balance - amount;
+        this.balance = this.balance + amount;
     }
 
     @Override

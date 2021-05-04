@@ -34,12 +34,7 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
     @Override
     protected void removeCurrency(double val, String currency) {
         super.removeCurrency(val, currency);
-//        AccountDao.updateCheckingMoney(this,currency);
     }
-
-//    public String depositExe(double val, String currency){
-//        return new Deposit(this,)
-//    }
 
 
     public String deposit(double val){
@@ -89,10 +84,10 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
 
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertAccount(newly);
+        AccountDao.getInstance().insertAccount(newly);
         return "Create " + TYPE + " account successfully. Deposit "+deposit +
-                ", account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
-                ". Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"into the account. ";
+                "USD, account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
+                "USD. Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"USD into the account. ";
     }
 
     public static String createAccountFromAccount(Customer customer){
@@ -101,8 +96,8 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
         CheckingAccount newly = new CheckingAccount(customer);
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertAccount(newly);
-        AccountDao.updateAccountMoney(account, "USD");
+        AccountDao.getInstance().insertAccount(newly);
+        AccountDao.getInstance().updateAccountMoney(account, "USD");
         return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
     }
 }

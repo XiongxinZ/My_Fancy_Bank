@@ -64,27 +64,7 @@ public class User{
         return email;
     }
 
-    //    public User(String name, String password){
-//        this.name  = name;
-//        this.password = password;
-//        this.id = name.hashCode() + System.currentTimeMillis();
-//    }
-
-//    public String EncoderByMd5(String str) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-//        //确定计算方法
-//        MessageDigest md5 = MessageDigest.getInstance("MD5");
-//        BASE64Encoder base64en = new BASE64Encoder();
-//        //加密后的字符串
-//        String newstr=base64en.encode(md5.digest(str.getBytes("utf-8")));
-//        return newstr;
-//    }
-
-
     public String getId() {
         return id;
     }
-
-//    public void sendMessage(String message){
-//        TransactionLog.showMessage(this,message);
-//    }
 }

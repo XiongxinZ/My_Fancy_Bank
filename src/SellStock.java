@@ -2,7 +2,7 @@
 public class SellStock extends StockTransaction{
 
     public SellStock(SecurityAccount account, CustomerStock stock){
-        super(account, stock);
+        super(account, stock,"Sell");
     }
 
     public String execute() {
@@ -18,12 +18,31 @@ public class SellStock extends StockTransaction{
                         getStock().getCurrency());
                 cs.remove(getStock());
                 if (cs.getQuantity() == 0){
-                    getAccount().getProfitPool().remove(cs.getName());
-                    StockDao.removeCustomerStock(cs);
+                    StockProfit profit = new StockProfit(getStock());
+                    if (getAccount().getProfitPool().containsKey(profit.getName())){
+                        StockProfit val =getAccount().getProfitPool().get(profit.getName());
+                        val.setProfit(val.getProfit() + profit.getProfit());
+                        StockDao.getInstance().updateProfit(val);
+                    }else{
+                        getAccount().getProfitPool().put(profit.getName(), profit);
+                        StockDao.getInstance().insertProfit(profit);
+                    }
+                    getAccount().getStockPool().remove(cs.getName());
+                    StockDao.getInstance().removeCustomerStock(cs);
                 }else{
-                    StockDao.updateStockPosition(cs);
+                    StockProfit profit = new StockProfit(getStock());
+                    if (getAccount().getProfitPool().containsKey(profit.getName())){
+                        StockProfit val =getAccount().getProfitPool().get(profit.getName());
+                        val.setProfit(val.getProfit() + profit.getProfit());
+                        StockDao.getInstance().updateProfit(val);
+                    }else{
+                        getAccount().getProfitPool().put(profit.getName(), profit);
+                        StockDao.getInstance().insertProfit(profit);
+                    }
+                    StockDao.getInstance().updateStockPosition(cs);
                 }
-                AccountDao.updateAccountMoney(getAccount(), getStock().getCurrency());
+                AccountDao.getInstance().updateAccountMoney(getAccount(), getStock().getCurrency());
+                TransactionDao.getInstance().insertStockTransaction(this);
                 return "Sold "+ getStock().getQuantity() + getStock().getName();
             }
         }else{

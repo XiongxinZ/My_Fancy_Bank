@@ -64,7 +64,7 @@ public class UploadCollateralFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new CustomerFrame(customer).setContextPanel(new MultiCurrAccountPanel(customer.getAccount("Security")));
+                new CustomerFrame(customer).setContextPanel(new MultiCurrAccountPanel(customer.getAccount("Loan")));
             }
         });
         jPanel.add(back);

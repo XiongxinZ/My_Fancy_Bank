@@ -31,19 +31,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
     private JTable jt_customer;
     private DefaultTableModel dm;
     private DefaultTableColumnModel dcm;
-//    private JLabel jl_add;
-//    private JLabel jl_del;
-//    private JLabel jl_update;
-//    private JLabel jl_refresh;
 
-//    private Customer customer;
-
-//    public static void main(String[] args) {
-//        JFrame jf = new JFrame();
-//        jf.add(new TransactionHistoryPanel(new Customer()));
-//        jf.setSize(750,500);
-//        jf.setVisible(true);
-//    }
 
     /**
      * 将客户信息填入表格
@@ -53,18 +41,18 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        List<Vector<String>> list = TransactionDao.getTransactionList(getCustomer());
+        List<Vector<String>> list = TransactionDao.getInstance().getTransactionList(getCustomer());
 
         for(Vector<String> data : list) {
             dm.addRow(data);
         }
     }
 
-    public void fillTable(String type, String direction,String year, String month, String day) {
+    public void fillTable(String type, String direction,String year, String month, String day,String hide) {
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        List<Vector<String>> list = TransactionDao.getTransactionList(getCustomer(), type, direction,year, month, day);
+        List<Vector<String>> list = TransactionDao.getInstance().getTransactionList(getCustomer(), type, direction,year, month, day,hide);
 
         for(Vector<String> data : list) {
             dm.addRow(data);
@@ -131,7 +119,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         JComboBox<String> jc_type = new JComboBox<>();
 //        jc_type.setBounds(750, 10, 100, 30);
         jc_type.addItem("ALL");
-        String[] typeList = ComboList.getTransactionTypeList();
+        String[] typeList = SystemDatabase.transType;
         for(String data : typeList) {
             jc_type.addItem(data);
         }
@@ -150,6 +138,13 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         }
         jp_tool.add(jc_direction);
 
+        JLabel jl_hide = new JLabel("Interest");
+//        jl_to.setBounds(700, 10, 50, 30);
+        jp_tool.add(jl_hide);
+
+        JComboBox<String> jc_hide = new JComboBox<>(new String[]{"hide","show"});
+        jp_tool.add(jc_hide);
+
         jt_customer = new JTable(new DefaultTableModel(TableColumns.getTransactionColumns(), 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -162,7 +157,15 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         jt_customer.setDefaultRenderer(Object.class, r);
         TableSetting.makeFace(jt_customer);
 
-        fillTable();
+        String type = ((String) jc_type.getSelectedItem()).trim();
+        String direction = ((String) jc_direction.getSelectedItem()).trim();
+        String y = ((String)jc_year.getSelectedItem()).trim();
+        String m = ((String)jc_month.getSelectedItem()).trim();
+        String d = ((String)jc_day.getSelectedItem()).trim();
+        String hide = ((String)jc_hide.getSelectedItem()).trim();
+
+//                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
+        fillTable(type, direction,y,m,d,hide);
         JScrollPane js = new JScrollPane(jt_customer);
         this.add(js, BorderLayout.CENTER);
 
@@ -180,9 +183,10 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
                 String year = ((String)jc_year.getSelectedItem()).trim();
                 String month = ((String)jc_month.getSelectedItem()).trim();
                 String day = ((String)jc_day.getSelectedItem()).trim();
+                String hide = ((String)jc_hide.getSelectedItem()).trim();
 
 //                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
-                fillTable(type, direction,year,month,day);
+                fillTable(type, direction,year,month,day,hide);
 
             }
         });
@@ -255,7 +259,5 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
 //
 //        }
     }
-
-
 }
 

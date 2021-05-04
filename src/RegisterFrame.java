@@ -113,10 +113,14 @@ public class RegisterFrame extends CoreFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Customer newCustomer = new Customer(username.getText().trim(), password.getText().trim(), email.getText());
-                CustomerDao.insertCustomer(newCustomer);
-                dispose();
-                new LoginFrame();
-                new MessageFrame("IMPORTANT","<html>Your customer ID is <b><em>" + newCustomer.getId() + "</em></b>");
+                int flag = CustomerDao.getInstance().insertCustomer(newCustomer);
+                if (flag == 1){
+                    dispose();
+                    new LoginFrame();
+                    new MessageFrame("IMPORTANT","<html>Your customer ID is <b><em>" + newCustomer.getId() + "</em></b>");
+                }else{
+                    new MessageFrame("Error", "Email exists.");
+                }
             }
         });
         layout.setConstraints(registerButton,constraints);

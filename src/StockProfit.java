@@ -7,11 +7,25 @@ public class StockProfit extends StockInfo implements Valuable{
         this.customer = customer;
     }
 
+    public StockProfit(CustomerStock customerStock) {
+        super(customerStock.getName(), customerStock.getCurrency());
+        this.profit = (customerStock.getCurrentPrice() - customerStock.getBuyPrice()) * customerStock.getQuantity();
+        this.customer = customerStock.getCustomer();
+    }
+
     public double getValue() {
         return profit;
     }
 
     public Customer getCustomer() {
         return customer;
+    }
+
+    public void setProfit(double profit) {
+        this.profit = profit;
+    }
+
+    public double getProfit() {
+        return profit;
     }
 }

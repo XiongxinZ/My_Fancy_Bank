@@ -1,10 +1,7 @@
-import java.io.Serial;
 
 public class SavingAccount extends Account implements CanDeposit, CanTransferWithin {
 
     public static final String TYPE = "Saving";
-    @Serial
-    private static final long serialVersionUid = -2481826816986733553L;
 
     public SavingAccount(Customer customer, double amount) {
         super(customer, amount, "Saving");
@@ -20,7 +17,7 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
 
     public String deposit(double val,String currency){
         addCurrency(val, currency);
-        AccountDao.updateAccountMoney(this,currency);
+        AccountDao.getInstance().updateAccountMoney(this,currency);
         return "Deposit $" + val + ", amount $" + getAmount();
     }
 
@@ -41,18 +38,18 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
 
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertAccount(newly);
+        AccountDao.getInstance().insertAccount(newly);
         return "Create " + TYPE + " account successfully. Deposit "+deposit +
-                ", account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
-                ". Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"into the account. ";    }
+                "USD, account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
+                "USD. Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"USD nto the account. ";    }
 
     public static String createAccountFromAccount(Customer customer){
         customer.getAccount("Checking").removeCurrency(ConfigUtil.getConfigInt("AccountFee"));
         SavingAccount newly = new SavingAccount(customer);
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertAccount(newly);
-        AccountDao.updateAccountMoney((CheckingAccount) customer.getAccount("Checking"), "USD");
+        AccountDao.getInstance().insertAccount(newly);
+        AccountDao.getInstance().updateAccountMoney((CheckingAccount) customer.getAccount("Checking"), "USD");
         return "Pay the fee from Checking Account automatically. Create " + TYPE + " account successfully";
     }
 

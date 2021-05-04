@@ -133,11 +133,11 @@ public abstract class AbstractTransaction implements Transaction {
     }
 
     public Double getFromBalance() {
-        return from == null? null:from.getAmount();
+        return from == null? null:from.getAmount(currencyFrom);
     }
 
     public Double getToBalance() {
-        return to == null? null:to.getAmount();
+        return to == null? null:to.getAmount(currencyTo);
     }
 
     public String getCurrencyFrom() {
@@ -153,5 +153,11 @@ public abstract class AbstractTransaction implements Transaction {
     }
 
     public abstract String execute();
+
+    public void setTransTime(Date transTime) {
+        this.transTime = transTime;
+    }
+
+
 
 }

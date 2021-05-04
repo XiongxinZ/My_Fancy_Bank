@@ -1,14 +1,14 @@
 
 import java.util.HashMap;
 
-public class SecurityAccount extends Account implements CanTransferWithin {
+public class SecurityAccount extends Account{
 
     public static final String TYPE = "Security";
 
     private ValuePool<CustomerStock> stockPool = new ValuePool<>();
     private ValuePool<StockProfit> profitPool = new ValuePool<>();
 
-    static int temp = 5000;
+    static int temp = 10;
 
     public SecurityAccount(Customer customer, double amount) {
         super(customer, amount,"Security");
@@ -24,7 +24,7 @@ public class SecurityAccount extends Account implements CanTransferWithin {
     }
 
     public String sellStock(CustomerStock customerStock, int num){
-        CustomerStock stock = new CustomerStock(customerStock, getCustomer(), num);
+        CustomerStock stock = new CustomerStock(customerStock, getCustomer(), num, customerStock.getBuyPrice());
         return new SellStock(this,stock).execute();
     }
 
@@ -70,8 +70,8 @@ public class SecurityAccount extends Account implements CanTransferWithin {
             SecurityAccount newly = new SecurityAccount(customer);
             customer.addAccount(TYPE, newly);
             customer.markDirty(true);
-            AccountDao.insertAccount(newly);
-            AccountDao.updateAccountMoney(customer.getAccount("Saving"),"USD");
+            AccountDao.getInstance().insertAccount(newly);
+            AccountDao.getInstance().updateAccountMoney(customer.getAccount("Saving"),"USD");
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully. ";
         }else{
             return "Your Saving Account should have at least $5000";
@@ -93,8 +93,12 @@ public class SecurityAccount extends Account implements CanTransferWithin {
         return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();
     }
 
-    @Override
-    public boolean isMultiCurr() {
-        return false;
+    public String transferIn(double val, String curr){
+        return new TransferIn(this, val, curr).execute();
     }
+
+    public String transferOut(double val, String curr){
+        return new TransferOut(this, val, curr).execute();
+    }
+
 }

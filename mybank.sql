@@ -18,6 +18,11 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 
+ DROP TABLE IF EXISTS `timer`;
+CREATE TABLE IF NOT EXISTS `timer`  (
+   `u_id` TINYINT NOT NULL COMMENT 'id',
+  `u_date` date NOT NULL COMMENT 'Last Update Time') ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
 -- ----------------------------
 -- Table structure for transaction
 -- ----------------------------
@@ -61,14 +66,14 @@ CREATE TABLE IF NOT EXISTS `customer`  (
 -- ----------------------------
 -- Table structure for account
 -- ----------------------------
--- DROP TABLE IF EXISTS `account`;
+ DROP TABLE IF EXISTS `account`;
 CREATE TABLE IF NOT EXISTS `account`  (
   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
   `a_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account ID',
   `c_account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Account Type',
-  `c_Balance_USD` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'USD',
-  `c_Balance_CNY` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'CNY',
-  `c_Balance_JPY` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT 'JPY',
+  `c_Balance_USD` decimal(16, 2) NOT NULL DEFAULT 0.00 COMMENT 'USD',
+  `c_Balance_CNY` decimal(16, 2) NOT NULL DEFAULT 0.00 COMMENT 'CNY',
+  `c_Balance_JPY` decimal(16, 2) NOT NULL DEFAULT 0.00 COMMENT 'JPY',
   INDEX `c_ID`(`c_ID`) USING BTREE,
   PRIMARY KEY (`a_id`) USING BTREE,
   CONSTRAINT `account_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -82,23 +87,30 @@ CREATE TABLE IF NOT EXISTS `collateral`  (
   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
   `co_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral ID',
   `co_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Name',
-  `co_value` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral value',
+  `co_value` decimal(16,2) NOT NULL COMMENT 'Collateral value',
   `co_used` TINYINT NOT NULL COMMENT 'used',
   INDEX `c_ID`(`c_ID`) USING BTREE,
+  PRIMARY KEY(`co_id`) USING BTREE,
   CONSTRAINT `collateral_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of stockInfo
+-- ----------------------------
+INSERT INTO `collateral` VALUES("670820845","1234323445920849" ,"House2", 5000.0, 0);
+INSERT INTO `collateral` VALUES("670820845","1244592024524849" ,"Car3", 50000.0, 0);
+
+-- ----------------------------
 -- Table structure for stock
 -- ----------------------------
--- DROP TABLE IF EXISTS `stock`;
+ DROP TABLE IF EXISTS `stock`;
 CREATE TABLE IF NOT EXISTS `stock`  (
   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
   `s_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Name',
   `s_curr` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Currency',
   `s_quantity` INT(16) NOT NULL COMMENT 'Stock Quantity',
-  `b_price` decimal(8,2) NOT NULL COMMENT 'Buy Price',
-  `c_price` decimal(8,2) NOT NULL COMMENT 'Current Price',
+  `b_price` decimal(16,2) NOT NULL COMMENT 'Buy Price',
+  `c_price` decimal(16,2) NOT NULL COMMENT 'Current Price',
   INDEX `c_ID`(`c_ID`) USING BTREE,
   INDEX `s_name`(`s_name`) USING BTREE,
 --  PRIMARY KEY (`co_id`) USING BTREE,
@@ -108,24 +120,32 @@ CREATE TABLE IF NOT EXISTS `stock`  (
 -- ----------------------------
 -- Table structure for stockInfo
 -- ----------------------------
--- DROP TABLE IF EXISTS `stockInfo`;
+ DROP TABLE IF EXISTS `stockInfo`;
 CREATE TABLE IF NOT EXISTS `stockInfo`  (
   `s_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Name',
   `s_curr` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Currency',
-  `c_price` decimal(8,2) NOT NULL COMMENT 'Current Price',
+  `c_price` decimal(16,2) NOT NULL COMMENT 'Current Price',
 --  INDEX `s_name`(`s_name`) USING BTREE,
   PRIMARY KEY (`s_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
+
+-- ----------------------------
+-- Records of stockInfo
+-- ----------------------------
+INSERT INTO `stockInfo` VALUES ("Apple", "USD", 100.0);
+INSERT INTO `stockInfo` VALUES ("KWEICHOW MOUTAI ", "CNY", 2000.0);
+INSERT INTO `stockInfo` VALUES ("TOKYO ELECTRON", "JPY", 48320.0);
+
 -- ----------------------------
 -- Table structure for stock
 -- ----------------------------
--- DROP TABLE IF EXISTS `realizedStock`;
+ DROP TABLE IF EXISTS `realizedStock`;
 CREATE TABLE IF NOT EXISTS `realizedStock`  (
   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
   `s_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Name',
   `s_curr` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Currency',
-  `r_profit` decimal(8,2) NOT NULL COMMENT 'Realized Profit',
+  `r_profit` decimal(16,2) NOT NULL COMMENT 'Realized Profit',
   INDEX `c_ID`(`c_ID`) USING BTREE,
   INDEX `s_name`(`s_name`) USING BTREE,
 --  PRIMARY KEY (`co_id`) USING BTREE,
@@ -135,13 +155,13 @@ CREATE TABLE IF NOT EXISTS `realizedStock`  (
 -- ----------------------------
 -- Table structure for loan
 -- ----------------------------
--- DROP TABLE IF EXISTS `loan`;
+ DROP TABLE IF EXISTS `loan`;
 CREATE TABLE IF NOT EXISTS `loan`  (
   `l_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Loan ID',
   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
   `co_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral ID',
   `l_currency` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Currency',
-  `l_balance` decimal(8,2) NOT NULL COMMENT 'Balance',
+  `l_balance` decimal(16,2) NOT NULL COMMENT 'Balance',
   INDEX `c_ID`(`c_ID`) USING BTREE,
   INDEX `co_id`(`co_id`) USING BTREE,
   PRIMARY KEY (`l_id`) USING BTREE,
@@ -150,12 +170,18 @@ CREATE TABLE IF NOT EXISTS `loan`  (
 -- ----------------------------
 -- Table structure for collateralValuation
 -- ----------------------------
--- DROP TABLE IF EXISTS `collateralValuation`;
+ DROP TABLE IF EXISTS `collateralValuation`;
 CREATE TABLE IF NOT EXISTS `collateralValuation`  (
+  `r_date` date NOT NULL COMMENT 'Request Time',
   `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `cv_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Request ID',
   `co_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Collateral Name',
   `f_path` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'File Path',
+  `co_value` decimal(16,2) COMMENT 'Collateral value',
+  `cv_status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Request Status',
+  `s_date` date COMMENT 'Solve Time',
   INDEX `c_ID`(`c_ID`) USING BTREE,
+  PRIMARY KEY (`cv_id`) USING BTREE,
   CONSTRAINT `collateralValuation_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

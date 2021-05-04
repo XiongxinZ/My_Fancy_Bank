@@ -21,7 +21,7 @@ public class TakeLoanFrame  extends PopupFrame{
         JLabel collLabel = new JLabel("Collateral: ");
         jPanel.add(collLabel);
 
-        JComboBox<Collateral> collateral = new JComboBox<>(CollateralDao.selectUnusedCollateralList(
+        JComboBox<Collateral> collateral = new JComboBox<>(CollateralDao.getInstance().selectUnusedCollateralList(
                 account.getCustomer()).toArray(new Collateral[0]));
         jPanel.add(collateral);
 

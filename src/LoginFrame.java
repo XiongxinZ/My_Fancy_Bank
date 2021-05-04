@@ -47,8 +47,8 @@ public class LoginFrame extends CoreFrame {
 
         imgLabel = new JLabel("Login img"){
             protected void paintComponent(Graphics g) {
-                ImageIcon icon = new ImageIcon("img/login.jpg");
-                g.drawImage(icon.getImage(), 0, 0, getWidth(),getHeight(),
+                ImageIcon icon = new ImageIcon("img/login.png");
+                g.drawImage(icon.getImage(), 0, -(icon.getIconHeight()*getWidth()/icon.getIconWidth()-getHeight())/3, getWidth(),icon.getIconHeight()*getWidth()/icon.getIconWidth(),
                         icon.getImageObserver());
             }
         };
@@ -99,11 +99,11 @@ public class LoginFrame extends CoreFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Customer customer = CustomerDao.selectCustomer(username.getText(), String.valueOf(password.getPassword()));
+                Customer customer = CustomerDao.getInstance().selectCustomer(username.getText(), String.valueOf(password.getPassword()));
                 if (customer == null){
                     new MessageFrame("Login Error", "No user or password error");
                 }else{
-                    dispose();
+                    LoginFrame.this.dispose();
                     new CustomerFrame(customer);
                 }
             }
@@ -145,12 +145,12 @@ public class LoginFrame extends CoreFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-
+                register.setText("<html><b><em>Register</em></b>");
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-
+                register.setText("Register");
             }
         });
         register.setForeground(Color.BLUE);

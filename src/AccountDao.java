@@ -3,12 +3,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class AccountDao {
 
+    private static AccountDao accountDao = new AccountDao();
 
-    public static int insertAccount(Account account) {
+    public static AccountDao getInstance(){
+        return accountDao;
+    }
+
+    public int insertAccount(Account account) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -45,7 +52,7 @@ public class AccountDao {
         return flag;
     }
 
-    public static int updateAccountMoney(Account account, String curr) {
+    public int updateAccountMoney(Account account, String curr) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -76,7 +83,7 @@ public class AccountDao {
         return flag;
     }
 
-    public static int updateAccountMoney(String id, String accountType, double val, String curr) {
+    public int updateAccountMoney(String id, String accountType, double val, String curr) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -88,21 +95,21 @@ public class AccountDao {
 
 //            String c_id = id;
 //            String type = accountType;
-            String select = "select * from account where c_id = ? and c_account = ?";
+//            String select = "select * from account where c_id = ? and c_account = ?";
+//
+//            ps = conn.prepareStatement(select);
+//            ps.setString(1, id);
+//            ps.setString(2, accountType);
+//
+//            rs = ps.executeQuery();
+//            double amount = 0;
+//
+//            while(rs.next()) {
+//                amount = Double.parseDouble(rs.getString("c_Balance_"+curr));
+//            }
 
-            ps = conn.prepareStatement(select);
-            ps.setString(1, id);
-            ps.setString(2, accountType);
 
-            rs = ps.executeQuery();
-            double amount = 0;
-
-            while(rs.next()) {
-                amount = Double.parseDouble(rs.getString("c_Balance_"+curr));
-            }
-
-
-            String sql = "update account set c_Balance_" + curr + " = " + (amount + val) +
+            String sql = "update account set c_Balance_" + curr + " = " + val +
                     " where c_id = '" + id + "' and c_account = '" + accountType + "'";
             ps = conn.prepareStatement(String.valueOf(sql));
             flag = ps.executeUpdate();
@@ -144,7 +151,7 @@ public class AccountDao {
     }
 
 
-    public static Account selectAccount(Customer customer, String type) {
+    public Account selectAccount(Customer customer, String type) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -178,16 +185,16 @@ public class AccountDao {
                 account.setId(rs.getString("a_id"));
 
                 account.setAmount(Double.parseDouble(rs.getString("c_Balance_USD")),"USD");
-                account.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"CNY");
+                account.setAmount(Double.parseDouble(rs.getString("c_Balance_CNY")),"CNY");
                 account.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"JPY");
 
                 if (account instanceof SecurityAccount){
-                    ((SecurityAccount) account).setProfitPool(StockDao.selectProfitList(customer));
-                    ((SecurityAccount) account).setStockPool(StockDao.selectCustomerStockList(customer));
+                    ((SecurityAccount) account).setProfitPool(StockDao.getInstance().selectProfitList(customer));
+                    ((SecurityAccount) account).setStockPool(StockDao.getInstance().selectCustomerStockList(customer));
                 }
 
                 if (account instanceof LoanAccount){
-                    ((LoanAccount) account).setLoanPool(LoanDao.selectCustomerLoanList(customer));
+                    ((LoanAccount) account).setLoanPool(LoanDao.getInstance().selectCustomerLoanList(customer));
                 }
             }
         } catch (SQLException e) {
@@ -198,9 +205,43 @@ public class AccountDao {
         return account;
     }
 
+    public List<String[]> selectSavingList() {
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<String[]> list = new ArrayList<>();
+
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "select * from account where c_account = 'Saving'";
+
+            System.out.println("selectCustomerWithCid(Customer customer)" + sql);
+
+            ps = conn.prepareStatement(sql);
+
+            rs = ps.executeQuery();
+
+            while(rs.next()) {
+                String[] ret= new String[4];
+                ret[0] = rs.getString("c_id");
+                ret[1] = rs.getString("c_Balance_USD");
+                ret[2] = rs.getString("c_Balance_CNY");
+                ret[3] = rs.getString("c_Balance_JPY");
+
+                list.add(ret);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return list;
+    }
 
 
-    public static HashMap<String, Account> selectAccountList(Customer customer){
+
+    public HashMap<String, Account> selectAccountList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

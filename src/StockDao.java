@@ -6,7 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StockDao {
-    public static int updateStockPosition(CustomerStock stock) {
+
+    private static StockDao stockDao = new StockDao();
+
+    public static StockDao getInstance(){
+        return stockDao;
+    }
+
+    public int updateStockPosition(CustomerStock stock) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -35,7 +42,7 @@ public class StockDao {
         return flag;
     }
 
-    public static int removeCustomerStock(CustomerStock stock) {
+    public int removeCustomerStock(CustomerStock stock) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -63,7 +70,7 @@ public class StockDao {
         return flag;
     }
 
-    public static int insertCustomerStock(CustomerStock stock){
+    public int insertCustomerStock(CustomerStock stock){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -93,7 +100,7 @@ public class StockDao {
         return flag;
     }
 
-    public static List<StockInfo> selectStockInfoList(){
+    public List<StockInfo> selectStockInfoList(){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -124,7 +131,7 @@ public class StockDao {
     }
 
 
-    public static StockInfo selectStockInfo(String name){
+    public StockInfo selectStockInfo(String name){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -154,11 +161,11 @@ public class StockDao {
         return stockInfo;
     }
 
-    public static StockInfo selectStockInfo(CustomerStock customerStock){
+    public StockInfo selectStockInfo(CustomerStock customerStock){
         return selectStockInfo(customerStock.getName());
     }
 
-    public static List<CustomerStock> selectOwnedInfoList(Customer customer){
+    public List<CustomerStock> selectOwnedInfoList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -191,7 +198,7 @@ public class StockDao {
         return list;
     }
 
-    public static ValuePool<CustomerStock> selectCustomerStockList(Customer customer){
+    public ValuePool<CustomerStock> selectCustomerStockList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -224,7 +231,53 @@ public class StockDao {
         return list;
     }
 
-    public static ValuePool<StockProfit> selectProfitList(Customer customer){
+    public int updateProfit(StockProfit profit){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        int flag = 0;
+
+        try{
+            conn = JDBCUtil.getConnection();
+
+            String sql = "update realizedStock set r_profit = ? where c_id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setDouble(1, profit.getProfit());
+            ps.setString(2, profit.getCustomer().getId());
+
+            flag = ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return flag;
+    }
+
+    public int insertProfit(StockProfit profit){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        int flag = 0;
+
+        try{
+            conn = JDBCUtil.getConnection();
+
+            String sql = "insert into realizedStock(c_id,s_name,s_curr,r_profit) values(?,?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,profit.getCustomer().getId());
+            ps.setString(2,profit.getName());
+            ps.setString(3, profit.getCurrency());
+            ps.setDouble(4, profit.getProfit());
+
+            flag = ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return flag;
+    }
+
+    public ValuePool<StockProfit> selectProfitList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

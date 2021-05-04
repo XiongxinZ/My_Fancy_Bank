@@ -24,7 +24,7 @@ public class CustomerFrame extends CoreFrame {
 
     private void setTopInfo(){
         infoPanel = new JPanel(new BorderLayout());
-        JLabel jLabel = new JLabel("<html>Hello! <b><em>" + customer.getName() + "!</em></b>");
+        JLabel jLabel = new JLabel("<html>  Hello! <b><em>" + customer.getName() + "!</em></b>");
         infoPanel.add(setButton(), BorderLayout.EAST);
         infoPanel.add(jLabel, BorderLayout.CENTER);
     }
@@ -34,7 +34,7 @@ public class CustomerFrame extends CoreFrame {
         JPopupMenu menu = new JPopupMenu("1");
         JMenuItem homepage = new JMenuItem("HomePage");
         JMenuItem transHis = new JMenuItem("Transaction History");
-        JMenuItem item2 = new JMenuItem("12");
+        JMenuItem item2 = new JMenuItem("Stock Trading History");
         JMenuItem item3 = new JMenuItem("Logout");
         JMenuItem item4 = new JMenuItem("Exit");
         homepage.addActionListener(new ActionListener() {
@@ -53,9 +53,7 @@ public class CustomerFrame extends CoreFrame {
         item2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                label.setText("pick 12");
-//                button8.setText("¡ø"+ item2.getText());
-//                button8.setSelected(false);
+                setContextPanel(new StockTransactionHistoryPanel(customer));
             }
         });
 
@@ -70,7 +68,7 @@ public class CustomerFrame extends CoreFrame {
         item4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CustomerFrame.this.dispose();
+                System.exit(-1);
             }
         });
         menu.add(homepage);
