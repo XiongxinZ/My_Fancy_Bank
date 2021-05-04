@@ -24,13 +24,7 @@ public class CustomerStock extends StockInfo implements Valuable{
 
     public void remove(CustomerStock stock){
         assert stock.getName().equals(getName());
-        int newQuantity = quantity - stock.quantity;
-        if (newQuantity == 0){
-            quantity = newQuantity;
-        }else{
-            buyPrice = (quantity * buyPrice - stock.quantity * stock.getCurrentPrice())/(quantity - stock.quantity);
-            quantity = quantity - stock.quantity;
-        }
+        quantity = quantity - stock.quantity;
     }
 
     public void setBuyPrice(double buyPrice) {
