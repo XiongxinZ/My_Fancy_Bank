@@ -11,6 +11,14 @@ public class Banker extends User{
         super(name, pwd, "Banker", email);
     }
 
+    public Banker(String pwd, String email) {
+        super(pwd, "Banker", email);
+    }
+
+    public Banker() {
+        super();
+    }
+
     public void takeOrder(Order order){
         orderList.add(order);
     }

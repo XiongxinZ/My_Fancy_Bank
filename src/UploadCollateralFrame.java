@@ -3,9 +3,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.geom.CubicCurve2D;
 import java.io.File;
 
 public class UploadCollateralFrame extends PopupFrame{
@@ -33,10 +30,10 @@ public class UploadCollateralFrame extends PopupFrame{
 //        JFileChooser file = new JFileChooser(System.getProperty("user.dir"));
 //        file.setFileSelectionMode(JFileChooser.FILES_ONLY);
         JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));//ÉèÖÃÄ¬ÈÏÏÔÊ¾Îªµ±Ç°ÎÄ¼þ¼Ð
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);//ÉèÖÃÑ¡ÔñÄ£Ê½£¨Ö»Ñ¡ÎÄ¼þ¡¢Ö»Ñ¡ÎÄ¼þ¼Ð¡¢ÎÄ¼þºÍÎÄ¼þ¾ù¿ÉÑ¡£©
-        fc.setMultiSelectionEnabled(false);//ÊÇ·ñÔÊÐí¶àÑ¡
-//        fc.addChoosableFileFilter(new FileNameExtensionFilter("zip(*.zip, *.rar)", "zip", "rar"));//ÎÄ¼þ¹ýÂËÆ÷
+        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));//ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½ï¿½ï¿½Ê¾Îªï¿½ï¿½Ç°ï¿½Ä¼ï¿½ï¿½ï¿½
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);//ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Ä£Ê½ï¿½ï¿½Ö»Ñ¡ï¿½Ä¼ï¿½ï¿½ï¿½Ö»Ñ¡ï¿½Ä¼ï¿½ï¿½Ð¡ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+        fc.setMultiSelectionEnabled(false);//ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡
+//        fc.addChoosableFileFilter(new FileNameExtensionFilter("zip(*.zip, *.rar)", "zip", "rar"));//ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         fc.setFileFilter(new FileNameExtensionFilter("image(*.jpg,*.jpeg, *.png, *.gif)", "jpg","jpeg", "png", "gif"));
         fc.showOpenDialog(null);
         jPanel.add(fc);

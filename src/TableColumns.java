@@ -1,5 +1,17 @@
 public class TableColumns {
 
+    public static String[] getBankerColumns() {
+        return new String[] {
+                "Banker ID",  "Banker Name", "Password", "Email Address"
+        };
+    }
+
+    public static String[] getCustomerColumns() {
+        return new String[] {
+               "Customer ID",  "Customer Name", "Password", "Email Address"
+        };
+    }
+
     public static String[] getTransactionColumns() {
         return new String[] {
                 "Date", "Transaction Type", "FromWho", "FromAccount", "ToWho", "ToAccount", "Amount",
@@ -48,4 +60,5 @@ public class TableColumns {
                 "Stock Name", "Currency", "Profit"
         };
     }
+
 }

@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Arrays;
 
 public class LoginFrame extends CoreFrame {
 
@@ -181,7 +180,7 @@ public class LoginFrame extends CoreFrame {
         layout.setConstraints(usernameLabel, constraints);
         jp.add(usernameLabel);
 
-        JTextField username = new JTextField();
+        JTextField username = new JTextField("admin@bu.edu");
         layout.setConstraints(username, constraints);
         jp.add(username);
 
@@ -189,7 +188,7 @@ public class LoginFrame extends CoreFrame {
         layout.setConstraints(pwdLabel, constraints);
         jp.add(pwdLabel);
 
-        JPasswordField password = new JPasswordField();
+        JPasswordField password = new JPasswordField("admin");
         layout.setConstraints(password, constraints);
         jp.add(password);
 
@@ -197,6 +196,19 @@ public class LoginFrame extends CoreFrame {
         constraints.gridwidth = GridBagConstraints.BOTH;
         constraints.insets = new Insets(10,10,10,5);
         JButton loginButton = new JButton("Login");
+        // Banker login control
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Banker banker = BankerDao.getInstance().selectBanker(username.getText(), String.valueOf(password.getPassword()));
+                if (banker == null){
+                    new MessageFrame("Login Error", "No user or password error");
+                }else{
+                    LoginFrame.this.dispose();
+                    new BankerFrame(banker);
+                }
+            }
+        });
         layout.setConstraints(loginButton,constraints);
         jp.add(loginButton);
 
