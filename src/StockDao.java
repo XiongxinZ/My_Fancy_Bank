@@ -43,6 +43,33 @@ public class StockDao {
         return flag;
     }
 
+    public int updateStockInfo(StockInfo stock) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int flag = 0;
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+
+            String sql = "update stockinfo set c_price = ? where s_name = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setDouble(1, stock.getCurrentPrice());
+            ps.setString(2, stock.getName());
+
+//            System.out.println("delCustomer(Customer customer)" + ps.toString());
+            flag = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(ps, rs);
+        }
+        return flag;
+    }
+
     public int removeCustomerStock(CustomerStock stock) {
 
         Connection conn = null;

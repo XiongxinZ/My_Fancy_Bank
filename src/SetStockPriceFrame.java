@@ -4,24 +4,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SetStockPriceFrame extends PopupFrame{
-    public SetStockPriceFrame(String stockName) {
+    private Banker banker;
+    private StockInfo stockInfo;
+    public SetStockPriceFrame(String stockName, Banker banker) {
         super("Set Stock Price");
-        setFrame(stockName);
+        this.banker = banker;
+        this.stockInfo = StockDao.getInstance().selectStockInfo(stockName);
+        setFrame();
         setVisible(true);
     }
 
-    private void setFrame(String stockName) {
+    private void setFrame() {
         JPanel jPanel = new JPanel(new GridLayout(0,2));
         jPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         JLabel typeLabel = new JLabel("Stock: ");
         jPanel.add(typeLabel);
 
-        JLabel name = new JLabel(stockName);
+        JLabel name = new JLabel(stockInfo.getName());
         jPanel.add(name);
 
-        JLabel amountLabel = new JLabel("Price: ");
+        JLabel amountLabel = new JLabel("Current Price: ");
         jPanel.add(amountLabel);
+
+        JLabel amount = new JLabel(stockInfo.getCurrentPrice() + stockInfo.getCurrency());
+        jPanel.add(amount);
+
+
+        JLabel newPriceLabel = new JLabel("New Price: ");
+        jPanel.add(newPriceLabel);
 
         JTextField price = new JTextField();
         jPanel.add(price);
@@ -32,13 +43,13 @@ public class SetStockPriceFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    int amount = Integer.parseInt(price.getText().trim());
-                    StockInfo stockInfo = ((StockInfo) box.getSelectedItem());
-                    String message = account.buyStock(stockInfo, amount);
-                    BuyStockFrame.this.dispose();
-                    new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
-                    new MessageFrame("Success", message);
-                    //                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(DepositFrame.this)).getContextPanel()).repaintPanel();
+                    double val = Double.parseDouble(price.getText());
+                    stockInfo.setCurrentPrice(val);
+                    StockDao.getInstance().updateStockInfo(stockInfo);
+                    String massage = stockInfo.getName() + " price update! Current price is "+ stockInfo.getCurrentPrice() + stockInfo.getCurrency();
+                    SetStockPriceFrame.this.dispose();
+                    new BankerFrame(banker).setContextPanel(new StockEvalsPanel(banker));
+                    new MessageFrame("Success", massage);
 
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a integer");
@@ -52,7 +63,7 @@ public class SetStockPriceFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+                new BankerFrame(banker).setContextPanel(new StockEvalsPanel(banker));
             }
         });
         jPanel.add(back);
