@@ -91,8 +91,9 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                     if (e.getClickCount() == 2) {
                         int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
                         // get cv_id
-                        String cellVal = (String) (jt_banker.getModel().getValueAt(row, 2));
-                        new MessageFrame("Test" + 2, cellVal);
+                        String cv_id = (String) (jt_banker.getModel().getValueAt(row, 2));
+                        System.out.println(cv_id);
+                        new CollateralValuationFrame(cv_id);
                     }
                 }
             });

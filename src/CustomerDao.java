@@ -217,8 +217,8 @@ public class CustomerDao {
 			e.printStackTrace();
 		} finally {
 			JDBCUtil.closeResource(ps, rs);
-			return user;
 		}
+		return user;
 	}
 
 

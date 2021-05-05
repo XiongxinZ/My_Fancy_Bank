@@ -1,5 +1,7 @@
 import java.io.File;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -335,5 +337,43 @@ public class CollateralDao {
             JDBCUtil.closeResource(ps, rs);
         }
         return list;
+    }
+
+    public CollateralValuation selectCollateralEvaluationWithRid(String request_id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        CollateralValuation cv = null;
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            String sql = "select * from collateralValuation where cv_id = ?";
+
+            System.out.println("selectCollateralEvaluationWithRid(String request_id)" + sql);
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, request_id);
+
+            rs = ps.executeQuery();
+
+            while(rs.next()) {
+                String filePath = System.getProperty("user.dir") + "/certificate/" + rs.getString("f_path");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String sDate = rs.getString("r_date");
+                java.util.Date date = formatter.parse(sDate);
+                File in = new File(filePath);
+                cv = new CollateralValuation(rs.getString("c_id"),
+                        rs.getString("co_name"), in, rs.getString("cv_id"), date);
+                // System.out.println(cv.getFileName());
+                // System.out.println(cv.getRequestDate());
+            }
+
+        } catch (SQLException | ParseException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(ps, rs);
+        }
+        return cv;
     }
 }
