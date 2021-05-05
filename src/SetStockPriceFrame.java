@@ -62,8 +62,10 @@ public class SetStockPriceFrame extends PopupFrame{
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 dispose();
                 new BankerFrame(banker).setContextPanel(new StockEvalsPanel(banker));
+
             }
         });
         jPanel.add(back);

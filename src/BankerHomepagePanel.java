@@ -121,6 +121,7 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                         // get stock name
                         String stockName = (String) (jt_banker.getModel().getValueAt(row, 0));
                         System.out.println(stockName);
+                        GuiUtil.getFrame(BankerHomepagePanel.this).dispose();
                         new SetStockPriceFrame(stockName, banker);
                     }
                 }

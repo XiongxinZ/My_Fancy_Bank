@@ -86,6 +86,7 @@ public class CollateralValuationFrame extends CoreFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 CollateralValuationFrame.this.dispose();
+                new BankerFrame(banker).setContextPanel(new CollateralEvalsPanel(banker));
             }
         });
         jPanel.add(confirm);
