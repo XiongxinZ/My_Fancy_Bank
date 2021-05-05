@@ -9,11 +9,11 @@ public class TransactionDao {
 
     private static TransactionDao transactionDao = new TransactionDao();
 
-    public static TransactionDao getInstance(){
+    public static TransactionDao getInstance() {
         return transactionDao;
     }
 
-    public int  insertTransaction(AbstractTransaction transaction){
+    public int insertTransaction(AbstractTransaction transaction) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -29,15 +29,15 @@ public class TransactionDao {
             ps = conn.prepareStatement(sql);
             ps.setDate(1, new Date(transaction.getTransTime().getTime()));
             ps.setString(2, transaction.getTransType());
-            ps.setString(3, transaction.getFromWhom()==null?"-": transaction.getFromWhom());
-            ps.setString(4, transaction.getFromAccount()==null?"-": transaction.getFromAccount());
-            ps.setString(5, transaction.getToWhom()==null?"-": transaction.getToWhom());
-            ps.setString(6, transaction.getToAccount()==null?"-": transaction.getToAccount());
+            ps.setString(3, transaction.getFromWhom() == null ? "-" : transaction.getFromWhom());
+            ps.setString(4, transaction.getFromAccount() == null ? "-" : transaction.getFromAccount());
+            ps.setString(5, transaction.getToWhom() == null ? "-" : transaction.getToWhom());
+            ps.setString(6, transaction.getToAccount() == null ? "-" : transaction.getToAccount());
             ps.setString(7, String.valueOf(transaction.getAmount()));
-            ps.setString(8, transaction.getFromBalance()==null?"-":String.valueOf(transaction.getFromBalance()));
-            ps.setString(9, transaction.getFromBalance()==null?"-":transaction.getCurrencyFrom());
-            ps.setString(10, transaction.getToBalance()==null?"-": String.valueOf(transaction.getToBalance()));
-            ps.setString(11, transaction.getToBalance()==null?"-": transaction.getCurrencyTo());
+            ps.setString(8, transaction.getFromBalance() == null ? "-" : String.valueOf(transaction.getFromBalance()));
+            ps.setString(9, transaction.getFromBalance() == null ? "-" : transaction.getCurrencyFrom());
+            ps.setString(10, transaction.getToBalance() == null ? "-" : String.valueOf(transaction.getToBalance()));
+            ps.setString(11, transaction.getToBalance() == null ? "-" : transaction.getCurrencyTo());
             flag = ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -48,7 +48,7 @@ public class TransactionDao {
         return flag;
     }
 
-    public List<Vector<String>> getTransactionList(Customer customer){
+    public List<Vector<String>> getTransactionList(Customer customer) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -64,11 +64,11 @@ public class TransactionDao {
 
             StringBuilder sql = QueryUtil.getPartAll(dbName);
 
-            if(!"".equals(id) && id != null) {
+            if (!"".equals(id) && id != null) {
                 sql.append(" and");
 
                 sql.append(" (");
-                sql.append (QueryUtil.appendConstrain("f_id",id)).append(" or ").append(QueryUtil.appendConstrain("t_id", id));
+                sql.append(QueryUtil.appendConstrain("f_id", id)).append(" or ").append(QueryUtil.appendConstrain("t_id", id));
                 sql.append(")");
 
             }
@@ -78,7 +78,7 @@ public class TransactionDao {
 
             rs = ps.executeQuery();
 //            int size = rs.getFetchSize();
-            while(rs.next()) {
+            while (rs.next()) {
                 Vector<String> dataRow = new Vector<>();
                 dataRow.add(rs.getString("t_date"));
                 dataRow.add(rs.getString("t_type"));
@@ -102,7 +102,7 @@ public class TransactionDao {
         return list;
     }
 
-    public List<Vector<String>> getTransactionList(Customer customer, String type){
+    public List<Vector<String>> getTransactionList(Customer customer, String type) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -118,25 +118,25 @@ public class TransactionDao {
 
             StringBuilder sql = QueryUtil.getPartAll(dbName);
 
-            if(!"".equals(id) && id != null) {
+            if (!"".equals(id) && id != null) {
                 sql.append(" and");
 
                 sql.append(" (");
-                sql.append (QueryUtil.appendConstrain("f_id",id)).append(" or ").append(QueryUtil.appendConstrain("t_id", id));
+                sql.append(QueryUtil.appendConstrain("f_id", id)).append(" or ").append(QueryUtil.appendConstrain("t_id", id));
                 sql.append(")");
 
             }
 
             sql.append(" and");
 
-            sql.append(QueryUtil.appendConstrain("t_type",type));
+            sql.append(QueryUtil.appendConstrain("t_type", type));
 
 
             ps = conn.prepareStatement(String.valueOf(sql));
 
             rs = ps.executeQuery();
 //            int size = rs.getFetchSize();
-            while(rs.next()) {
+            while (rs.next()) {
                 Vector<String> dataRow = new Vector<>();
                 dataRow.add(rs.getString("t_date"));
                 dataRow.add(rs.getString("t_type"));
@@ -160,7 +160,7 @@ public class TransactionDao {
         return list;
     }
 
-    public List<Vector<String>> getTransactionList(Customer customer, String type, String direction){
+    public List<Vector<String>> getTransactionList(Customer customer, String type, String direction) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -176,22 +176,22 @@ public class TransactionDao {
 
             StringBuilder sql = QueryUtil.getPartAll(dbName);
 
-            if(!"".equals(id) && id != null) {
+            if (!"".equals(id) && id != null) {
                 sql.append(" and");
-                if ("All".equalsIgnoreCase(direction)){
+                if ("All".equalsIgnoreCase(direction)) {
                     sql.append(" (");
-                    sql.append (QueryUtil.appendConstrain("f_id",id)).append(" or ").append(QueryUtil.appendConstrain("t_id", id));
+                    sql.append(QueryUtil.appendConstrain("f_id", id)).append(" or ").append(QueryUtil.appendConstrain("t_id", id));
                     sql.append(")");
-                }else if ("out".equalsIgnoreCase(direction)){
-                    sql.append(QueryUtil.appendConstrain("f_id",id));
-                }else if ("in".equalsIgnoreCase(direction)){
+                } else if ("out".equalsIgnoreCase(direction)) {
+                    sql.append(QueryUtil.appendConstrain("f_id", id));
+                } else if ("in".equalsIgnoreCase(direction)) {
                     sql.append(QueryUtil.appendConstrain("t_id", id));
                 }
             }
 
-            if (!"All".equalsIgnoreCase(type)){
+            if (!"All".equalsIgnoreCase(type)) {
                 sql.append(" and");
-                sql.append(QueryUtil.appendConstrain("t_type",type));
+                sql.append(QueryUtil.appendConstrain("t_type", type));
             }
 
 
@@ -199,7 +199,7 @@ public class TransactionDao {
 
             rs = ps.executeQuery();
 //            int size = rs.getFetchSize();
-            while(rs.next()) {
+            while (rs.next()) {
                 Vector<String> dataRow = new Vector<>();
                 dataRow.add(rs.getString("t_date"));
                 dataRow.add(rs.getString("t_type"));
@@ -223,7 +223,7 @@ public class TransactionDao {
         return list;
     }
 
-    public List<Vector<String>> getTransactionList(Customer customer, String type, String direction, String year, String month, String day, boolean hide){
+    public List<Vector<String>> getTransactionList(Customer customer, String type, String direction, String year, String month, String day, boolean hide) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -239,22 +239,22 @@ public class TransactionDao {
 
             StringBuilder sql = QueryUtil.getPartAll(dbName);
 
-            if(!"".equals(id) && id != null) {
+            if (!"".equals(id) && id != null) {
                 sql.append(" and");
-                if ("All".equalsIgnoreCase(direction)){
+                if ("All".equalsIgnoreCase(direction)) {
                     sql.append(" (");
-                    sql.append (QueryUtil.appendConstrain("f_id",id)).append(" or ").append(QueryUtil.appendConstrain("t_id", id));
+                    sql.append(QueryUtil.appendConstrain("f_id", id)).append(" or ").append(QueryUtil.appendConstrain("t_id", id));
                     sql.append(")");
-                }else if ("out".equalsIgnoreCase(direction)){
-                    sql.append(QueryUtil.appendConstrain("f_id",id));
-                }else if ("in".equalsIgnoreCase(direction)){
+                } else if ("out".equalsIgnoreCase(direction)) {
+                    sql.append(QueryUtil.appendConstrain("f_id", id));
+                } else if ("in".equalsIgnoreCase(direction)) {
                     sql.append(QueryUtil.appendConstrain("t_id", id));
                 }
             }
 
-            if (!"All".equalsIgnoreCase(type)){
+            if (!"All".equalsIgnoreCase(type)) {
                 sql.append(" and");
-                sql.append(QueryUtil.appendConstrain("t_type",type));
+                sql.append(QueryUtil.appendConstrain("t_type", type));
             }
 
 
@@ -262,7 +262,7 @@ public class TransactionDao {
 
             rs = ps.executeQuery();
 //            int size = rs.getFetchSize();
-            while(rs.next()) {
+            while (rs.next()) {
                 Vector<String> dataRow = new Vector<>();
                 Date date = rs.getDate("t_date");
                 Calendar calendar = Calendar.getInstance();
@@ -272,20 +272,19 @@ public class TransactionDao {
                 int transDay = calendar.get(Calendar.DAY_OF_MONTH);
 
 
-
-                if (!"All".equalsIgnoreCase(year) && transYear != Integer.parseInt(year)){
+                if (!"All".equalsIgnoreCase(year) && transYear != Integer.parseInt(year)) {
                     continue;
                 }
 
-                if (!"All".equalsIgnoreCase(month) && transMonth != SystemDatabase.monthMap.get(month)){
+                if (!"All".equalsIgnoreCase(month) && transMonth != SystemDatabase.monthMap.get(month)) {
                     continue;
                 }
 
-                if (!"All".equalsIgnoreCase(day) && transDay != Integer.parseInt(day)){
+                if (!"All".equalsIgnoreCase(day) && transDay != Integer.parseInt(day)) {
                     continue;
                 }
 
-                if (hide && rs.getString("t_type").equalsIgnoreCase("Pay Interest")){
+                if (hide && rs.getString("t_type").equalsIgnoreCase("Pay Interest")) {
                     continue;
                 }
 
@@ -311,7 +310,7 @@ public class TransactionDao {
         return list;
     }
 
-    public int insertStockTransaction(StockTransaction transaction){
+    public int insertStockTransaction(StockTransaction transaction) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -343,7 +342,7 @@ public class TransactionDao {
     }
 
 
-    public List<Vector<String>> getStockTransactionList(Customer customer, String type, String year, String month, String day){
+    public List<Vector<String>> getStockTransactionList(Customer customer, String type, String year, String month, String day) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -358,9 +357,9 @@ public class TransactionDao {
 
             StringBuilder sql = QueryUtil.getPartAll("stockTransactionLog");
 
-            if (!"All".equalsIgnoreCase(type)){
+            if (!"All".equalsIgnoreCase(type)) {
                 sql.append(" and");
-                sql.append(QueryUtil.appendConstrain("t_type",type));
+                sql.append(QueryUtil.appendConstrain("t_type", type));
             }
 
 
@@ -368,7 +367,7 @@ public class TransactionDao {
 
             rs = ps.executeQuery();
 //            int size = rs.getFetchSize();
-            while(rs.next()) {
+            while (rs.next()) {
                 Vector<String> dataRow = new Vector<>();
                 Date date = rs.getDate("t_date");
                 Calendar calendar = Calendar.getInstance();
@@ -378,16 +377,15 @@ public class TransactionDao {
                 int transDay = calendar.get(Calendar.DAY_OF_MONTH);
 
 
-
-                if (!"All".equalsIgnoreCase(year) && transYear != Integer.parseInt(year)){
+                if (!"All".equalsIgnoreCase(year) && transYear != Integer.parseInt(year)) {
                     continue;
                 }
 
-                if (!"All".equalsIgnoreCase(month) && transMonth != SystemDatabase.monthMap.get(month)){
+                if (!"All".equalsIgnoreCase(month) && transMonth != SystemDatabase.monthMap.get(month)) {
                     continue;
                 }
 
-                if (!"All".equalsIgnoreCase(day) && transDay != Integer.parseInt(day)){
+                if (!"All".equalsIgnoreCase(day) && transDay != Integer.parseInt(day)) {
                     continue;
                 }
 
@@ -408,4 +406,35 @@ public class TransactionDao {
         }
         return list;
     }
+
+    public int getNumberOfTransactions(String t_type, String dbName) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Integer num = null;
+
+        ArrayList<Vector<String>> list = new ArrayList<>();
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            // select count(*) from transactionLog where t_type="Deposit";
+            StringBuilder sql = new StringBuilder("select count(*) from " + dbName + " where ");
+            sql.append(QueryUtil.appendConstrain("t_type", t_type));
+            sql.append(";");
+
+            ps = conn.prepareStatement(String.valueOf(sql));
+
+            rs = ps.executeQuery();
+            while(rs.next()) {
+                num = Integer.parseInt(rs.getString("count(*)"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(ps, rs);
+        }
+        return num;
+    }
+
 }

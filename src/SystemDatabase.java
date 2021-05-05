@@ -9,6 +9,7 @@ public class SystemDatabase {
 
     public static final String[] currType = {"USD", "CNY", "JPY"};
     public static final String[] transType = {"Withdraw", "Deposit", "Transfer","Transfer In","Transfer Out","Take Loan", "Pay Interest"};
+    public static final String[] stockTransType = {"Buy", "Sell"};
     public static final String[] accType = {"Saving", "Checking", "Loan", "Security"};
     public static final String[] month = {"All","Jan.", "Feb.", "Mar.", "Apr.", "May.", "Jun.", "Jul.",
             "Aug.","Sept.","Oct.","Nov.","Dec."};
