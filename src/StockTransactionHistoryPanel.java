@@ -83,7 +83,7 @@ public class StockTransactionHistoryPanel extends CustomerContentPanel {
         year[0] = "All";
         int j = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = 1; i < 6; i++) {
-            year[i] = String.valueOf(j-i);
+            year[i] = String.valueOf(j-i+1);
         }
         JComboBox<String> jc_year = new JComboBox<>(year);
         jp_tool.add(jc_year);
