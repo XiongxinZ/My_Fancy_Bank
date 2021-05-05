@@ -62,14 +62,14 @@ public class BankerFrame extends CoreFrame {
         daily_report.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setContextPanel(new DailyReportPanel());
+                setContextPanel(new DailyReportPanel(banker));
             }
         });
 
         stock_evals.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setContextPanel(new StockEvalsPanel());
+                setContextPanel(new StockEvalsPanel(banker));
             }
         });
 

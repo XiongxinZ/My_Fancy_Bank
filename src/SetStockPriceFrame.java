@@ -32,13 +32,7 @@ public class SetStockPriceFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    int amount = Integer.parseInt(price.getText().trim());
-                    StockInfo stockInfo = ((StockInfo) box.getSelectedItem());
-                    String message = account.buyStock(stockInfo, amount);
-                    BuyStockFrame.this.dispose();
-                    new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
-                    new MessageFrame("Success", message);
-                    //                    ((MultiCurrAccountPanel)((CustomerFrame)GuiUtil.getFrame(DepositFrame.this)).getContextPanel()).repaintPanel();
+//                    int price = Integer.parseInt(price.getText().trim());
 
                 }catch (NumberFormatException e1){
                     new MessageFrame("Input Error", "Please enter a integer");
@@ -51,8 +45,7 @@ public class SetStockPriceFrame extends PopupFrame{
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
+
             }
         });
         jPanel.add(back);

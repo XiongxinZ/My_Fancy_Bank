@@ -1,5 +1,5 @@
 public class DailyReportPanel extends BankerHomepagePanel {
-    public DailyReportPanel(){
-        super("Daily Transaction Report");
+    public DailyReportPanel(Banker banker){
+        super("Daily Transaction Report", banker);
     }
 }
