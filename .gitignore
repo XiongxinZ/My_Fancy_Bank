@@ -1,2 +1,6 @@
 .idea/
 out/
+.DS_Store
+jdbc.properties
+*.jpeg
+*.PNG
