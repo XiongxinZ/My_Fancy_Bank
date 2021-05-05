@@ -58,7 +58,7 @@ public class TableColumns {
 
     public static String[] getCollateralRequestColumns_bankerVersion(){
         return new String[]{
-                "Request Date", "Customer ID","Request ID", "Collateral Name", "File Path", "Status", "Collateral value", "Request Status", "Solve Date"
+                "Request Date", "Customer ID","Request ID", "Collateral Name", "File Path", "Collateral value", "Request Status", "Solve Date"
         };
     }
 
