@@ -5,12 +5,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-public class CollateralValuationFrame extends CoreFrame{
+public class CollateralValuationFrame extends PopupFrame{
     private  Banker banker;
     public CollateralValuationFrame(String request_id, Banker banker) {
         super("Collateral Valuation");
         this.banker = banker;
         setFrame(request_id);
+        setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
         setVisible(true);
     }
 
