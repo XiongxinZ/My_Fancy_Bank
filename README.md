@@ -11,7 +11,7 @@
 ---
 
 ---
-## BankManagementSystem Introduction
+## Banker & Customer System Introduction
 * User(Both customer and banker) are identified by email address & user type, which means one email can only register once(You can use the same email to register as one customer and one banker, but you can't register as 2 different customers)
 * One customer can only have one saving account,one checking account,one loan account and one stock account.
 * The bank will pay interest to certain saving accounts every day.
@@ -30,7 +30,7 @@
 * Loan account can only be repaid by saving account. And the money customer get after take loan will transfer to saving account automatically.
 * Security account can only transfer in from and transfer out to saving account. But transfer in operation need to over 1000USD(or the equivalent in other currencies) & the saving account should have at least 5000USD before transfer and have at least 2500USD remaining after transfer.
 
-## how to run
+## Implementation
 1. add `mysql-connector-java-8.0.20.jar` to dependencies
 2. open mysql.Run following command.
     ```
@@ -38,7 +38,13 @@
    use mybank;
    source /filePath/mybank.sql;
    ```
-3. change `username` and `password` to your mysql username and password in `jdbc.properties` file
+3. configure `username` and `password` to your mysql username and password in `jdbc.properties` file:
+   ```
+   driverClass=com.mysql.cj.jdbc.Driver
+   url=jdbc\:mysql\://localhost\:3306/mybank
+   username=root
+   password=
+   ```
 4. run Main in IDE or run following commands in terminal:
    ```
    javac *.class

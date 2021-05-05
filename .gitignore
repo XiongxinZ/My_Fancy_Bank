@@ -3,3 +3,4 @@ out/
 jdbc.properties
 .DS_Store
 certificate/
+*.class
