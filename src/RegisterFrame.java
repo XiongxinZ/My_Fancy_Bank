@@ -109,14 +109,21 @@ public class RegisterFrame extends CoreFrame{
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Customer newCustomer = new Customer(username.getText().trim(), password.getText().trim(), email.getText());
-                int flag = CustomerDao.getInstance().insertCustomer(newCustomer);
-                if (flag == 1){
-                    dispose();
-                    new LoginFrame();
-                    new MessageFrame("IMPORTANT","<html>Your customer ID is <b><em>" + newCustomer.getId() + "</em></b>");
+                String name = username.getText().trim();
+                String pwd = password.getText().trim();
+                String eml = email.getText();
+                if (name.equals("") || pwd.equals("")||eml.equals("")){
+                    new MessageFrame("Error", "No blanks allowed!!");
                 }else{
-                    new MessageFrame("Error", "Email exists.");
+                    Customer newCustomer = new Customer(name, pwd, eml);
+                    int flag = CustomerDao.getInstance().insertCustomer(newCustomer);
+                    if (flag == 1){
+                        dispose();
+                        new LoginFrame();
+                        new MessageFrame("IMPORTANT","<html>Your customer ID is <b><em>" + newCustomer.getId() + "</em></b>");
+                    }else{
+                        new MessageFrame("Error", "Email exists.");
+                    }
                 }
             }
         });

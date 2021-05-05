@@ -110,14 +110,21 @@ public class RegisterPopUpFrame extends PopupFrame{
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Banker newBanker = new Banker(username.getText().trim(), password.getText().trim(), email.getText());
-                int flag = BankerDao.getInstance().insertBanker(newBanker);
-                if (flag == 1){
-                    dispose();
-                    new RegisterPopUpFrame();
-                    new MessageFrame("IMPORTANT","<html>Your banker ID is <b><em>" + newBanker.getId() + "</em></b>");
-                }else{
-                    new MessageFrame("Error", "Email exists.");
+                String name = username.getText().trim();
+                String pwd = password.getText().trim();
+                String eml = email.getText();
+                if (name.equals("") || pwd.equals("")||eml.equals("")){
+                    new MessageFrame("Error", "No blanks allowed!!");
+                }else {
+                    Banker newBanker = new Banker(name, pwd, eml);
+                    int flag = BankerDao.getInstance().insertBanker(newBanker);
+                    if (flag == 1){
+                        dispose();
+                        new RegisterPopUpFrame();
+                        new MessageFrame("IMPORTANT","<html>Your banker ID is <b><em>" + newBanker.getId() + "</em></b>");
+                    }else{
+                        new MessageFrame("Error", "Email exists.");
+                    }
                 }
             }
         });
