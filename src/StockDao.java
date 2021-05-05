@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class StockDao {
 
@@ -302,6 +303,37 @@ public class StockDao {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Vector<String>> getStocks() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        ArrayList<Vector<String>> list = new ArrayList<>();
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            StringBuilder sql = QueryUtil.getAllQuery("stockInfo");
+            ps = conn.prepareStatement(String.valueOf(sql));
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Vector<String> dataRow = new Vector<>();
+                // s_name, s_curr, c_price
+                dataRow.add(rs.getString("s_name"));
+                dataRow.add(rs.getString("s_curr"));
+                dataRow.add(rs.getString("c_price"));
+                list.add(dataRow);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }

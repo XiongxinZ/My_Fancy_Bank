@@ -29,6 +29,8 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
             list = BankerDao.getInstance().getCustomers();
         } else if (dbName.equals("collateralValuation")) {
             list = CollateralDao.getInstance().getCollateralRequests();
+        } else if (dbName.equals("stockInfo")) {
+            list = StockDao.getInstance().getStocks();
         }
 
         for (Vector<String> data : list) {
@@ -94,6 +96,27 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                         String cv_id = (String) (jt_banker.getModel().getValueAt(row, 2));
                         System.out.println(cv_id);
                         new CollateralValuationFrame(cv_id);
+                    }
+                }
+            });
+        } else if (dbName.equals("transactionLog")) {
+
+        } else if (dbName.equals("stockInfo")) {
+            jt_banker = new JTable(new DefaultTableModel(TableColumns.getStockListColumns(), 0)) {
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
+            jt_banker.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                        // get stock name
+                        String stockName = (String) (jt_banker.getModel().getValueAt(row, 0));
+                        System.out.println(stockName);
+                        new SetStockPriceFrame(stockName);
                     }
                 }
             });
