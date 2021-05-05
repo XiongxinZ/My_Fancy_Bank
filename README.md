@@ -54,6 +54,7 @@
 * **CollateralDao**: Collateral DAO. Get Data from collateral & collateralValuation table.
 * **LoanDao**: Collateral DAO. Get Data from Loan table.
 * **TransactionDao**: : Collateral DAO. Get Data from Transaction table.
+* **BankerDao**: : Banker DAO. Get Data from banker table.
 * **InterestUpdate**: InterestUpdate class. Update data. Pay interest to saving account and add interest to loan account.<br><br>
 
 * **User**: User class. Generate an unique id.
@@ -106,6 +107,7 @@
 * **MyFrame extends JFrame**: MyFrame class, set window position.
    * **CoreFrame extends MyFrame**: Core Frame class. The main frame.
       * **CustomerFrame extends CoreFrame**: The frame that shown after customer login
+      * **BankerFrame extends CoreFrame**: The frame that shown after banker login
       * **LoginFrame extends CoreFrame**: The login frame for both customer and banker
       * **RegisterFrame extends CoreFrame**: The register frame for customer
    * **PopupFrame extends MyFrame**: Popup Frame class. 
@@ -134,7 +136,8 @@
       * **StockListPanel extends TablePanel**: Available stock info Table, show stocks that be traded
       * **StockPositionPanel extends TablePanel**: Stock position info Table, show customer's current positions.
       * **StockProfitPanel extends TablePanel**: Stock profit info Table, show realized profit of the customer from each stock.
-
+* **BankerHomepagePanel extends JPanel**: BankerHomePageOanel class. the main panel of banker frame, which will change based on the operation.
+ 
 * **MyMenuButton extends JToggleButton**: MyMenuButton class. Implemented a toggle menu button.   
 * **TableSetting**: set table design, the color of table.
 * **TableColumn**: store the column name of different table.

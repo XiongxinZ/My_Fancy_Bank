@@ -1,8 +1,5 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
@@ -83,7 +80,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel{
         year[0] = "All";
         int j = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = 1; i < 6; i++) {
-            year[i] = String.valueOf(j-i);
+            year[i] = String.valueOf(j-i+1);
         }
         JComboBox<String> jc_year = new JComboBox<>(year);
         jp_tool.add(jc_year);
@@ -148,6 +145,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel{
             }
         });
         jp_tool.add(jCheckBox);
+
 
         jt_customer = new JTable(new DefaultTableModel(TableColumns.getTransactionColumns(), 0) {
             public boolean isCellEditable(int row, int column) {

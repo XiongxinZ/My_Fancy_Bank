@@ -4,8 +4,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -25,9 +23,8 @@ public class CollateralRequestPanel extends CustomerContentPanel{
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        if (valuationList == null){
-            valuationList = CollateralDao.getInstance().selectCollateralRequestList(getCustomer().getId());
-        }
+        valuationList = CollateralDao.getInstance().selectCollateralRequestList(getCustomer().getId());
+
 
         for (CollateralValuation value : valuationList) {
 //          "Request Date", "ID","Customer", "Name", "Status","Value","Solve Date"
@@ -47,9 +44,8 @@ public class CollateralRequestPanel extends CustomerContentPanel{
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        if (valuationList == null){
-            valuationList = CollateralDao.getInstance().selectCollateralRequestList(getCustomer().getId());
-        }
+        valuationList = CollateralDao.getInstance().selectCollateralRequestList(getCustomer().getId());
+
 
         for (CollateralValuation value : valuationList) {
 //          "Request Date", "ID","Customer", "Name", "Status","Value","Solve Date"
@@ -115,7 +111,7 @@ public class CollateralRequestPanel extends CustomerContentPanel{
         year[0] = "All";
         int j = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = 1; i < 6; i++) {
-            year[i] = String.valueOf(j-i);
+            year[i] = String.valueOf(j-i+1);
         }
         JComboBox<String> jc_year = new JComboBox<>(year);
         jp_tool.add(jc_year);
@@ -158,6 +154,23 @@ public class CollateralRequestPanel extends CustomerContentPanel{
         jp_tool.add(jb_submit);
 
         jb_submit.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String year = ((String)jc_year.getSelectedItem()).trim();
+                String month = ((String)jc_month.getSelectedItem()).trim();
+                String day = ((String)jc_day.getSelectedItem()).trim();
+                String status = ((String)jc_status.getSelectedItem()).trim();
+                fillTable(year, month, day, status);
+
+            }
+        });
+
+        JButton jb_refesh = new JButton("Refresh");
+        jp_tool.add(jb_refesh);
+
+        jb_refesh.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {

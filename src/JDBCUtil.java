@@ -69,6 +69,11 @@ public class JDBCUtil {
 		closeResultSet(rs);
 		closeStatement(stm);
 	}
+
+	public static void closeResource(Connection coon, Statement stm, ResultSet rs) {
+		closeResultSet(rs);
+		closeStatement(stm);
+	}
 	
 	public static void closeResultSet(ResultSet rs) {
 		if(rs != null) {
