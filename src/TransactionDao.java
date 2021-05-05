@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -407,7 +409,7 @@ public class TransactionDao {
         return list;
     }
 
-    public int getNumberOfTransactions(String t_type, String dbName) {
+    public int getNumberOfTransactions(String t_type, String dbName, boolean justToday) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -421,6 +423,12 @@ public class TransactionDao {
             // select count(*) from transactionLog where t_type="Deposit";
             StringBuilder sql = new StringBuilder("select count(*) from " + dbName + " where ");
             sql.append(QueryUtil.appendConstrain("t_type", t_type));
+            if (justToday) {
+                sql.append(" and ");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date date = new java.util.Date();
+                sql.append(QueryUtil.appendConstrain("t_date", dateFormat.format(date)));
+            }
             sql.append(";");
 
             ps = conn.prepareStatement(String.valueOf(sql));

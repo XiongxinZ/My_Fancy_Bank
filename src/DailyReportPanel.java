@@ -20,14 +20,14 @@ public class DailyReportPanel extends JPanel {
         centerPanel.add(new JLabel("<html><font color = \"green\">Number of transactions</font>"));
         for (String type: SystemDatabase.transType) {
             centerPanel.add(new JLabel("<html><b>" + type + "</b>: "));
-            centerPanel.add(new JLabel(String.valueOf(TransactionDao.getInstance().getNumberOfTransactions(type, "transactionLog"))));
+            centerPanel.add(new JLabel(String.valueOf(TransactionDao.getInstance().getNumberOfTransactions(type, "transactionLog", true))));
         }
         centerPanel.add(new JLabel("<html><font color = \"red\">Stock Transaction Type:</font>"));
         centerPanel.add(new JLabel("<html><font color = \"red\">Number of stock transactions</font>"));
         setLayout(new GridLayout(0,2));
         for (String type: SystemDatabase.stockTransType) {
             centerPanel.add(new JLabel("<html><b>" + type + "</b>: "));
-            centerPanel.add(new JLabel(String.valueOf(TransactionDao.getInstance().getNumberOfTransactions(type, "stockTransactionLog"))));
+            centerPanel.add(new JLabel(String.valueOf(TransactionDao.getInstance().getNumberOfTransactions(type, "stockTransactionLog", true))));
         }
         add(left,BorderLayout.WEST);
         add(centerPanel,BorderLayout.CENTER);
