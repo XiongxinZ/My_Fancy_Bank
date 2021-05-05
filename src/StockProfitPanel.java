@@ -44,8 +44,6 @@ public class StockProfitPanel extends TablePanel {
             v.add(value.getProfit());
             dm.addRow(v);
         }
-        dm = (DefaultTableModel) getJt_customer().getModel();
-        dm.setRowCount(0);
     }
 
     public StockProfitPanel(Customer customer) {
