@@ -40,26 +40,33 @@ public class CustomerFrame extends CoreFrame {
         homepage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                button8.setText(homepage.getText());
                 setContextPanel(new CustomerHomepagePanel(customer));
+                button8.setSelected(false);
             }
         });
         transHis.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                button8.setText(transHis.getText());
                 setContextPanel(new TransactionHistoryPanel(customer));
+                button8.setSelected(false);
             }
         });
 
         item2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                button8.setText(item2.getText());
                 setContextPanel(new StockTransactionHistoryPanel(customer));
+                button8.setSelected(false);
             }
         });
 
         item3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                button8.setText(item3.getText());
                 CustomerFrame.this.dispose();
                 new LoginFrame();
             }
@@ -68,6 +75,7 @@ public class CustomerFrame extends CoreFrame {
         item4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                button8.setText(item4.getText());
                 System.exit(-1);
             }
         });
