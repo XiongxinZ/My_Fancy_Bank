@@ -49,7 +49,7 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
         list = CollateralDao.getInstance().getCollateralRequests();
 
         for (Vector<String> data : list) {
-            if (selected & !data.get(6).equalsIgnoreCase("Solving")){
+            if (selected & !data.get(6).equalsIgnoreCase("Solving")) {
                 continue;
             }
             dm.addRow(data);
@@ -73,7 +73,7 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
         JPanel jp_tool = new JPanel(new FlowLayout());
         jp_tool.setPreferredSize(new Dimension(1000, 50));
 
-        if (dbName.equals("banker")){
+        if (dbName.equals("banker")) {
             JButton jButton = new JButton("Add");
             jButton.addActionListener(new ActionListener() {
                 @Override
@@ -105,13 +105,14 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
             jt_banker.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
-                    // int col = ((JTable) e.getSource()).columnAtPoint(e.getPoint());
+                    if (e.getClickCount() == 2) {
+                        int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                        // int col = ((JTable) e.getSource()).columnAtPoint(e.getPoint());
 
-                    String cellVal = (String) (jt_banker.getModel().getValueAt(row, 0));
-                    new TransactionHisotryFrame(cellVal);
-                }
+                        String cellVal = (String) (jt_banker.getModel().getValueAt(row, 0));
+                        new TransactionHisotryFrame(cellVal);
+                        new StockTransactionHisotryFrame(cellVal);
+                    }
                 }
             });
         } else if (dbName.equals("collateralValuation")) {
@@ -141,9 +142,9 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                         String cv_id = (String) (jt_banker.getModel().getValueAt(row, 2));
                         System.out.println(cv_id);
                         CollateralValuation collateralValuation = CollateralDao.getInstance().selectCollateralEvaluationWithRid(cv_id);
-                        if (!collateralValuation.getStatus().equalsIgnoreCase("Solving")){
+                        if (!collateralValuation.getStatus().equalsIgnoreCase("Solving")) {
                             new MessageFrame("Error!", "Sorry this request is solved, you can't modify");
-                        }else{
+                        } else {
                             GuiUtil.getFrame(BankerHomepagePanel.this).dispose();
                             new CollateralValuationFrame(cv_id, banker);
                         }
@@ -192,9 +193,9 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
         jt_banker.setDefaultRenderer(Object.class, r);
         TableSetting.makeFace(jt_banker);
 
-        if (jCheckBox!=null){
+        if (jCheckBox != null) {
             fillTable(jCheckBox.isSelected());
-        }else{
+        } else {
             fillTable();
         }
         JScrollPane js = new JScrollPane(jt_banker);
