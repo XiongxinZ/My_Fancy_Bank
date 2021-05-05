@@ -53,6 +53,25 @@ public class SecurityAccount extends Account{
         });
     }
 
+    public HashMap<String, Double> getUnrealizedProfit() {
+        return stockPool.calTotal(new ValCounter<CustomerStock>() {
+            @Override
+            public double getCountedPrice(CustomerStock target) {
+                return (target.getCurrentPrice()- target.getBuyPrice()) * target.getQuantity();
+            }
+        });
+    }
+
+    public HashMap<String, Double> getTotalValue() {
+        HashMap<String, Double> balance = getAmountTotal();
+        HashMap<String, Double> stock = getStockAmount();
+        HashMap<String,Double> ret = new HashMap<>();
+        for (String s : balance.keySet()) {
+            ret.put(s, balance.get(s) + stock.get(s));
+        }
+        return ret;
+    }
+
     public HashMap<String, Double> getStockAmount() {
         return stockPool.calTotal(new ValCounter<CustomerStock>() {
             @Override
