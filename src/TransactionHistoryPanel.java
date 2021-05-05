@@ -1,8 +1,5 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
@@ -149,9 +146,22 @@ public class TransactionHistoryPanel extends CustomerContentPanel{
         });
         jp_tool.add(jCheckBox);
 
+
         jt_customer = new JTable(new DefaultTableModel(TableColumns.getTransactionColumns(), 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
+            }
+        });
+        jt_customer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2){
+                    int row =((JTable)e.getSource()).rowAtPoint(e.getPoint()); //获得行位置
+                    int  col=((JTable)e.getSource()).columnAtPoint(e.getPoint()); //获得列位置
+
+                    String cellVal=(String)(jt_customer.getModel().getValueAt(row, col)); //获得点击单元格数据
+                    new MessageFrame("Test",cellVal);
+                }
             }
         });
 

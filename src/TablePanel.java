@@ -45,7 +45,7 @@ public abstract class TablePanel extends CustomerContentPanel{
         JLabel currencyLabel = new JLabel("Currency");
         jp_tool.add(currencyLabel);
 
-        JComboBox<String> currency = new JComboBox<>(new String[]{"USD","CNY","JPY"});
+        JComboBox<String> currency = new JComboBox<>(new String[]{"All","USD","CNY","JPY"});
         jp_tool.add(currency);
 
         jt_customer = new JTable(new DefaultTableModel(tableColumn, 0) {
@@ -77,6 +77,8 @@ public abstract class TablePanel extends CustomerContentPanel{
 
             }
         });
+
+
     }
 
     public JTable getJt_customer() {
