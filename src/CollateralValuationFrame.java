@@ -10,8 +10,9 @@ public class CollateralValuationFrame extends PopupFrame{
     public CollateralValuationFrame(String request_id, Banker banker) {
         super("Collateral Valuation");
         this.banker = banker;
-        setFrame(request_id);
+
         setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
+        setFrame(request_id);
         setVisible(true);
     }
 
