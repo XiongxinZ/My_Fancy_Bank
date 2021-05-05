@@ -34,7 +34,7 @@ public class StockProfitPanel extends TablePanel {
         }
 
         for (StockProfit value : profitList.values()) {
-            if (!value.getCurrency().equals(currency)){
+            if (!currency.equalsIgnoreCase("All")&&!value.getCurrency().equals(currency)){
                 continue;
             }
 //             "Stock Name", "Current Price", "Buy Price", "Quantity", "Amount", "Profit"

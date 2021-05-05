@@ -48,7 +48,7 @@ public class StockPositionPanel extends CustomerContentPanel {
 
         for (CustomerStock value : stockList.values()) {
 //             "Stock Name", "Current Price", "Buy Price", "Quantity", "Amount", "Profit"
-            if (!value.getCurrency().equals(currency)){
+            if (!currency.equalsIgnoreCase("All")&&!value.getCurrency().equals(currency)){
                 continue;
             }
             Vector<Object> v = new Vector<>();

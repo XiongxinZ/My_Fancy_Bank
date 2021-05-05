@@ -41,7 +41,7 @@ public class StockListPanel extends CustomerContentPanel {
         stockList = StockDao.getInstance().selectStockInfoList();
 
         for (StockInfo value : stockList) {
-            if (!value.getCurrency().equals(currency)){
+            if (!currency.equalsIgnoreCase("All")&&!value.getCurrency().equals(currency)){
                 continue;
             }
 //             "Stock Name", "Current Price", "Buy Price", "Quantity", "Amount", "Profit"
