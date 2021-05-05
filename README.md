@@ -48,8 +48,10 @@
 4. run Main in IDE or run following commands in terminal:
    ```
    javac *.class
-   java Main
+   java -cp .;complete-path-to-drive/mysql-connector-java-8.0.20.jar Main
    ```
+
+Due to the complexity of configuring driver for mysql and the version of jdk required for compilation, we recommand that you run the code with jdk version >=15 in IDE like intelliJ IDEA and configure modules for mysql-connector-java-8.0.20.jar in project setting.
 
 ## Classes of the project
 * **Main**: Main class. Then entrance of the program.<br><br>
