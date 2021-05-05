@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
@@ -26,6 +27,8 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
             list = BankerDao.getInstance().getBankers();
         } else if (dbName.equals("customer")) {
             list = BankerDao.getInstance().getCustomers();
+        } else if (dbName.equals("collateralValuation")) {
+            list = CollateralDao.getInstance().getCollateralRequests();
         }
 
         for (Vector<String> data : list) {
@@ -62,6 +65,37 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                     return false;
                 }
             };
+
+            jt_banker.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                        // int col = ((JTable) e.getSource()).columnAtPoint(e.getPoint());
+
+                        String cellVal = (String) (jt_banker.getModel().getValueAt(row, 0));
+                        new TransactionHisotryFrame(cellVal);
+                    }
+                }
+            });
+        } else if (dbName.equals("collateralValuation")) {
+            jt_banker = new JTable(new DefaultTableModel(TableColumns.getCollateralRequestColumns_bankerVersion(), 0)) {
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
+            jt_banker.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                        // get cv_id
+                        String cellVal = (String) (jt_banker.getModel().getValueAt(row, 2));
+                        new MessageFrame("Test" + 2, cellVal);
+                    }
+                }
+            });
         }
 
         jt_banker.setRowHeight(30);

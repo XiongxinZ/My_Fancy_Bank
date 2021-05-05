@@ -56,6 +56,12 @@ public class TableColumns {
         };
     }
 
+    public static String[] getCollateralRequestColumns_bankerVersion(){
+        return new String[]{
+                "Request Date", "Customer ID","Request ID", "Collateral Name", "File Path", "Status", "Collateral value", "Request Status", "Solve Date"
+        };
+    }
+
     public static String[] getStockProfitColumns(){
         return new String[]{
                 "Stock Name", "Currency", "Profit"

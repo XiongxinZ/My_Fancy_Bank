@@ -19,6 +19,11 @@ public class Banker extends User{
         super();
     }
 
+    public String placeValuation(CollateralValuation request, String status) {
+        request.setStatus(status);
+        return request.execute();
+    }
+
     public void takeOrder(Order order){
         orderList.add(order);
     }

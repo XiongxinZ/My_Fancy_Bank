@@ -2,6 +2,7 @@ import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class CollateralDao {
 
@@ -300,4 +301,39 @@ public class CollateralDao {
         return list;
     }
 
+    public List<Vector<String>> getCollateralRequests() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        ArrayList<Vector<String>> list = new ArrayList<>();
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            StringBuilder sql = QueryUtil.getAllQuery("collateralValuation");
+            ps = conn.prepareStatement(String.valueOf(sql));
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Vector<String> dataRow = new Vector<>();
+                // r_date, c_id, cv_id, co_name, f_path, co_value, cv_status, s_date
+                dataRow.add(rs.getString("r_date"));
+                dataRow.add(rs.getString("c_id"));
+                dataRow.add(rs.getString("cv_id"));
+                dataRow.add(rs.getString("co_name"));
+                dataRow.add(rs.getString("f_path"));
+                dataRow.add(rs.getString("co_value"));
+                dataRow.add(rs.getString("cv_status"));
+                dataRow.add(rs.getString("s_date"));
+                list.add(dataRow);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(ps, rs);
+        }
+        return list;
+    }
 }

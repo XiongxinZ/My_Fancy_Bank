@@ -34,7 +34,7 @@ public class BankerFrame extends CoreFrame {
         JPopupMenu menu = new JPopupMenu("1");
         JMenuItem homepage = new JMenuItem("HomePage");
         JMenuItem customer_lists = new JMenuItem("Customer Lists");
-        JMenuItem item2 = new JMenuItem("Loan Approval");
+        JMenuItem collateral_evals = new JMenuItem("Collateral Evaluation");
         JMenuItem item3 = new JMenuItem("Logout");
         JMenuItem item4 = new JMenuItem("Exit");
         homepage.addActionListener(new ActionListener() {
@@ -50,10 +50,10 @@ public class BankerFrame extends CoreFrame {
             }
         });
 
-        item2.addActionListener(new ActionListener() {
+        collateral_evals.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                setContextPanel(new StockTransactionHistoryPanel(banker));
+                setContextPanel(new CollateralEvalsPanel());
             }
         });
 
@@ -73,7 +73,7 @@ public class BankerFrame extends CoreFrame {
         });
         menu.add(homepage);
         menu.add(customer_lists);
-        menu.add(item2);
+        menu.add(collateral_evals);
         menu.add(item3);
         menu.add(item4);
         button8.addMenu(menu);
