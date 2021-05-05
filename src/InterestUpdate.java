@@ -31,8 +31,8 @@ public class InterestUpdate {
                     if (amount >= bar){
 //                        double amount = account.getAmount(s);
                         for (int j = 0; j < day; j++) {
-                            Date transDate = new Date(lastDate.getTime() + 1000 * 60 * 60 * 24);
-                            new PayInterest(account[0], amount,s, lastDate).execute();
+                            Date transDate = new Date(lastDate.getTime() + 1000L * 60 * 60 * 24*(j+1));
+                            new PayInterest(account[0], amount,s, transDate).execute();
                             amount = amount*(1+ConfigUtil.getConfigDouble("SavingRate")/365.0);
                         }
                     }
