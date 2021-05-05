@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.List;
 import java.util.Vector;
 
-public class BankerHomepagePanel extends JPanel implements MouseListener {
+public class BankerContentPanel extends JPanel implements MouseListener {
 
     private JTable jt_banker;
     private DefaultTableModel dm;
@@ -56,12 +56,12 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
         }
     }
 
-    public BankerHomepagePanel(Banker banker) {
+    public BankerContentPanel(Banker banker) {
         this.banker = banker;
         setPanel();
     }
 
-    public BankerHomepagePanel(String dbName, Banker banker) {
+    public BankerContentPanel(String dbName, Banker banker) {
         this.banker = banker;
         setDbName(dbName);
         setPanel();
@@ -145,7 +145,7 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                         if (!collateralValuation.getStatus().equalsIgnoreCase("Solving")) {
                             new MessageFrame("Error!", "Sorry this request is solved, you can't modify");
                         } else {
-                            GuiUtil.getFrame(BankerHomepagePanel.this).dispose();
+                            GuiUtil.getFrame(BankerContentPanel.this).dispose();
                             new CollateralValuationFrame(cv_id, banker);
                         }
                     }
@@ -158,7 +158,7 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
             jButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GuiUtil.getFrame(BankerHomepagePanel.this).dispose();
+                    GuiUtil.getFrame(BankerContentPanel.this).dispose();
                     new AddStockFrame(banker);
                 }
             });
@@ -180,7 +180,7 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                         // get stock name
                         String stockName = (String) (jt_banker.getModel().getValueAt(row, 0));
                         System.out.println(stockName);
-                        GuiUtil.getFrame(BankerHomepagePanel.this).dispose();
+                        GuiUtil.getFrame(BankerContentPanel.this).dispose();
                         new SetStockPriceFrame(stockName, banker);
                     }
                 }

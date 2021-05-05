@@ -1,6 +1,4 @@
-import javax.swing.*;
-
-public class CustomerListPanel extends BankerHomepagePanel {
+public class CustomerListPanel extends BankerContentPanel {
     public CustomerListPanel(Banker banker) {
         super("customer", banker);
     }

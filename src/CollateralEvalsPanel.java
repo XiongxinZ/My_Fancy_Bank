@@ -1,6 +1,4 @@
-import javax.swing.*;
-
-public class CollateralEvalsPanel extends BankerHomepagePanel {
+public class CollateralEvalsPanel extends BankerContentPanel {
     public CollateralEvalsPanel(Banker banker) {
             super("collateralValuation",banker);
     }

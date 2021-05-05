@@ -43,7 +43,7 @@ public class BankerFrame extends CoreFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 button8.setText(homepage.getText());
-                setContextPanel(new BankerHomepagePanel(banker));
+                setContextPanel(new BankerContentPanel(banker));
                 button8.setSelected(false);
             }
         });

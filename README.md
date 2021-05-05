@@ -116,20 +116,26 @@
       * **BankerFrame extends CoreFrame**: The frame that shown after banker login
       * **LoginFrame extends CoreFrame**: The login frame for both customer and banker
       * **RegisterFrame extends CoreFrame**: The register frame for customer
-   * **PopupFrame extends MyFrame**: Popup Frame class. 
+   * **PopupFrame extends MyFrame**: Popup Frame class.
+      * **AddStockFrame extends PopupFrame**: Add new Stock frame by banker with stock name, three currency choices and price.
       * **BuyStockFrame extends PopupFrame**: Buy Stock frame. Can choose 10, 20,50,100 percent.
       * **SellStockFrame extends PopupFrame**: Sell stock frame.Can choose 10, 20,50,100 percent.
+      * **SetStockPriceFrame extends PopupFrame**: Frame where a banker set a new price for selected stockName.
+      * **StockTransactionHistoryFrame extends PopupFrame**: Frame where all the logs for stock transactions show up.
+      * **TransactionHistoryFrame extends PopupFrame**: Frame where all the logs for monetary transactions show up.  
       * **CreateAccountFrame extends PopupFrame**: Create account frame. Can choose pay the fee from another account or cash
       * **DepositFrame extends PopupFrame**: Deposit frame.
       * **WithdrawFrame extends PopupFrame**: Withdraw frame
       * **ExchangeFrame extends PopupFrame**: Exchange frame
       * **DepositTempFrame extends PopupFrame**: Deposit temp frame. Only for the deposit when creating account.
       * **RepaymentFrame extends PopupFrame**: Repayment frame
-      * **TakeLoanFrame extends PopupFrame**: Take Loan fram. Can choose collateral and currency.
+      * **TakeLoanFrame extends PopupFrame**: Take Loan frame. Can choose collateral and currency.
       * **TransferFrame extends PopupFrame**: Transfer frame. can transfer to other account or another customer.
       * **TransferInFrame extends PopupFrame**: Transfer In frame. only for security account. transfer in from saving account
       * **TransferOutFrame extends PopupFrame**: Transfer Out frame. only for security account. transfer out to saving account
       * **UploadCollateralFrame extends PopupFrame**: upload collateral frame. request collateral valuation and upload corresponding certificate
+      * **CollateralValuationFrame extends PopupFrame**: set-price-for-collateral frame. Banker evaluates each unresolved collateral (either reject or approve) and gives it a value based on which customer can take a loan.
+      * **RegisterPopUpFrame extends PopupFrame**: Frame for registering a new banker account.
       * **MessageFrame extends PopupFrame**: Message frame. Show message after operation. success or fail.<br><br>
 
 * **CustomerContentPanel extends JPanel**: CustomerContentPanel class. main panel of customer frame, which will change based on the operation.
@@ -142,7 +148,10 @@
       * **StockListPanel extends TablePanel**: Available stock info Table, show stocks that be traded
       * **StockPositionPanel extends TablePanel**: Stock position info Table, show customer's current positions.
       * **StockProfitPanel extends TablePanel**: Stock profit info Table, show realized profit of the customer from each stock.
-* **BankerHomepagePanel extends JPanel**: BankerHomePageOanel class. the main panel of banker frame, which will change based on the operation.
+* **BankerContentPanel extends JPanel**: The main panel for banker frames, which will change based on the operation. It shows all the details for manage accounts by default.
+   * **CustomerListPanel extends BankerContentPanel**: Panel for showing all the customers information. Double clicking on specific customers for more details.
+   * **CollateralEvalsPanel extends BankerContentPanel**: Panel for showing all the unresolved collateral requests so far.
+   * **StockEvalsPanel extends BankerContentPanel**: Panel for showing all the stocks on the market with an "Add" button for importing new stocks from the banker.
  
 * **MyMenuButton extends JToggleButton**: MyMenuButton class. Implemented a toggle menu button.   
 * **TableSetting**: set table design, the color of table.
@@ -153,23 +162,31 @@
 
 
 
-# Design Pattern
+# Design Pattern & Benefits
 
 1. Singleton : JDBCUtil is a singleton. There is only one Connection, and this connection is open once the program starts and will close if the program ends. 
    * Benefit:
        * make sure there is only one connection and easy to control.
        * easy to access database and make sure the connection last until the program ends.
 
-2. DAO Pattern: 6 xxxDao class are Dao impl classes.
+2. Data Access Object (DAO) Pattern: 6 xxxDao class are Dao impl classes.
+   * Benefit:
+       * separate low level data accessing API or operations from high level business services.
+    
 3. Strategy Pattern: *`ValCounter` interface* is the Strategy Interface. `ValPool<T>` class is the Context Class. The concrete classes are anonymous classes.
    * Benefit: 
      * sum up the target value of the objects in the HashMap based on the Strategy concrete class.
      * easy to sum up different attributes. easy to extend.
-4. MVC Pattern: The whole part is MVC pattern. Controller layer execute and return the message to view layer to update the frame info.
+4. MVC Pattern: Controller layer executes and returns the message to view layer to update the frame info.
    * Benefit:
      * loose coupling.
      * convenient to teamwork
      * high scalability and re-usability, easy to maintain
 
+# Object, Object Model and GUI Relationship
 
+For the whole part of design, we combine DAO and MVC pattern. Anything that plays with data in each table of database goes into xxxDAO classes, 
+anything dealt with the object functions and attributes we either abstract or implement with all kinds of half-controller classes,
+and anything regarding GUI design, we cover them in all kinds of Frame and Panel classes and for each of them we include some ActionListeners
+for synchronizing singleton database with all kinds of views.
 
