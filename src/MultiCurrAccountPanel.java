@@ -53,7 +53,6 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             jTabbedPane.setMnemonicAt(2, KeyEvent.VK_0);
 
             add(jTabbedPane);
-//            add(new LoanPanel(getCustomer()));
         }
         add(operationPanel);
     }
@@ -61,13 +60,16 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
     private JPanel infoPanel(){
         JPanel jp = new JPanel(new GridLayout(0,1,0,0));
         jp.add(new JLabel(new ImageIcon("img/back"+ new Random().nextInt(5) +".jpeg")));
-        jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\"><b><em>"+account.toString()+"</em></b>", JLabel.CENTER ));
-        jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\">Balance: <b>USD:</b> " + account.getAmount("USD") +
-                "  <b>CNY</b>: " + account.getAmount("CNY") +
-                "  <b>JPY</b>: " + account.getAmount("JPY") , JLabel.CENTER ));
+        jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\" ><b><em>"+account.toString()+"</em></b>", JLabel.CENTER ));
+        jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\" color=\"green\">Balance:</font> <b>USD:</b> " + account.getAmount("USD") +
+                " | <b>CNY</b>: " + account.getAmount("CNY") +
+                " | <b>JPY</b>: " + account.getAmount("JPY")+" |" , JLabel.CENTER ));
         if (account instanceof SecurityAccount){
+            jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\" color=\"green\">Stock Position:</font>"+getLabel(((SecurityAccount) account).getStockAmount()),JLabel.CENTER));
+            jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\" color=\"green\">Account Value(balance+stock): </font><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\">"+getLabel(((SecurityAccount) account).getTotalValue()), JLabel.CENTER));
             jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\" color=\"green\">Realized Profit: </font><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\">"+getLabel(((SecurityAccount) account).getProfit()), JLabel.CENTER));
-            jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\">Stock Position"+getLabel(((SecurityAccount) account).getStockAmount()),JLabel.CENTER));
+            jp.add(new JLabel("<html><font size=\""+ConfigUtil.getConfigInt("FontSize")+"\" color=\"green\">Unrealized Profit:</font>"+getLabel(((SecurityAccount) account).getUnrealizedProfit()),JLabel.CENTER));
+
         }
 
         return jp;
@@ -259,9 +261,9 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
 
     private String getLabel(HashMap<String, Double> valMap){
         String ret = "";
-        for (Map.Entry<String, Double> stringDoubleEntry : valMap.entrySet()) {
-            ret = ret + "  <b>"+stringDoubleEntry.getKey() + "</b>: "+stringDoubleEntry.getValue();
-        }
+        ret = ret + "  <b>USD</b>: "+valMap.get("USD") + " |";
+        ret = ret + "  <b>CNY</b>: "+valMap.get("CNY") + " |";
+        ret = ret + "  <b>JPY</b>: "+valMap.get("JPY") + " |";
         return ret;
     }
 
