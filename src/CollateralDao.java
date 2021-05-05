@@ -325,7 +325,7 @@ public class CollateralDao {
                 dataRow.add(rs.getString("cv_id"));
                 dataRow.add(rs.getString("co_name"));
                 dataRow.add(rs.getString("f_path"));
-                dataRow.add(rs.getString("co_value"));
+                dataRow.add(rs.getString("co_value")==null?"-":rs.getString("co_value"));
                 dataRow.add(rs.getString("cv_status"));
                 dataRow.add(rs.getString("s_date"));
                 list.add(dataRow);
@@ -338,6 +338,8 @@ public class CollateralDao {
         }
         return list;
     }
+
+
 
     public CollateralValuation selectCollateralEvaluationWithRid(String request_id) {
         Connection conn = null;
@@ -361,10 +363,12 @@ public class CollateralDao {
                 String filePath = System.getProperty("user.dir") + "/certificate/" + rs.getString("f_path");
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 String sDate = rs.getString("r_date");
+                String status = rs.getString("cv_status");
                 java.util.Date date = formatter.parse(sDate);
                 File in = new File(filePath);
                 cv = new CollateralValuation(rs.getString("c_id"),
                         rs.getString("co_name"), in, rs.getString("cv_id"), date);
+                cv.setStatus(status);
                 // System.out.println(cv.getFileName());
                 // System.out.println(cv.getRequestDate());
             }

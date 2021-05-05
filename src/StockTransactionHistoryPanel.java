@@ -9,19 +9,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 
 public class StockTransactionHistoryPanel extends CustomerContentPanel {
@@ -83,7 +75,7 @@ public class StockTransactionHistoryPanel extends CustomerContentPanel {
         year[0] = "All";
         int j = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = 1; i < 6; i++) {
-            year[i] = String.valueOf(j-i);
+            year[i] = String.valueOf(j-i+1);
         }
         JComboBox<String> jc_year = new JComboBox<>(year);
         jp_tool.add(jc_year);
@@ -120,6 +112,8 @@ public class StockTransactionHistoryPanel extends CustomerContentPanel {
                 return false;
             }
         });
+        RowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) jt_customer.getModel());
+        jt_customer.setRowSorter(sorter);
 
         jt_customer.setRowHeight(30);
         DefaultTableCellRenderer r = new DefaultTableCellRenderer();

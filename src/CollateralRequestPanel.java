@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +35,7 @@ public class CollateralRequestPanel extends CustomerContentPanel{
             v.add(getCustomer().getName());
             v.add(value.getName());
             v.add(value.getStatus());
-            v.add(value.getPrice());
+            v.add(value.getPrice()==null?"-":value.getPrice());
             v.add(value.getSolveDate());
 
             dm.addRow(v);
@@ -78,7 +79,7 @@ public class CollateralRequestPanel extends CustomerContentPanel{
             v.add(getCustomer().getName());
             v.add(value.getName());
             v.add(value.getStatus());
-            v.add(value.getPrice());
+            v.add(value.getPrice()==null?"-":value.getPrice());
             v.add(value.getSolveDate());
 
             dm.addRow(v);
@@ -139,6 +140,8 @@ public class CollateralRequestPanel extends CustomerContentPanel{
                 return false;
             }
         });
+        RowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) jt_customer.getModel());
+        jt_customer.setRowSorter(sorter);
 
         jt_customer.setRowHeight(30);
         DefaultTableCellRenderer r = new DefaultTableCellRenderer();

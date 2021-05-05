@@ -3,16 +3,11 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 
 public class StockPositionPanel extends CustomerContentPanel {
@@ -95,6 +90,8 @@ public class StockPositionPanel extends CustomerContentPanel {
                 return false;
             }
         });
+        RowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) jt_customer.getModel());
+        jt_customer.setRowSorter(sorter);
 
         jt_customer.addMouseListener(new MouseAdapter() {
             @Override

@@ -1,10 +1,9 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.List;
 import java.util.Vector;
 
@@ -13,6 +12,8 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
     private JTable jt_banker;
     private DefaultTableModel dm;
     private String dbName = "banker";
+
+    private JCheckBox jCheckBox = null;
 
     private Banker banker;
 
@@ -36,6 +37,21 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
         }
 
         for (Vector<String> data : list) {
+            dm.addRow(data);
+        }
+    }
+
+    public void fillTable(boolean selected) {
+        dm = (DefaultTableModel) jt_banker.getModel();
+        dm.setRowCount(0);
+
+        List<Vector<String>> list = null;
+        list = CollateralDao.getInstance().getCollateralRequests();
+
+        for (Vector<String> data : list) {
+            if (selected & !data.get(6).equalsIgnoreCase("Solving")){
+                continue;
+            }
             dm.addRow(data);
         }
     }
@@ -64,6 +80,8 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                 return false;
             }
         };
+        RowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) jt_banker.getModel());
+        jt_banker.setRowSorter(sorter);
 
         if (dbName.equals("customer")) {
             jt_banker = new JTable(new DefaultTableModel(TableColumns.getCustomerColumns(), 0)) {
@@ -75,21 +93,32 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
             jt_banker.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
-                        int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
-                        // int col = ((JTable) e.getSource()).columnAtPoint(e.getPoint());
+                if (e.getClickCount() == 2) {
+                    int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                    // int col = ((JTable) e.getSource()).columnAtPoint(e.getPoint());
 
-                        String cellVal = (String) (jt_banker.getModel().getValueAt(row, 0));
-                        new TransactionHisotryFrame(cellVal);
-                    }
+                    String cellVal = (String) (jt_banker.getModel().getValueAt(row, 0));
+                    new TransactionHisotryFrame(cellVal);
+                }
                 }
             });
         } else if (dbName.equals("collateralValuation")) {
+            jCheckBox = new JCheckBox("only show solving", true);
+            jCheckBox.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    fillTable(jCheckBox.isSelected());
+                }
+            });
+            jp_tool.add(jCheckBox);
+
             jt_banker = new JTable(new DefaultTableModel(TableColumns.getCollateralRequestColumns_bankerVersion(), 0)) {
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             };
+            RowSorter<DefaultTableModel> sorter2 = new TableRowSorter<>((DefaultTableModel) jt_banker.getModel());
+            jt_banker.setRowSorter(sorter2);
 
             jt_banker.addMouseListener(new MouseAdapter() {
                 @Override
@@ -99,8 +128,13 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                         // get cv_id
                         String cv_id = (String) (jt_banker.getModel().getValueAt(row, 2));
                         System.out.println(cv_id);
-                        GuiUtil.getFrame(BankerHomepagePanel.this).dispose();
-                        new CollateralValuationFrame(cv_id, banker);
+                        CollateralValuation collateralValuation = CollateralDao.getInstance().selectCollateralEvaluationWithRid(cv_id);
+                        if (!collateralValuation.getStatus().equalsIgnoreCase("Solving")){
+                            new MessageFrame("Error!", "Sorry this request is solved, you can't modify");
+                        }else{
+                            GuiUtil.getFrame(BankerHomepagePanel.this).dispose();
+                            new CollateralValuationFrame(cv_id, banker);
+                        }
                     }
                 }
             });
@@ -112,6 +146,8 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                     return false;
                 }
             };
+            RowSorter<DefaultTableModel> sorter2 = new TableRowSorter<>((DefaultTableModel) jt_banker.getModel());
+            jt_banker.setRowSorter(sorter2);
 
             jt_banker.addMouseListener(new MouseAdapter() {
                 @Override
@@ -134,7 +170,11 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
         jt_banker.setDefaultRenderer(Object.class, r);
         TableSetting.makeFace(jt_banker);
 
-        fillTable();
+        if (jCheckBox!=null){
+            fillTable(jCheckBox.isSelected());
+        }else{
+            fillTable();
+        }
         JScrollPane js = new JScrollPane(jt_banker);
         this.add(js, BorderLayout.CENTER);
 

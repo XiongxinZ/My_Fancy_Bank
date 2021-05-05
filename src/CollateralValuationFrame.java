@@ -19,10 +19,20 @@ public class CollateralValuationFrame extends CoreFrame{
         setLayout(null);
 
         String filePath = System.getProperty("user.dir") + "/certificate/" + collateralValuation.getFileName();
-        JLabel imgLabel = new JLabel("certificate img"){
+        JLabel imgLabel = new JLabel("certificate img", JLabel.CENTER){
             protected void paintComponent(Graphics g) {
                 ImageIcon icon = new ImageIcon(filePath);
-                g.drawImage(icon.getImage(), 0, 0, getWidth(),icon.getIconHeight()*getWidth()/icon.getIconWidth(),
+                int width;
+                int height;
+                if (getWidth()/getHeight() > icon.getIconWidth()/icon.getIconHeight()){
+                    height = getHeight();
+                    width = icon.getIconWidth()*getHeight()/icon.getIconHeight();
+                }else{
+                    width = getWidth();
+                    height = icon.getIconHeight()*getWidth()/icon.getIconWidth();
+                }
+
+                g.drawImage(icon.getImage(), (getWidth()-width)/2, 0, width,height,
                         icon.getImageObserver());
             }
         };
