@@ -14,7 +14,7 @@ public class BankerDao {
         return bankerDao;
     }
 
-    public int insertCustomer(Banker banker) {
+    public int insertBanker(Banker banker) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -334,4 +334,5 @@ public class BankerDao {
         }
         return list;
     }
+
 }
