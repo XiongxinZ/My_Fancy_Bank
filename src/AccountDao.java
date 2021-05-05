@@ -148,34 +148,6 @@ public class AccountDao {
     }
 
 
-    public int delCustomer(String id) {
-
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int flag = 0;
-
-        try {
-            conn = JDBCUtil.getConnection();
-
-
-            String sql = "delete from customer where c_id = ?";
-
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, id);
-
-            System.out.println("delCustomer(Customer customer)" + ps.toString());
-            flag = ps.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            JDBCUtil.closeResource(ps, rs);
-            return flag;
-        }
-    }
-
-
     public Account selectAccount(Customer customer, String type) {
 
         Connection conn = null;

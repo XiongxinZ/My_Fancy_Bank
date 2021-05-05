@@ -70,7 +70,7 @@ public class CollateralValuation implements Order{
             String coId = Long.toString(customerId.hashCode() * 31L + new Date().hashCode());
             CollateralDao.getInstance().insertCollateral(customerId, name, price, 0, coId);
             CollateralDao.getInstance().updateCollateralRequest(this);
-            return "Approve and set Price successfully!";
+            return "Approve and set Price as " + getPrice()+" successfully!";
         }else{
             return "No operation";
         }
