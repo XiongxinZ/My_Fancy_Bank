@@ -2,26 +2,35 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class LoginFrame extends JFrame {
+public class LoginFrame extends CoreFrame {
 
     GridBagLayout layout;
 //    GridBagConstraints constraints = new GridBagConstraints();
     JPanel centerPanel;
     JLabel imgLabel = new JLabel();;
     JPanel textPanel = paintCustomerTextPanel();
-    public LoginFrame(String imgPath) {
-        centerPanel = new JPanel(new BorderLayout());
-        imgLabel.setIcon(new ImageIcon(imgPath));
-        buildPanel();
-        add(centerPanel);
+    ImageIcon img;
+
+    public LoginFrame(String type) {
+        this();
+        setTextPanel(paintCustomerTextPanel());
+        setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
+        setVisible(true);
     }
 
+
+
     public LoginFrame() {
+        super("Login");
 //        layout = new GridBagLayout();
         centerPanel = new JPanel(new BorderLayout());
         buildPanel();
         add(centerPanel);
+
+        setVisible(true);
     }
 
     public void buildPanel(){
@@ -34,6 +43,14 @@ public class LoginFrame extends JFrame {
         centerPanel.add(welcomeLabel, BorderLayout.NORTH);
 
 //        imgLabel.setPreferredSize(new Dimension(400,400));
+
+        imgLabel = new JLabel("Login img"){
+            protected void paintComponent(Graphics g) {
+                ImageIcon icon = new ImageIcon("img/login.png");
+                g.drawImage(icon.getImage(), 0, -(icon.getIconHeight()*getWidth()/icon.getIconWidth()-getHeight())/3, getWidth(),icon.getIconHeight()*getWidth()/icon.getIconWidth(),
+                        icon.getImageObserver());
+            }
+        };
         centerPanel.add(imgLabel, BorderLayout.CENTER);
 
 
@@ -55,7 +72,7 @@ public class LoginFrame extends JFrame {
         jp.add(info);
 
         constraints.insets = new Insets(10,10,10,20);
-        JLabel usernameLabel = new JLabel("Username:");
+        JLabel usernameLabel = new JLabel("Email:");
 //        label.setOpaque(true);
 //        label.setBorder(BorderFactory.createBevelBorder(0));
 //        label.setBackground(Color.LIGHT_GRAY);
@@ -78,6 +95,18 @@ public class LoginFrame extends JFrame {
         constraints.gridwidth = GridBagConstraints.BOTH;
         constraints.insets = new Insets(10,10,10,5);
         JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Customer customer = CustomerDao.getInstance().selectCustomer(username.getText(), String.valueOf(password.getPassword()));
+                if (customer == null){
+                    new MessageFrame("Login Error", "No user or password error");
+                }else{
+                    LoginFrame.this.dispose();
+                    new CustomerFrame(customer);
+                }
+            }
+        });
         layout.setConstraints(loginButton,constraints);
         jp.add(loginButton);
 
@@ -96,6 +125,33 @@ public class LoginFrame extends JFrame {
         constraints.gridwidth = GridBagConstraints.RELATIVE;
         constraints.insets = new Insets(0,20,10,20);
         JLabel register = new JLabel("<html><u><em>Register</em></u>");
+        register.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dispose();
+                new RegisterFrame();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                register.setText("<html><b><em>Register</em></b>");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                register.setText("Register");
+            }
+        });
         register.setForeground(Color.BLUE);
         layout.setConstraints(register,constraints);
         jp.add(register);
@@ -117,14 +173,14 @@ public class LoginFrame extends JFrame {
         jp.add(info);
 
         constraints.insets = new Insets(10,10,10,20);
-        JLabel usernameLabel = new JLabel("Username:");
+        JLabel usernameLabel = new JLabel("Email:");
 //        label.setOpaque(true);
 //        label.setBorder(BorderFactory.createBevelBorder(0));
 //        label.setBackground(Color.LIGHT_GRAY);
         layout.setConstraints(usernameLabel, constraints);
         jp.add(usernameLabel);
 
-        JTextField username = new JTextField();
+        JTextField username = new JTextField("admin@bu.edu");
         layout.setConstraints(username, constraints);
         jp.add(username);
 
@@ -132,7 +188,7 @@ public class LoginFrame extends JFrame {
         layout.setConstraints(pwdLabel, constraints);
         jp.add(pwdLabel);
 
-        JPasswordField password = new JPasswordField();
+        JPasswordField password = new JPasswordField("admin");
         layout.setConstraints(password, constraints);
         jp.add(password);
 
@@ -140,6 +196,19 @@ public class LoginFrame extends JFrame {
         constraints.gridwidth = GridBagConstraints.BOTH;
         constraints.insets = new Insets(10,10,10,5);
         JButton loginButton = new JButton("Login");
+        // Banker login control
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Banker banker = BankerDao.getInstance().selectBanker(username.getText(), String.valueOf(password.getPassword()));
+                if (banker == null){
+                    new MessageFrame("Login Error", "No user or password error");
+                }else{
+                    LoginFrame.this.dispose();
+                    new BankerFrame(banker);
+                }
+            }
+        });
         layout.setConstraints(loginButton,constraints);
         jp.add(loginButton);
 
@@ -211,12 +280,4 @@ public class LoginFrame extends JFrame {
         centerPanel.updateUI();
     }
 
-    public static void main(String[] args) {
-//        JPanel a = paintCustomerTextPanel();
-        JFrame jf = new LoginFrame("img/login.jpg");
-//        jf.add(a);
-        jf.setSize(700, 500);
-//        jf.pack();
-        jf.setVisible(true);
-    }
 }

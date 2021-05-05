@@ -1,29 +1,37 @@
-public class Deposit extends Transaction{
-    private String currency = "USD";
+public class Deposit extends AbstractTransaction {
+//    private String currency = "USD";
     public Deposit(Account to, double amount) {
-        super(null, to, amount);
+        super(null, to, amount, "Deposit");
     }
 
     public Deposit(Account to, double amount, String currency) {
-        super(null, to, amount);
-        this.currency = currency;
+        super(null, to, amount,currency,"Deposit");
+//        this.currency = currency;
     }
 
     @Override
     public String showInfo() {
-        return getTransTime() + ": " + "Deposit " + getAmount() +" "+ currency +" to " + getTo().toString();
+        return getTransTime() + ": " + "Deposit " + getAmount() +" "+ getCurrencyTo() +" to " + getTo().toString();
     }
 
     @Override
     public String execute() {
-        assert getTo() instanceof SavingAccount || getTo() instanceof CheckingAccount;
+        assert getTo() instanceof CanDeposit;
+//        assert getTo() instanceof SavingAccount || getTo() instanceof CheckingAccount;
         String ret;
         if (getTo() instanceof SavingAccount){
-            ret =  ((SavingAccount) getTo()).deposit(getAmount(), currency);
-            TransactionDao.insertTransaction(this);
+            SavingAccount savingAccount = (SavingAccount) getTo();
+            savingAccount.addCurrency(getAmount(), getCurrencyTo());
+            AccountDao.getInstance().updateAccountMoney(savingAccount,getCurrencyTo());
+            TransactionDao.getInstance().insertTransaction(this);
+            ret = "<html>Deposit " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount() )+"</font>"+getCurrencyTo()+ "<br>Balance " + "<font color=\"red\">"+PrintUtil.printDouble(savingAccount.getAmount(getCurrencyTo()))+"</font>"+getCurrencyTo();
         }else if (getTo() instanceof CheckingAccount){
-            ret = ((CheckingAccount) getTo()).deposit(getAmount(), currency);
-            TransactionDao.insertTransaction(this);
+            CheckingAccount checkingAccount = (CheckingAccount) getTo();
+            checkingAccount.addCurrency(getAmount(), getCurrencyTo());
+            AccountDao.getInstance().updateAccountMoney(checkingAccount,getCurrencyTo());
+            TransactionDao.getInstance().insertTransaction(this);
+            ret = "<html>Deposit " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" + getCurrencyTo()  +
+                    "<br>Balance " + "<font color=\"red\">"+PrintUtil.printDouble(checkingAccount.getAmount(getCurrencyTo()))+"</font>" + getCurrencyTo();
         }else{
             ret = getTo().toString() + " can't deposit.";
         }

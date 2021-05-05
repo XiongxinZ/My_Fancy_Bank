@@ -1,37 +1,71 @@
+// store the column name used in table panel
 public class TableColumns {
 
-    public static String[] getCustomerColumns() {
-        String[] columns = new String[] {
-                "账号", "密码", "姓名", "余额", "状态", "开户日期", "籍贯", "身份证"
+    public static String[] getBankerColumns() {
+        return new String[] {
+                "Banker ID",  "Banker Name", "Password", "Email Address"
         };
-        return columns;
+    }
+
+    public static String[] getCustomerColumns() {
+        return new String[] {
+               "Customer ID",  "Customer Name", "Password", "Email Address"
+        };
     }
 
     public static String[] getTransactionColumns() {
-        String[] columns = new String[] {
-                "Date", "Transaction Type", "FromWho", "FromAccount", "ToWho", "ToAccount", "Amount", "FromBalance","ToBalance"
+        return new String[] {
+                "Date", "Transaction Type", "FromWho", "FromAccount", "ToWho", "ToAccount", "Amount",
+                "FromBalance","FromCurrency","ToBalance","ToCurrency"
         };
-        return columns;
     }
 
-    public static String[] getDepositColumns() {
-        String[] columns = new String[] {
-                "处理人员", "账号", "存款日期", "存款金额", "账户余额"
+    public static String[] getStockTransactionColumns() {
+        return new String[] {
+                "Date", "Customer", "Stock Name", "Type", "Price", "Quantity", "Amount"
         };
-        return columns;
     }
 
-    public static String[] getWithdrawalColumns() {
-        String[] columns = new String[] {
-                "处理人员", "账号", "取款日期", "取款金额", "账户余额"
+    public static String[] getStockPoolColumns(){
+        return new String[] {
+                "Stock Name", "Currency","Current Price", "Buy Price", "Quantity", "Amount", "Profit"
         };
-        return columns;
     }
 
-    public static String[] getTransferColumns() {
-        String[] columns = new String[] {
-                "处理人员", "账户", "接收方账户", "转账日期", "转账金额", "账户余额"
+    public static String[] getStockListColumns(){
+        return new String[] {
+                "Stock Name", "Currency","Current Price"
         };
-        return columns;
     }
+
+    public static String[] getLoanPoolColumns(){
+        return new String[] {
+                "Loan ID", "Customer","Collateral ID","Balance", "Currency"
+        };
+    }
+
+    public static String[] getCollateralColumns(){
+        return new String[] {
+                "Collateral ID", "Customer","Value", "Currency","Used"
+        };
+    }
+
+    public static String[] getCollateralRequestColumns(){
+        return new String[]{
+                "Request Date", "ID","Customer", "Name", "Status","Value","Solve Date"
+        };
+    }
+
+    public static String[] getCollateralRequestColumns_bankerVersion(){
+        return new String[]{
+                "Request Date", "Customer ID","Request ID", "Collateral Name", "File Path", "Collateral value", "Request Status", "Solve Date"
+        };
+    }
+
+    public static String[] getStockProfitColumns(){
+        return new String[]{
+                "Stock Name", "Currency", "Profit"
+        };
+    }
+
 }

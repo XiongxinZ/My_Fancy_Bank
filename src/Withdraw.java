@@ -1,28 +1,44 @@
-public class Withdraw extends Transaction{
-    private String currency = "USD";
+
+public class Withdraw extends AbstractTransaction {
+//    private String currency = "USD";
     public Withdraw(Account from, double amount) {
-        super(from, null, amount);
+        super(from, null, amount, "Withdraw");
     }
 
     public Withdraw(Account from, double amount, String currency) {
-        super(from, null, amount);
-        this.currency = currency;
+        super(from, null, amount,currency,"Withdraw");
+//        this.currency = currency;
     }
 
     @Override
     public String showInfo() {
-        return getTransTime() + ": " + "Withdraw " + getAmount() +" "+ currency +" from " + getFrom().toString();
+        return getTransTime() + ": " + "Withdraw " + getAmount() +" "+ getCurrencyFrom() +" from " + getFrom().toString();
     }
 
     @Override
     public String execute() {
-        assert getTo() instanceof CheckingAccount;
+        assert getFrom() instanceof CheckingAccount;
+
         String ret;
-        if (getTo() instanceof CheckingAccount){
-            ret = ((CheckingAccount) getTo()).withdraw(getAmount(), currency);
-            TransactionDao.insertTransaction(this);
+        if (getFrom() instanceof SavingAccount){
+            SavingAccount savingAccount = (SavingAccount) getFrom();
+            setAmount(Math.min(getAmount(), getFrom().getAmount(getCurrencyFrom())));
+            savingAccount.removeCurrency(getAmount(), getCurrencyFrom());
+            AccountDao.getInstance().updateAccountMoney(savingAccount, getCurrencyFrom());
+            TransactionDao.getInstance().insertTransaction(this);
+            ret =  "Withdraw " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" +getCurrencyFrom()+
+                    "<br>Balance " + "<font color=\"red\">"+PrintUtil.printDouble(savingAccount.getAmount(getCurrencyFrom()))+"</font>"+getCurrencyFrom();
+        }else if (getFrom() instanceof CheckingAccount){
+            CheckingAccount checkingAccount = (CheckingAccount) getFrom();
+            setAmount(Math.min(getAmount(), getFrom().getAmount(getCurrencyFrom())/(1+ConfigUtil.getConfigDouble("CheckingRate"))));
+            checkingAccount.removeCurrency(getAmount()*(1+ConfigUtil.getConfigDouble("CheckingRate")), getCurrencyFrom());
+            AccountDao.getInstance().updateAccountMoney(checkingAccount,getCurrencyFrom());
+            TransactionDao.getInstance().insertTransaction(this);
+            ret = "Withdraw " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" +getCurrencyFrom()+
+                    "<br>Balance " + "<font color=\"red\">"+PrintUtil.printDouble(checkingAccount.getAmount(getCurrencyFrom()))+"</font>"+getCurrencyFrom()+
+                    "<br>Fee "+"<font color=\"red\">"+PrintUtil.printDouble(getAmount()*ConfigUtil.getConfigDouble("CheckingRate"))+"</font>" + getCurrencyFrom();
         }else{
-            ret = getTo().toString() + " can't withdraw.";
+            ret = getFrom().toString() + " can't withdraw.";
         }
         return ret;
     }

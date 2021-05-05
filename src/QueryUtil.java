@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QueryUtil {
-    public static String getAllQueryWithConstrain(String tableName, String... constrain){
+    public static StringBuilder getAllQueryWithConstrain(String tableName, String... constrain){
         StringBuilder sql = getPartAll(tableName);
         sql.append(" ");
         assert constrain.length % 2 == 0;
@@ -14,13 +14,13 @@ public class QueryUtil {
             sql.append(" and ").append(constrain[i]).append("=").append("'").append(constrain[i+1]).append("'");
         }
         sql.append(";");
-        return sql.toString();
+        return sql;
     }
 
-    public static String getAllQuery(String tableName){
+    public static StringBuilder getAllQuery(String tableName){
         StringBuilder sql = getPartAll(tableName);
         sql.append(";");
-        return sql.toString();
+        return sql;
     }
 
     public static StringBuilder getPartAll(String tableName){
@@ -32,7 +32,7 @@ public class QueryUtil {
     public static StringBuilder appendConstrain(String... constrain){
         StringBuilder sql = new StringBuilder(" ");
         for (int i = 0; i < constrain.length; i = i + 2) {
-            sql.append(constrain[i]).append("=").append("'").append(constrain[i+1]).append("'");
+            sql.append(constrain[i]).append("=").append("'").append(constrain[i+1]).append("' ");
         }
         return sql;
     }
@@ -49,7 +49,7 @@ public class QueryUtil {
         return s;
     }
 
-    public static String getQueryString(String tableName, String... constrain){
+    public static StringBuilder getQueryString(String tableName, String... constrain){
 //        assert constrain.length % 2 == 1;
         StringBuilder sql = new StringBuilder("select");
         int i = 0;
@@ -64,7 +64,7 @@ public class QueryUtil {
             sql.append(" and ").append(constrain[i]).append("=").append("'").append(constrain[i+1]).append("'");
         }
         sql.append(";");
-        return sql.toString();
+        return sql;
     }
 
     public static ResultSet getResult(String query){

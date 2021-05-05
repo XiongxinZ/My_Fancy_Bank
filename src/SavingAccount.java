@@ -1,65 +1,70 @@
-import java.io.Serial;
 
-public class SavingAccount extends Account implements CanDeposit, CanTransfer{
+public class SavingAccount extends Account implements CanDeposit, CanTransferWithin {
 
     public static final String TYPE = "Saving";
-    @Serial
-    private static final long serialVersionUid = -2481826816986733553L;
 
-    private SavingAccount(Customer customer, double amount) {
+    public SavingAccount(Customer customer, double amount) {
         super(customer, amount, "Saving");
     }
 
-    private SavingAccount(Customer customer) {
+    public SavingAccount(Customer customer) {
         super(customer, "Saving");
     }
 
     public String deposit(double val){
-        addCurrency(val);
-        return "Deposit $" + val + ", amount $" + getAmount();
+        return deposit(val, "USD");
     }
 
     public String deposit(double val,String currency){
-        addCurrency(val, currency);
-        return "Deposit $" + val + ", amount $" + getAmount();
+        return new Deposit(this, val, currency).execute();
     }
 
-    // Transfer to customer's another account
+    @Override
+    public String transfer(String account,double val, String curr){
+        return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();
+    }
 
-    public String transfer(double val, Account account, String currency){
-        if (val > getAmount(currency)){
-            return "Sorry you only have " + getAmount() + currency + " in your " + getAccountType() + "account";
+    @Override
+    public boolean canClose() {
+        if (getCustomer().hasAccount("Security")){
+            return false;
+        } else if (getCustomer().hasAccount("Loan")){
+            return false;
+        } else if (!getCustomer().hasAccount("Checking")){
+            return false;
+        } else{
+            for (Double value : getAmountTotal().values()) {
+                if (value > 0){
+                    return false;
+                }
+            }
         }
-        account.addCurrency(val);
-        this.removeCurrency(val);
-        return "Transfer " + val + " from "+ toString() +" account to "+ account.toString()+"account.";
+        return getCustomer().getAccount("Checking").getAmount() >= 10;
     }
 
-    // Transfer to another account
-    public String transfer(double val,Account account){
-        return transfer(val, account, "USD");
+//    @Override
+//    public String transfer(Account account, double val, String curr) {
+//        return new Transfer(this,account,val,curr).execute();
+//    }
+
+    public static String createAccountFromCash(Customer customer, double deposit){
+        SavingAccount newly = new SavingAccount(customer);
+        newly.deposit(deposit);
+        newly.consume(ConfigUtil.getConfigInt("AccountFee"));
+
+        customer.addAccount(TYPE, newly);
+        AccountDao.getInstance().insertAccount(newly);
+        return "Create " + TYPE + " account successfully. Deposit "+deposit +
+                "USD, account fee cost "+"<font color=\"red\">"+ConfigUtil.getConfigInt("AccountFee")+"</font>"+
+                "USD. Put the remaining "+"<font color=\"red\">"+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"</font>"+"USD nto the account. ";    }
+
+    public static String createAccountFromAccount(Customer customer){
+        customer.getAccount("Checking").removeCurrency(ConfigUtil.getConfigInt("AccountFee"));
+        SavingAccount newly = new SavingAccount(customer);
+        customer.addAccount(TYPE, newly);
+        AccountDao.getInstance().insertAccount(newly);
+        AccountDao.getInstance().updateAccountMoney((CheckingAccount) customer.getAccount("Checking"), "USD");
+        return "Pay the fee from Checking Account automatically. Create " + TYPE + " account successfully";
     }
 
-    public String transfer(double val,String account){
-        if (getCustomer().getAccount(account) == null){
-            return "Sorry you don't have the " + account + " account";
-        }
-        return transfer(val, getCustomer().getAccount(account), "USD");
-    }
-
-    public static String createAccount(Customer customer){
-
-        if (customer.hasAccount("Checking") && customer.getAccount("Checking").getAmount() > 10){
-            customer.getAccount("Checking").removeCurrency(10);
-            customer.addAccount(TYPE, new SavingAccount(customer));
-            customer.markDirty(true);
-            return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
-        }else{
-            // 付钱
-            // code
-            customer.markDirty(true);
-            customer.addAccount(TYPE, new SavingAccount(customer));
-            return "Create " + TYPE + " account successfully. Deposit %.2f, account fee cost %d. Put the remaining %.2f into the account. ";
-        }
-    }
 }

@@ -3,7 +3,7 @@ import java.awt.Component;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-
+// set table that show infos.
 public class TableSetting {
 
     public static void makeFace(JTable table) {
@@ -12,9 +12,9 @@ public class TableSetting {
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                                                                boolean hasFocus, int row, int column) {
                     if(row % 2 == 0) {
-                        setBackground(Color.white);		// 设置奇数行底色
+                        setBackground(Color.white);
                     } else if(row % 2 == 1) {
-                        setBackground(new Color(206, 231, 255));	// 设置偶数行底色
+                        setBackground(new Color(206, 231, 255));
                     }
                     return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 }

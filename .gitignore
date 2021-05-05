@@ -1,6 +1,5 @@
 .idea/
 out/
-.DS_Store
 jdbc.properties
-*.jpeg
-*.PNG
+.DS_Store
+certificate/

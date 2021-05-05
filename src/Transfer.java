@@ -1,16 +1,45 @@
-public class Transfer extends Transaction{
-    public Transfer(Account from, Account to, double amount) {
-        super(from, to, amount);
+public class Transfer extends AbstractTransaction {
+    public Transfer(Account from, Account to, double amount, String currency) {
+        super(from, to, amount, currency,"Transfer");
+    }
+    public Transfer(Account from, String to,String toAccount, double amount, String currency) {
+        super(from, to,toAccount, amount, currency,"Transfer");
+    }
+
+    public Transfer(Account from, Account to, double amount, String currency, String type) {
+        super(from, to, amount, currency,type);
     }
 
     @Override
     public String execute() {
         String ret;
-        if (getAmount() > getFrom().getAmount("USD")){
-            ret =  "Sorry you only have $" + getFrom().getAmount("USD") + " in your " + getFrom().getAccountType() + "account";
+        if (getAmount() > getFrom().getAmount(getCurrencyFrom())){
+            ret =  "Sorry you only have $" + "<font color=\"red\">"+PrintUtil.printDouble(getFrom().getAmount("USD"))+"</font>" + " in your " + getFrom().getAccountType() + " account";
+        }else if (getTo() == null){
+            getFrom().removeCurrency(getAmount(), getCurrencyFrom());
+            AccountDao.getInstance().addAccountMoney(getToWhom(), getToAccount(), getAmount(), getCurrencyTo());
+            TransactionDao.getInstance().insertTransaction(this);
+            ret = "Transfer success";
         }else{
-            ret = getFrom().transfer(getTo(), getAmount());
-            TransactionDao.insertTransaction(this);
+            if (getFrom() instanceof CheckingAccount){
+                if (getFrom().getAmount(getCurrencyFrom()) >= getAmount() * (1 + ConfigUtil.getConfigDouble("CheckingRate"))){
+                    getFrom().removeCurrency(getAmount()* (1 + ConfigUtil.getConfigDouble("CheckingRate")), getCurrencyFrom());
+                    getTo().addCurrency(getAmount(), getCurrencyTo());
+                    ret = "Transfer " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" + " from "+ getFrom().toString() +" to "+ getTo().toString();
+                    TransactionDao.getInstance().insertTransaction(this);
+                    AccountDao.getInstance().updateAccountMoney(getTo(),getCurrencyTo());
+                    AccountDao.getInstance().updateAccountMoney(getFrom(),getCurrencyFrom());
+                }else{
+                    ret = "Sorry You don't have enough money to pay the transaction fee.";
+                }
+            }else{
+                getFrom().removeCurrency(getAmount(), getCurrencyFrom());
+                getTo().addCurrency(getAmount(), getCurrencyTo());
+                ret = "Transfer " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" + " from "+ getFrom().toString() +" to "+ getTo().toString();
+                TransactionDao.getInstance().insertTransaction(this);
+                AccountDao.getInstance().updateAccountMoney(getTo(),getCurrencyTo());
+                AccountDao.getInstance().updateAccountMoney(getFrom(),getCurrencyFrom());
+            }
         }
         return ret;
     }

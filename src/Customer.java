@@ -8,37 +8,31 @@ public class Customer extends User implements Modifiable{
 
     private boolean isDirty = false;
 
-    public Customer(String name, String pwd) {
-        super(name, pwd, "Customer");
-//        setId(getId() * 31 + "Customer".hashCode());
+    public Customer(String name, String pwd, String email) {
+        super(name, pwd, "Customer", email);
     }
 
-    public Customer() {}
+    public Customer(String pwd, String email) {
+        super(pwd, "Customer", email);
+    }
+
+    public Customer() {
+        super();
+    }
 
     public String createAccountAndReturnMessage(String accountType){
         if (accountList.containsKey(accountType)){
             return "You already have the " + accountType +"Account.";
         }
 
-        return switch (accountType) {
-            case "Saving" -> SavingAccount.createAccount(this);
-            case "Checking" -> CheckingAccount.createAccount(this);
-            case "Loan" -> LoanAccount.createAccount(this);
-            case "Security" -> SecurityAccount.createAccount(this);
-            default -> null;
-        };
-    }
-
-    public String deposit(double val, String currency, String accountType){
-        return new Deposit(accountList.get(accountType), val, currency).execute();
-    }
-
-    public String deposit(double val, String currency){
-        return deposit(val, currency, "Saving");
-    }
-
-    public String deposit(double val){
-        return deposit(val, "USD");
+//        return switch (accountType) {
+//            case "Saving" -> SavingAccount.createAccountFromCash(this);
+//            case "Checking" -> CheckingAccount.createAccountFromCash(this);
+//            case "Loan" -> LoanAccount.createAccountFromAccount(this);
+//            case "Security" -> SecurityAccount.createAccountFromAccount(this);
+//            default -> null;
+//        };
+        return null;
     }
 
     public String withdraw(double val, String currency, String accountType){
@@ -51,6 +45,10 @@ public class Customer extends User implements Modifiable{
 
     public String withdraw(double val){
         return withdraw(val, "USD");
+    }
+
+    public static String getId(String email){
+        return Long.toString(email.hashCode() * 31L + "Customer".hashCode());
     }
 
     public boolean hasAccount(String accountType){
@@ -67,6 +65,14 @@ public class Customer extends User implements Modifiable{
 
     public void addAccount(String accountType, Account account){
         accountList.put(accountType, account);
+    }
+
+    public void setAccountList(HashMap<String, Account> accountList) {
+        this.accountList = accountList;
+    }
+
+    public HashMap<String, Account> getAccountList() {
+        return accountList;
     }
 
     @Override

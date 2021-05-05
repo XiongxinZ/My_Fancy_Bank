@@ -1,4 +1,3 @@
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,84 +6,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDao {
-	
-	@SuppressWarnings("finally")
-	public static int insertCustomer(Customer customer) {
+
+	private static CustomerDao customerDao = new CustomerDao();
+
+	public static CustomerDao getInstance(){
+		return customerDao;
+	}
+
+	public int insertCustomer(Customer customer) {
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int flag = 0;
-		
+
 		try {
 			conn = JDBCUtil.getConnection();
-			
+
 			String c_id = customer.getId();
 			String c_name = customer.getName();
 			String c_pswd = customer.getPassword();
-			
-			String sql = "insert into customer(c_id, c_name, c_pwd, a_saving, a_checking, a_loan, a_security) "
-					+ "values(?,?,?,?,?,?,?)";
-			
+			String c_email = customer.getEmail();
+
+
+			String sql = "insert into customer(c_id, c_name, c_pswd,c_email) "
+					+ "values(?,?,?,?)";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, c_id);
 			ps.setString(2, c_name);
 			ps.setString(3, c_pswd);
-			ps.setString(4, Boolean.toString(customer.hasAccount("Saving")));
-			ps.setString(5, Boolean.toString(customer.hasAccount("Checking")));
-			ps.setString(6, Boolean.toString(customer.hasAccount("Loan")));
-			ps.setString(7, Boolean.toString(customer.hasAccount("Security")));
+			ps.setString(4, c_email);
 			flag = ps.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
-			return flag;
+			JDBCUtil.closeResource(ps, rs);
 		}
-		
-	}
-	
-	@SuppressWarnings("finally")
-	public static int updateCustomer(Customer customer) {
-		
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		int flag = 0;
-		
-		try {
-			conn = JDBCUtil.getConnection();
-			
-			String c_id = customer.getId();
-			String c_pswd = customer.getPassword();
-			
-			StringBuffer sql = new StringBuffer("update customer set");
-			
-			if(!("".equals(c_pswd)) && c_pswd != null) {
-				sql.append(" c_pswd = '" + c_pswd + "'");
-			}
-//
-//			if(!("".equals(c_status)) && c_status != null) {
-//				sql.append(" , c_status = '" + c_status + "'");
-//			}
-			
-			if(!"".equals(c_id) && c_id != null) {
-				sql.append(" where c_id = '" + c_id + "'");
-			}
-			
-			ps = conn.prepareStatement(String.valueOf(sql));
-			flag = ps.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
-			return flag;
-		}
+		return flag;
 	}
 
-	public static int updateCustomerPSW(String id, String pwd) {
+
+	public int updateCustomerPSW(String id, String pwd) {
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -105,18 +68,18 @@ public class CustomerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
-			return flag;
+			JDBCUtil.closeResource(ps, rs);
+
 		}
+		return flag;
 	}
 
 
-	@SuppressWarnings("finally")
-	public static int updateCustomerPSW(Customer customer) {
+	public int updateCustomerPSW(Customer customer) {
 		return updateCustomerPSW(customer.getId(), customer.getPassword());
 	}
 
-	public static int delCustomer(String id) {
+	public int delCustomer(String id) {
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -138,137 +101,173 @@ public class CustomerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
+			JDBCUtil.closeResource(ps, rs);
 			return flag;
 		}
 	}
 
-	@SuppressWarnings("finally")
-	public static int delCustomer(Customer customer) {
+	public int delCustomer(Customer customer) {
 
 		return delCustomer(customer.getId());
 	}
-	
-	@SuppressWarnings("finally")
-	public static Customer selectCustomer(Customer customer) {
-		
+
+	public String getCustomerName(String id){
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Customer user = null;
-		
-		try {
-			conn = JDBCUtil.getConnection();
-			
-			String c_id = customer.getId();
-			String c_pswd = customer.getPassword();
-			
-			String sql = "select * from customer where c_id = ? and c_PSWD = ?";
-			
-			System.out.println("selectCustomer(Customer customer)" + sql);
-			
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, c_id);
-			ps.setString(2, c_pswd);
-			
-			rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				user = new Customer();
-				
-				user.setId(rs.getString("c_id"));
-				user.setName(rs.getString("c_Name"));
-				user.setPassword(rs.getString("c_PSWD"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
-			return user;
+		String userName = "-";
+		if (id == null){
+			return userName;
 		}
-	}
-	
-	@SuppressWarnings("finally")
-	public static Customer selectCustomerWithCid(String id) {
-		
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Customer user = null;
-		
+
 		try {
 			conn = JDBCUtil.getConnection();
-			
+
 			String sql = "select * from customer where c_id = ?";
-			
-			System.out.println("selectCustomerWithCid(Customer customer)" + sql);
-			
+
+			System.out.println("selectCustomer(Customer customer)" + sql);
+
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, id);
-			
+
 			rs = ps.executeQuery();
-			
+
+			while(rs.next()){
+				userName = rs.getString("c_name");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.closeResource(ps, rs);
+		}
+		return userName;
+	}
+
+	public Customer selectCustomer(String email, String pswd) {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Customer user = null;
+
+		try {
+			conn = JDBCUtil.getConnection();
+
+			String sql = "select * from customer where c_email = ? and c_PSWD = ?";
+
+			System.out.println("selectCustomer(Customer customer)" + sql);
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			ps.setString(2, pswd);
+
+			rs = ps.executeQuery();
+
 			while(rs.next()) {
-				user = new Customer();
-				
+				user = new Customer(pswd, email);
+
 				user.setId(rs.getString("c_id"));
 				user.setName(rs.getString("c_Name"));
 				user.setPassword(rs.getString("c_PSWD"));
+				user.setEmail(rs.getString("c_email"));
+				user.setAccountList(AccountDao.getInstance().selectAccountList(user));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
-			return user;
+			JDBCUtil.closeResource(ps, rs);
 		}
+		return user;
 	}
-	
-	@SuppressWarnings("finally")
-	public static List<Customer> selectCustomerList(Customer customer){
+
+	public Customer selectCustomer(Customer customer) {
+		return selectCustomer(customer.getEmail(), customer.getPassword());
+	}
+
+
+	public Customer selectCustomerWithCid(String id) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
-		ArrayList<Customer> list = new ArrayList<>();
-		
+		Customer user = null;
+
 		try {
 			conn = JDBCUtil.getConnection();
-			
+
+			String sql = "select * from customer where c_id = ?";
+
+			System.out.println("selectCustomerWithCid(Customer customer)" + sql);
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+
+			rs = ps.executeQuery();
+
+			while(rs.next()) {
+				user = new Customer();
+
+				user.setId(rs.getString("c_id"));
+				user.setName(rs.getString("c_Name"));
+				user.setPassword(rs.getString("c_PSWD"));
+				user.setEmail(rs.getString("c_email"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.closeResource(ps, rs);
+		}
+		return user;
+	}
+
+
+	public List<Customer> selectCustomerList(Customer customer){
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		ArrayList<Customer> list = new ArrayList<>();
+
+		try {
+			conn = JDBCUtil.getConnection();
+
 			String c_id = customer.getId();
 			String c_name = customer.getName();
 			String c_pswd = customer.getPassword();
-			
+
 			StringBuffer sql = new StringBuffer("select * from customer where 1 = 1");
-			
+
 			if(!"".equals(c_id) && c_id != null) {
 				sql.append(" and c_id = '" + c_id + "'");
 			}
-			
+
 			if(!("".equals(c_name)) && c_name != null) {
 				sql.append(" and c_name = '" + c_name + "'");
 			}
-			
+
 			if(!("".equals(c_pswd)) && c_pswd != null) {
 				sql.append(" and c_pswd = '" + c_pswd + "'");
 			}
 
 			ps = conn.prepareStatement(String.valueOf(sql));
-			
+
 			rs = ps.executeQuery();
-			
+
 			while(rs.next()) {
 				Customer user = new Customer();
 				user.setId(rs.getString("c_id"));
 				user.setName(rs.getString("c_Name"));
 				user.setPassword(rs.getString("c_PSWD"));
-				
+				user.setEmail(rs.getString("c_email"));
+
 				list.add(user);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
-			return list;
+			JDBCUtil.closeResource(ps, rs);
 		}
+		return list;
 	}
 }

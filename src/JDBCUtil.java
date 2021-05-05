@@ -1,10 +1,11 @@
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
-import java.util.ResourceBundle;
+import java.util.Properties;
 
 /**
- * 
- * @author NaiveKyo
- * JDBC 工具类
+ *
+ * JDBC Util
  */
 public class JDBCUtil {
 	
@@ -17,23 +18,19 @@ public class JDBCUtil {
 	private static JDBCUtil instance = null;
 	
 	static {
-//		ResourceBundle bundle = ResourceBundle.getBundle("lib.jdbc");
-//
-//
-//		DRIVERCLASS = bundle.getString("driverClass");
-//		URL = bundle.getString("url");
-//		USERNAME = bundle.getString("username");
-//		PASSWORD = bundle.getString("password");
-		DRIVERCLASS = ConfigUtil.getConfig("driverClass");
-		URL = ConfigUtil.getConfig("url");
-		USERNAME = ConfigUtil.getConfig("username");
-		PASSWORD = ConfigUtil.getConfig("password");
+		 Properties properties = new Properties();
+		try {
+			properties.load(new FileInputStream("jdbc.properties"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+		DRIVERCLASS = properties.getProperty("driverClass");
+		URL = properties.getProperty("url");
+		USERNAME = properties.getProperty("username");
+		PASSWORD = properties.getProperty("password");
 	}
-	
-	// test
-//	public static void main(String[] args) {
-//		System.out.println(DRIVERCLASS + "\n" + URL + "\n" + USERNAME + "\n" + PASSWORD);
-//	}
 	
 	static {
 		try {
@@ -48,12 +45,11 @@ public class JDBCUtil {
 	}
 	
 	/**
-	 * 获取数据库连接
+	 * get database connection
 	 * @return
 	 * @throws SQLException
 	 */
 	public static Connection getConnection() throws SQLException {
-		// return DriverManager.getConnection(URL, USERNAME, PASSWORD);
 		return getInstance().conn;
 	}
 
@@ -63,21 +59,20 @@ public class JDBCUtil {
 		}
 		return instance;
 	}
-
-	public static Connection getConn() throws SQLException {
-		return getInstance().conn;
-	}
 	
 	/**
-	 * 释放数据库资源
-	 * @param conn
+	 * release database resources, do not close connection.
 	 * @param stm
 	 * @param rs
 	 */
-	public static void closeResource(Connection conn, Statement stm, ResultSet rs) {
+	public static void closeResource(Statement stm, ResultSet rs) {
 		closeResultSet(rs);
 		closeStatement(stm);
-//		closeConnection(conn);
+	}
+
+	public static void closeResource(Connection coon, Statement stm, ResultSet rs) {
+		closeResultSet(rs);
+		closeStatement(stm);
 	}
 	
 	public static void closeResultSet(ResultSet rs) {
