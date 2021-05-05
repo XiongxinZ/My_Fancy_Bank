@@ -35,6 +35,8 @@ public class BankerFrame extends CoreFrame {
         JMenuItem homepage = new JMenuItem("HomePage");
         JMenuItem customer_lists = new JMenuItem("Customer Lists");
         JMenuItem collateral_evals = new JMenuItem("Collateral Evaluation");
+        JMenuItem daily_report = new JMenuItem("Daily Report");
+        JMenuItem stock_evals = new JMenuItem("Stock Evaluation");
         JMenuItem item3 = new JMenuItem("Logout");
         JMenuItem item4 = new JMenuItem("Exit");
         homepage.addActionListener(new ActionListener() {
@@ -57,6 +59,20 @@ public class BankerFrame extends CoreFrame {
             }
         });
 
+        daily_report.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setContextPanel(new DailyReportPanel());
+            }
+        });
+
+        stock_evals.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setContextPanel(new StockEvalsPanel());
+            }
+        });
+
         item3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,6 +90,8 @@ public class BankerFrame extends CoreFrame {
         menu.add(homepage);
         menu.add(customer_lists);
         menu.add(collateral_evals);
+        menu.add(daily_report);
+        menu.add(stock_evals);
         menu.add(item3);
         menu.add(item4);
         button8.addMenu(menu);
