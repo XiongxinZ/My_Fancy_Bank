@@ -17,7 +17,7 @@ public class Transfer extends AbstractTransaction {
             ret =  "Sorry you only have $" + "<font color=\"red\">"+PrintUtil.printDouble(getFrom().getAmount("USD"))+"</font>" + " in your " + getFrom().getAccountType() + " account";
         }else if (getTo() == null){
             getFrom().removeCurrency(getAmount(), getCurrencyFrom());
-            AccountDao.getInstance().updateAccountMoney(getToWhom(), getToAccount(), getAmount(), getCurrencyTo());
+            AccountDao.getInstance().addAccountMoney(getToWhom(), getToAccount(), getAmount(), getCurrencyTo());
             TransactionDao.getInstance().insertTransaction(this);
             ret = "Transfer success";
         }else{

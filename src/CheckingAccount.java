@@ -61,10 +61,6 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
     @Override
     public String transfer(String account,double val, String curr){
         return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();
-//        if (getCustomer().getAccount(account) == null){
-//            return "Sorry you don't have the " + account + " account";
-//        }
-//        return transfer(val, getCustomer().getAccount(account), "USD");
     }
 
     @Override
