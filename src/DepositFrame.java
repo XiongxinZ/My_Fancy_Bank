@@ -53,7 +53,7 @@ public class DepositFrame extends PopupFrame {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                DepositFrame.this.dispose();
                 new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
             }
         });

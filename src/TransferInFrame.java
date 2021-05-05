@@ -42,6 +42,7 @@ public class TransferInFrame extends PopupFrame{
             @Override
             public void itemStateChanged(ItemEvent e) {
                 balance.setText(Double.toString(account.getAmount((String) box.getSelectedItem())));
+                savingBalance.setText(Double.toString(account.getCustomer().getAccount("Saving").getAmount((String) box.getSelectedItem())));
             }
         });
 

@@ -119,7 +119,7 @@ public class BuyStockFrame extends PopupFrame{
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                BuyStockFrame.this.dispose();
                 new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
             }
         });

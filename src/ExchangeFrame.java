@@ -45,7 +45,7 @@ public class ExchangeFrame extends PopupFrame {
         JComboBox<String> box2 = new JComboBox<>(new String[]{"USD", "CNY", "JPY"});
         jPanel.add(box2);
 
-        JLabel balanceToLabel = new JLabel("From Balance: ");
+        JLabel balanceToLabel = new JLabel("To Balance: ");
         jPanel.add(balanceToLabel);
 
         JLabel balanceTo = new JLabel(Double.toString(account.getAmount((String) box2.getSelectedItem())));
@@ -91,7 +91,7 @@ public class ExchangeFrame extends PopupFrame {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                ExchangeFrame.this.dispose();
                 new CustomerFrame(account.getCustomer()).setContextPanel(new MultiCurrAccountPanel(account));
             }
         });

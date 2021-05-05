@@ -68,7 +68,7 @@ public class AddStockFrame extends PopupFrame{
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                AddStockFrame.this.dispose();
                 new BankerFrame(banker).setContextPanel(new StockEvalsPanel(banker));
             }
         });

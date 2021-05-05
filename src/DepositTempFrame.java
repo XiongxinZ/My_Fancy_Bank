@@ -33,10 +33,14 @@ public class DepositTempFrame extends PopupFrame{
                     double val = Double.parseDouble(jTextField.getText().trim());
                     if (type.equalsIgnoreCase("Saving")){
                         DepositTempFrame.this.dispose();
-                        new MessageFrame("Success Info",SavingAccount.createAccountFromCash(customer, val));
+                        String s = SavingAccount.createAccountFromCash(customer, val);
+                        new CustomerFrame(customer).setContextPanel(new MultiCurrAccountPanel(customer.getAccount("Saving")));
+                        new MessageFrame("Success Info",s);
                     }else{
                         DepositTempFrame.this.dispose();
-                        new MessageFrame("Success Info", CheckingAccount.createAccountFromCash(customer, val));
+                        String s = CheckingAccount.createAccountFromCash(customer, val);
+                        new CustomerFrame(customer).setContextPanel(new MultiCurrAccountPanel(customer.getAccount("Checking")));
+                        new MessageFrame("Success Info", s);
                     }
                 } catch (NumberFormatException numberFormatException) {
                     new MessageFrame("Input Error", "Please enter a number");
@@ -46,7 +50,7 @@ public class DepositTempFrame extends PopupFrame{
         add(submit);
 
         JButton back = new JButton("Back");
-        submit.addActionListener(new ActionListener() {
+        back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
