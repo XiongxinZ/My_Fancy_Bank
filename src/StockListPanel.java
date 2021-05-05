@@ -1,8 +1,5 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 
@@ -85,6 +82,25 @@ public class StockListPanel extends CustomerContentPanel {
         jt_customer = new JTable(new DefaultTableModel(TableColumns.getStockListColumns(), 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
+            }
+        });
+
+        jt_customer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2){
+                    int row =((JTable)e.getSource()).rowAtPoint(e.getPoint());
+                    int  col=((JTable)e.getSource()).columnAtPoint(e.getPoint());
+                    assert jt_customer.getModel().getColumnCount() == 3;
+                    String sname = (String) jt_customer.getModel().getValueAt(row,0);
+                    Double price = (Double) jt_customer.getModel().getValueAt(row,1);
+                    String curr = (String) jt_customer.getModel().getValueAt(row,2);
+                    StockInfo stockInfo = new StockInfo(sname,price,curr);
+                    List<StockInfo> list =new ArrayList<>();
+                    list.add(stockInfo);
+                    GuiUtil.getFrame(StockListPanel.this).dispose();
+                    new BuyStockFrame((SecurityAccount) getCustomer().getAccount("Security"), list);
+                }
             }
         });
 
