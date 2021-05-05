@@ -14,6 +14,8 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
     private DefaultTableModel dm;
     private String dbName = "banker";
 
+    private Banker banker;
+
     public void setDbName(String dbName) {
         this.dbName = dbName;
     }
@@ -36,11 +38,13 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
         }
     }
 
-    public BankerHomepagePanel() {
+    public BankerHomepagePanel(Banker banker) {
+        this.banker = banker;
         setPanel();
     }
 
-    public BankerHomepagePanel(String dbName) {
+    public BankerHomepagePanel(String dbName, Banker banker) {
+        this.banker = banker;
         setDbName(dbName);
         setPanel();
     }
@@ -93,7 +97,8 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
                         // get cv_id
                         String cv_id = (String) (jt_banker.getModel().getValueAt(row, 2));
                         System.out.println(cv_id);
-                        new CollateralValuationFrame(cv_id);
+                        GuiUtil.getFrame(BankerHomepagePanel.this).dispose();
+                        new CollateralValuationFrame(cv_id, banker);
                     }
                 }
             });
@@ -134,5 +139,9 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    public Banker getBanker() {
+        return banker;
     }
 }

@@ -1,4 +1,4 @@
-public class TransactionHisotryFrame extends PopupFrame{
+public class TransactionHisotryFrame extends CoreFrame{
 
     public TransactionHisotryFrame(String c_id) {
         super("Transaction Details");

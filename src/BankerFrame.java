@@ -14,7 +14,7 @@ public class BankerFrame extends CoreFrame {
         centerPanel = new JPanel(new BorderLayout());
         setTopInfo();
         centerPanel.add(infoPanel, BorderLayout.NORTH);
-        contextPanel = new BankerHomepagePanel();
+        contextPanel = new BankerHomepagePanel(banker);
         centerPanel.add(contextPanel, BorderLayout.CENTER);
         add(centerPanel);
 
@@ -40,20 +40,20 @@ public class BankerFrame extends CoreFrame {
         homepage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setContextPanel(new BankerHomepagePanel());
+                setContextPanel(new BankerHomepagePanel(banker));
             }
         });
         customer_lists.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setContextPanel(new CustomerListPanel());
+                setContextPanel(new CustomerListPanel(banker));
             }
         });
 
         collateral_evals.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setContextPanel(new CollateralEvalsPanel());
+                setContextPanel(new CollateralEvalsPanel(banker));
             }
         });
 

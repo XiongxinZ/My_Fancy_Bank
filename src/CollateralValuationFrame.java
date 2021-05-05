@@ -6,8 +6,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 public class CollateralValuationFrame extends CoreFrame{
-    public CollateralValuationFrame(String request_id) {
+    private  Banker banker;
+    public CollateralValuationFrame(String request_id, Banker banker) {
         super("Collateral Valuation");
+        this.banker = banker;
         setFrame(request_id);
         setVisible(true);
     }
@@ -72,6 +74,7 @@ public class CollateralValuationFrame extends CoreFrame{
                     }
                     String message = collateralValuation.execute();
                     CollateralValuationFrame.this.dispose();
+                    new BankerFrame(banker).setContextPanel(new CollateralEvalsPanel(banker));
                     new MessageFrame("Success", message);
                 }catch (NumberFormatException e2){
                     new MessageFrame("Input Error", "Please enter a number");
