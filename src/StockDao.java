@@ -305,6 +305,29 @@ public class StockDao {
         return flag;
     }
 
+    public int insertStockInfo(StockInfo stockInfo){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        int flag = 0;
+
+        try{
+            conn = JDBCUtil.getConnection();
+
+            String sql = "insert into stockInfo(s_name,s_curr,c_price) values(?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,stockInfo.getName());
+            ps.setString(2,stockInfo.getCurrency());
+            ps.setDouble(3, stockInfo.getCurrentPrice());
+
+            flag = ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return flag;
+    }
+
     public ValuePool<StockProfit> selectProfitList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;

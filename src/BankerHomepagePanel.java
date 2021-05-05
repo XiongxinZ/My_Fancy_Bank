@@ -73,14 +73,17 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
         JPanel jp_tool = new JPanel(new FlowLayout());
         jp_tool.setPreferredSize(new Dimension(1000, 50));
 
-        JButton jButton = new JButton("Add");
-        jButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new RegisterPopUpFrame();
-            }
-        });
-        jp_tool.add(jButton);
+        if (dbName.equals("banker")){
+            JButton jButton = new JButton("Add");
+            jButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new RegisterPopUpFrame();
+                }
+            });
+            jp_tool.add(jButton);
+        }
+
 
         add(jp_tool, BorderLayout.NORTH);
 
@@ -150,11 +153,12 @@ public class BankerHomepagePanel extends JPanel implements MouseListener {
         } else if (dbName.equals("transactionLog")) {
 
         } else if (dbName.equals("stockInfo")) {
-            jButton = new JButton("Add");
+            JButton jButton = new JButton("Add");
             jButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new RegisterPopUpFrame();
+                    GuiUtil.getFrame(BankerHomepagePanel.this).dispose();
+                    new AddStockFrame(banker);
                 }
             });
             jp_tool.add(jButton);
