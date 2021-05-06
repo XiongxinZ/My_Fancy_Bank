@@ -4,7 +4,7 @@ import java.awt.*;
 public class TransactionHisotryFrame extends PopupFrame{
 
     public TransactionHisotryFrame(String c_id) {
-        super("Monetary Transaction Details");
+        super("Transaction Details");
         setFrame(c_id);
         setSize(ConfigUtil.getConfigInt("FrameWidth"), ConfigUtil.getConfigInt("FrameHeight"));
         setVisible(true);

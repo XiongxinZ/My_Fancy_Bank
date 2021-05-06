@@ -14,6 +14,7 @@ public class BankerContentPanel extends JPanel implements MouseListener {
     private String dbName = "banker";
 
     private JCheckBox jCheckBox = null;
+    private JPanel contextPanel;
 
     private Banker banker;
 
@@ -57,18 +58,19 @@ public class BankerContentPanel extends JPanel implements MouseListener {
     }
 
     public BankerContentPanel(Banker banker) {
+        super(new BorderLayout(0, 0));
         this.banker = banker;
         setPanel();
     }
 
     public BankerContentPanel(String dbName, Banker banker) {
+        super(new BorderLayout(0, 0));
         this.banker = banker;
         setDbName(dbName);
         setPanel();
     }
 
     private void setPanel() {
-        setLayout(new BorderLayout(0, 0));
 
         JPanel jp_tool = new JPanel(new FlowLayout());
         jp_tool.setPreferredSize(new Dimension(1000, 50));
@@ -96,6 +98,7 @@ public class BankerContentPanel extends JPanel implements MouseListener {
         jt_banker.setRowSorter(sorter);
 
         if (dbName.equals("customer")) {
+            setLayout(new GridLayout(0,1));
             jt_banker = new JTable(new DefaultTableModel(TableColumns.getCustomerColumns(), 0)) {
                 public boolean isCellEditable(int row, int column) {
                     return false;
@@ -111,6 +114,7 @@ public class BankerContentPanel extends JPanel implements MouseListener {
 
                         String cellVal = (String) (jt_banker.getModel().getValueAt(row, 0));
                         new TransactionHisotryFrame(cellVal);
+                        setContextPanel(new CustomerHomepagePanel(CustomerDao.getInstance().selectCustomerWithCid(cellVal)));
                     }
                 }
             });
@@ -150,8 +154,6 @@ public class BankerContentPanel extends JPanel implements MouseListener {
                     }
                 }
             });
-        } else if (dbName.equals("transactionLog")) {
-
         } else if (dbName.equals("stockInfo")) {
             JButton jButton = new JButton("Add");
             jButton.addActionListener(new ActionListener() {
@@ -229,5 +231,14 @@ public class BankerContentPanel extends JPanel implements MouseListener {
 
     public Banker getBanker() {
         return banker;
+    }
+
+    public void setContextPanel(JPanel jPanel){
+        if (contextPanel != null) {
+            this.remove(contextPanel);
+        }
+        contextPanel = jPanel;
+        this.add(contextPanel, BorderLayout.NORTH);
+        this.updateUI();
     }
 }
