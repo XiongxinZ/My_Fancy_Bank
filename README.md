@@ -154,6 +154,8 @@ Due to the complexity of configuring driver for mysql and the version of jdk req
    * **CustomerListPanel extends BankerContentPanel**: Panel for showing all the customers information. Double clicking on specific customers for more details.
    * **CollateralEvalsPanel extends BankerContentPanel**: Panel for showing all the unresolved collateral requests so far.
    * **StockEvalsPanel extends BankerContentPanel**: Panel for showing all the stocks on the market with an "Add" button for importing new stocks from the banker.
+    
+* **DailyReportPanel extends JPanel**: The panel for showing the total number of monetary and stock transactions of each type.
  
 * **MyMenuButton extends JToggleButton**: MyMenuButton class. Implemented a toggle menu button.   
 * **TableSetting**: set table design, the color of table.
