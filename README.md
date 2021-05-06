@@ -202,54 +202,100 @@ for synchronizing singleton database with all kinds of views.
 - Loose coupling of backend data and frontend object&control design
 
 # Demo
-##Init Page
+
+## Init Page
+
 ![avatar](./demo/init.png)
-##Login Page
+
+## Login Page
+
 ![avatar](./demo/login.png)
-##Register Page
+
+## Register Page
+
 ![avatar](./demo/register.png)
-##Customer
-###CustomerHomePage Page
+
+## Customer
+
+### CustomerHomePage Page
+
 ![avatar](./demo/customerHomepage2.png)
 ![avatar](./demo/customerHomepage.png)
-###Account Page Overview
+
+### Account Page Overview
+
 ![avatar](./demo/checking.png)
 ![avatar](./demo/saving.png)
 ![avatar](./demo/loan.png)
 ![avatar](./demo/security.png)
-###Loan Account
+
+### Loan Account
+
 #### Upload collateral valuation request
+
 ![avatar](./demo/uploadCollateral.png)
+
 #### loan list
+
 ![avatar](./demo/customerLoanList.png)
+
 #### collateral Request list
+
 ![avatar](./demo/customerCollateralRequestList.png)
+
 #### collateral list
+
 ![avatar](./demo/customerCollateralList.png)
-###Security Account
+
+### Security Account
+
 #### customer stock position
+
 ![avatar](./demo/security.png)
+
 #### stock list
+
 ![avatar](./demo/StockList.png)
+
 #### stock realized profit list
+
 ![avatar](./demo/stockProfit.png)
+
 #### buy stock
+
 ![avatar](./demo/buyStock.png)
+
 ### Transaction History Page
+
 ![avatar](./demo/transHis.png)
+
 ### StockTrading History Page
+
 ![avatar](./demo/stockTradingHis.png)
+
 ## Manager
+
 ## Homepage/DailyReport
+
 ![avatar](./demo/dailyReport.png)
+
 ## UserList
+
 ![avatar](./demo/userList1.png)
 ![avatar](./demo/userList2.png)
+
 ## view customer's account info
+
 ![avatar](./demo/CustomerTrans.png)
+
 ## CollateralRequest
+
 ![avatar](./demo/collateralRequest.png)
+
 ## manager collateral valuation
+
 ![avatar](./demo/valuation.png)
-##  stock management
+
+## stock management
+
 ![avatar](./demo/managerStock.png)
