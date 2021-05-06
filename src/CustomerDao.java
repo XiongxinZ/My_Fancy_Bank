@@ -212,6 +212,7 @@ public class CustomerDao {
 				user.setName(rs.getString("c_Name"));
 				user.setPassword(rs.getString("c_PSWD"));
 				user.setEmail(rs.getString("c_email"));
+				user.setAccountList(AccountDao.getInstance().selectAccountList(user));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
