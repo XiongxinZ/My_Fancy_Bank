@@ -9,7 +9,7 @@ public class TableColumns {
 
     public static String[] getCustomerColumns() {
         return new String[] {
-               "Customer ID",  "Customer Name", "Password", "Email Address"
+               "Customer ID",  "Customer Name", "Password", "Email Address","Checking ID","Saving ID","Loan ID","Security ID"
         };
     }
 
