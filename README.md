@@ -11,7 +11,7 @@
 ---
 
 ---
-## Banker & Customer System Introduction
+## Bank Management System Introduction
 * User(Both customer and banker) are identified by email address & user type, which means one email can only register once(You can use the same email to register as one customer and one banker, but you can't register as 2 different customers)
 * One customer can only have one saving account,one checking account,one loan account and one stock account.
 * The bank will pay interest to certain saving accounts every day.
@@ -47,11 +47,15 @@
    ```
 4. run Main in IDE or run following commands in terminal:
    ```
-   javac *.class
+   javac *.java
    java -cp .;complete-path-to-drive/mysql-connector-java-8.0.20.jar Main
    ```
 
 Due to the complexity of configuring driver for mysql and the version of jdk required for compilation, we recommand that you run the code with jdk version >=15 in IDE like intelliJ IDEA and configure modules for mysql-connector-java-8.0.20.jar in project setting.
+
+## Divide Up
+- Yuqiu: Customer part
+- Xiongxin: Banker part
 
 ## Classes of the project
 * **Main**: Main class. Then entrance of the program.<br><br>
