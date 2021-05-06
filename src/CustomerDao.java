@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class CustomerDao {
 
@@ -223,33 +224,18 @@ public class CustomerDao {
 	}
 
 
-	public List<Customer> selectCustomerList(Customer customer){
+	public List<Vector<String>> selectCustomerList(){
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		ArrayList<Customer> list = new ArrayList<>();
+		List<Vector<String>> list = new ArrayList<>();
 
 		try {
 			conn = JDBCUtil.getConnection();
 
-			String c_id = customer.getId();
-			String c_name = customer.getName();
-			String c_pswd = customer.getPassword();
-
 			StringBuffer sql = new StringBuffer("select * from customer where 1 = 1");
 
-			if(!"".equals(c_id) && c_id != null) {
-				sql.append(" and c_id = '" + c_id + "'");
-			}
-
-			if(!("".equals(c_name)) && c_name != null) {
-				sql.append(" and c_name = '" + c_name + "'");
-			}
-
-			if(!("".equals(c_pswd)) && c_pswd != null) {
-				sql.append(" and c_pswd = '" + c_pswd + "'");
-			}
 
 			ps = conn.prepareStatement(String.valueOf(sql));
 
@@ -261,8 +247,20 @@ public class CustomerDao {
 				user.setName(rs.getString("c_Name"));
 				user.setPassword(rs.getString("c_PSWD"));
 				user.setEmail(rs.getString("c_email"));
+				user.setAccountList(AccountDao.getInstance().selectAccountList(user));
 
-				list.add(user);
+				Vector<String> dataRow = new Vector<>();
+				// c_ID, c_Name, c_PSWD, c_email
+				dataRow.add(rs.getString("c_ID"));
+				dataRow.add(rs.getString("c_Name"));
+				dataRow.add(rs.getString("c_PSWD"));
+				dataRow.add(rs.getString("c_email"));
+				dataRow.add(user.hasAccount("Checking")?user.getAccount("Checking").getId():"-");
+				dataRow.add(user.hasAccount("Saving")?user.getAccount("Saving").getId():"-");
+				dataRow.add(user.hasAccount("Loan")?user.getAccount("Loan").getId():"-");
+				dataRow.add(user.hasAccount("Security")?user.getAccount("Security").getId():"-");
+				list.add(dataRow);
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

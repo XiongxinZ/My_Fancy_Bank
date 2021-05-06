@@ -30,7 +30,7 @@ public class BankerContentPanel extends JPanel implements MouseListener {
         if (dbName.equals("banker")) {
             list = BankerDao.getInstance().getBankers();
         } else if (dbName.equals("customer")) {
-            list = BankerDao.getInstance().getCustomers();
+            list = CustomerDao.getInstance().selectCustomerList();
         } else if (dbName.equals("collateralValuation")) {
             list = CollateralDao.getInstance().getCollateralRequests();
         } else if (dbName.equals("stockInfo")) {
@@ -110,7 +110,7 @@ public class BankerContentPanel extends JPanel implements MouseListener {
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 2) {
                         int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
-                        // int col = ((JTable) e.getSource()).columnAtPoint(e.getPoint());
+                        int col = ((JTable) e.getSource()).columnAtPoint(e.getPoint());
 
                         String cellVal = (String) (jt_banker.getModel().getValueAt(row, 0));
                         new TransactionHisotryFrame(cellVal);
