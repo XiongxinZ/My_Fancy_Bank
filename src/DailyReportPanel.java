@@ -8,7 +8,6 @@ public class DailyReportPanel extends JPanel {
         this.banker = banker;
         JLabel left = new JLabel(new ImageIcon("img/leftDaily.jpg"));
 
-        JLabel right = new JLabel( new ImageIcon("img/rightDaily.jpg"));
 
         JPanel centerPanel = new JPanel(new GridLayout(0,2));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(100,50,100,30));

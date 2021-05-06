@@ -1,3 +1,6 @@
+import javax.swing.*;
+import java.awt.*;
+
 public class TransactionHisotryFrame extends PopupFrame{
 
     public TransactionHisotryFrame(String c_id) {
@@ -8,6 +11,8 @@ public class TransactionHisotryFrame extends PopupFrame{
     }
 
     private void setFrame(String customer_id){
+        setLayout(new GridLayout(0,1));
         add(new TransactionHistoryPanel(CustomerDao.getInstance().selectCustomerWithCid(customer_id)));
+        add(new StockTransactionHistoryPanel(CustomerDao.getInstance().selectCustomerWithCid(customer_id)));
     }
 }
