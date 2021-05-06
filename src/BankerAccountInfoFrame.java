@@ -7,6 +7,11 @@ public class BankerAccountInfoFrame extends PopupFrame{
     }
 
     private void setFrame(String customer_id){
-        add(new CustomerHomepagePanel(CustomerDao.getInstance().selectCustomerWithCid(customer_id)));
+        CustomerHomepagePanel new_c = new CustomerHomepagePanel(CustomerDao.getInstance().selectCustomerWithCid(customer_id));
+//        ((CustomerFrame)GuiUtil.getFrame(new_c)).setContextPanel(new MultiCurrAccountPanel(new_c.getCustomer().getAccount("Checking")));
+//        ((CustomerFrame)GuiUtil.getFrame(new_c)).setContextPanel(new MultiCurrAccountPanel(new_c.getCustomer().getAccount("Saving")));
+//        ((CustomerFrame)GuiUtil.getFrame(new_c)).setContextPanel(new MultiCurrAccountPanel(new_c.getCustomer().getAccount("Loan")));
+//        ((CustomerFrame)GuiUtil.getFrame(new_c)).setContextPanel(new MultiCurrAccountPanel(new_c.getCustomer().getAccount("Security")));
+        add(new_c);
     }
 }
