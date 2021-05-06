@@ -145,9 +145,9 @@ Due to the complexity of configuring driver for mysql and the version of jdk req
    * **CollateralRequestPanel extends CustomerContentPanel**: List Collateral request info of the customer, including request status.
    * **CustomerHomepagePanel extends CustomerContentPanel**: HomePage panel. Show basic info of 4 accounts.
    * **TransactionHistoryPanel extends CustomerContentPanel**: Transaction history panel. List history transactions of one customer. 
+   * **LoanPanel extends CustomerContentPanel**: Loan info Table, show customer's loan info in the table
+   * **StockListPanel extends CustomerContentPanel**: Available stock info Table, show stocks that be traded
    * **TablePanel extends CustomerContentPanel**: Abstract class. Show info in a table. Has a Currency Filter.
-      * **LoanPanel extends TablePanel**: Loan info Table, show customer's loan info in the table
-      * **StockListPanel extends TablePanel**: Available stock info Table, show stocks that be traded
       * **StockPositionPanel extends TablePanel**: Stock position info Table, show customer's current positions.
       * **StockProfitPanel extends TablePanel**: Stock profit info Table, show realized profit of the customer from each stock.
 * **BankerContentPanel extends JPanel**: The main panel for banker frames, which will change based on the operation. It shows all the details for manage accounts by default.
