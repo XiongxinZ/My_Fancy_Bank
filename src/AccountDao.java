@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 public class AccountDao {
 
@@ -261,6 +262,45 @@ public class AccountDao {
                 if (selectAccount(customer, s) != null){
                     list.put(s, selectAccount(customer, s));
                 }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(ps, rs);
+        }
+        return list;
+    }
+
+    public List<String[]> selectAccountList(String c_id, String c_name){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<String[]> list = new ArrayList<>();
+
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "select * from account where c_id = ?";
+
+            System.out.println("selectCustomerWithCid(Customer customer)" + sql);
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,c_id);
+
+            rs = ps.executeQuery();
+
+            while(rs.next()) {
+                String[] ret= new String[7];
+                ret[0] = rs.getString("c_id");
+                ret[1] = c_name;
+                ret[2] = rs.getString("c_account");
+                ret[3] = rs.getString("a_id");
+                ret[4] = rs.getString("c_Balance_USD");
+                ret[5] = rs.getString("c_Balance_CNY");
+                ret[6] = rs.getString("c_Balance_JPY");
+
+                list.add(ret);
             }
 
         } catch (SQLException e) {

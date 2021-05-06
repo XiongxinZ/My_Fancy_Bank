@@ -113,8 +113,8 @@ public class BankerContentPanel extends JPanel implements MouseListener {
                         int col = ((JTable) e.getSource()).columnAtPoint(e.getPoint());
 
                         String cellVal = (String) (jt_banker.getModel().getValueAt(row, 0));
-                        new TransactionHisotryFrame(cellVal);
-                        setContextPanel(new CustomerHomepagePanel(CustomerDao.getInstance().selectCustomerWithCid(cellVal)));
+                        String customerName = (String) (jt_banker.getModel().getValueAt(row, 1));
+                        new TransactionHisotryFrame(cellVal,customerName);
                     }
                 }
             });

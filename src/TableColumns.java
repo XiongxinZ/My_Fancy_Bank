@@ -20,6 +20,12 @@ public class TableColumns {
         };
     }
 
+    public static String[] getCustomerAccountColumns() {
+        return new String[] {
+                "Customer ID", "Customer Name", "Account Type", "Account ID", "USD", "CNY", "JPY"
+        };
+    }
+
     public static String[] getStockTransactionColumns() {
         return new String[] {
                 "Date", "Customer", "Stock Name", "Type", "Price", "Quantity", "Amount"
