@@ -112,7 +112,7 @@ public class BankerContentPanel extends JPanel implements MouseListener {
                         String cellVal = (String) (jt_banker.getModel().getValueAt(row, 0));
                         new TransactionHisotryFrame(cellVal);
                         // new StockTransactionHisotryFrame(cellVal);
-                        new BankerAccountInfoFrame(cellVal);
+                        // new BankerAccountInfoFrame(cellVal);
                     }
                 }
             });
