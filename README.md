@@ -203,33 +203,33 @@ for synchronizing singleton database with all kinds of views.
 
 # Demo
 
-##Init Page
+## Init Page
 
 ![avatar](./demo/init.png)
 
-##Login Page
+## Login Page
 
 ![avatar](./demo/login.png)
 
-##Register Page
+## Register Page
 
 ![avatar](./demo/register.png)
 
-##Customer
+## Customer
 
-###CustomerHomePage Page
+### CustomerHomePage Page
 
 ![avatar](./demo/customerHomepage2.png)
 ![avatar](./demo/customerHomepage.png)
 
-###Account Page Overview
+### Account Page Overview
 
 ![avatar](./demo/checking.png)
 ![avatar](./demo/saving.png)
 ![avatar](./demo/loan.png)
 ![avatar](./demo/security.png)
 
-###Loan Account
+### Loan Account
 
 #### Upload collateral valuation request
 
@@ -247,7 +247,7 @@ for synchronizing singleton database with all kinds of views.
 
 ![avatar](./demo/customerCollateralList.png)
 
-###Security Account
+### Security Account
 
 #### customer stock position
 
@@ -296,6 +296,6 @@ for synchronizing singleton database with all kinds of views.
 
 ![avatar](./demo/valuation.png)
 
-##  stock management
+## stock management
 
 ![avatar](./demo/managerStock.png)
