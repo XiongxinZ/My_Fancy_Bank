@@ -47,7 +47,7 @@
    ```
 4. run Main in IDE or run following commands in terminal:
    ```
-   javac *.class
+   javac *.java
    java -cp .;complete-path-to-drive/mysql-connector-java-8.0.20.jar Main
    ```
 
