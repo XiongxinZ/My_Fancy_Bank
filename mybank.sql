@@ -60,9 +60,9 @@ CREATE TABLE IF NOT EXISTS `transactionLog`
     `t_id`       varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'ToCustomer',
     `t_account`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'ToAccount',
     `t_money`    varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Amount',
-    `f_balance`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'FromBalance',
+    `f_balance`  varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'FromBalance',
     `f_currency` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'FromCurrency',
-    `t_balance`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'ToBalance',
+    `t_balance`  varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'ToBalance',
     `t_currency` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'ToCurrency',
     INDEX `f_id` (`f_id`) USING BTREE,
     INDEX `t_id` (`t_id`) USING BTREE

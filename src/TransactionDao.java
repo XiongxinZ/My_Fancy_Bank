@@ -364,6 +364,9 @@ public class TransactionDao {
                 sql.append(QueryUtil.appendConstrain("t_type", type));
             }
 
+            sql.append(" and");
+            sql.append(QueryUtil.appendConstrain("c_id", id));
+
 
             ps = conn.prepareStatement(String.valueOf(sql));
 
