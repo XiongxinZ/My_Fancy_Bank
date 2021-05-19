@@ -217,7 +217,7 @@ public class TransactionDao {
         return list;
     }
 
-    public static List<Vector<String>> getTransactionList(Customer customer, String type, String direction, String year, String month, String day){
+    public static List<Vector<String>> getTransactionList(Customer customer, String type, String direction, String year, String month, String day, String hide){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -276,6 +276,10 @@ public class TransactionDao {
                 }
 
                 if (!"All".equalsIgnoreCase(day) && transDay != Integer.parseInt(day)){
+                    continue;
+                }
+
+                if ("hide".equalsIgnoreCase(hide) && rs.getString("t_type").equalsIgnoreCase("Pay Interest")){
                     continue;
                 }
 

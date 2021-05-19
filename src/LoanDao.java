@@ -33,6 +33,7 @@ public class LoanDao {
         return flag;
     }
 
+
     public static int insertLoan(Loan loan){
         Connection conn = null;
         PreparedStatement ps = null;
@@ -72,9 +73,9 @@ public class LoanDao {
         try{
             conn = JDBCUtil.getConnection();
 
-            String sql = "select * from loan where c_id = ?";
+            String sql = "select * from loan where 1= 1";
+            sql =sql +  " and c_id = " + customer.getId();
             ps = conn.prepareStatement(sql);
-            ps.setString(1, customer.getId());
 
             rs = ps.executeQuery();
 

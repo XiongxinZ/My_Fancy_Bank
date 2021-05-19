@@ -21,16 +21,21 @@ public class Withdraw extends AbstractTransaction {
         String ret;
         if (getFrom() instanceof SavingAccount){
             SavingAccount savingAccount = (SavingAccount) getFrom();
+            setAmount(Math.min(getAmount(), getFrom().getAmount(getCurrencyFrom())));
             savingAccount.removeCurrency(getAmount(), getCurrencyFrom());
             AccountDao.updateAccountMoney(savingAccount, getCurrencyFrom());
             TransactionDao.insertTransaction(this);
-            ret =  "Withdraw $" + getAmount() + ", balance $" + savingAccount.getAmount(getCurrencyFrom());
+            ret =  "Withdraw " + getAmount() +getCurrencyFrom()+
+                    ", balance " + savingAccount.getAmount(getCurrencyFrom())+getCurrencyFrom();
         }else if (getFrom() instanceof CheckingAccount){
             CheckingAccount checkingAccount = (CheckingAccount) getFrom();
-            checkingAccount.removeCurrency(getAmount(), getCurrencyFrom());
+            setAmount(Math.min(getAmount(), getFrom().getAmount(getCurrencyFrom())/(1+ConfigUtil.getConfigDouble("CheckingRate"))));
+            checkingAccount.removeCurrency(getAmount()*(1+ConfigUtil.getConfigDouble("CheckingRate")), getCurrencyFrom());
             AccountDao.updateAccountMoney(checkingAccount,getCurrencyFrom());
             TransactionDao.insertTransaction(this);
-            ret = "Withdraw $" + getAmount() + ", amount $" + checkingAccount.getAmount(getCurrencyFrom());
+            ret = "Withdraw " + getAmount() +getCurrencyFrom()+
+                    "Fee "+getAmount()*ConfigUtil.getConfigDouble("CheckingRate") + getCurrencyFrom()+
+                    ", balance " + checkingAccount.getAmount(getCurrencyFrom())+getCurrencyFrom();
         }else{
             ret = getFrom().toString() + " can't withdraw.";
         }

@@ -154,4 +154,10 @@ public abstract class AbstractTransaction implements Transaction {
 
     public abstract String execute();
 
+    public void setTransTime(Date transTime) {
+        this.transTime = transTime;
+    }
+
+
+
 }

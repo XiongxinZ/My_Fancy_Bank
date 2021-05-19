@@ -21,13 +21,25 @@ public class Transfer extends AbstractTransaction {
             TransactionDao.insertTransaction(this);
             ret = "Transfer success";
         }else{
-            getFrom().removeCurrency(getAmount(), getCurrencyFrom());
-            getTo().addCurrency(getAmount(), getCurrencyTo());
-            ret = "Transfer " + getAmount() + " from "+ getFrom().toString() +" to "+ getTo().toString();
-            TransactionDao.insertTransaction(this);
-            AccountDao.updateAccountMoney(getTo(),getCurrencyTo());
-            AccountDao.updateAccountMoney(getFrom(),getCurrencyFrom());
-
+            if (getFrom() instanceof CheckingAccount){
+                if (getFrom().getAmount(getCurrencyFrom()) >= getAmount() * (1 + ConfigUtil.getConfigDouble("CheckingRate"))){
+                    getFrom().removeCurrency(getAmount()* (1 + ConfigUtil.getConfigDouble("CheckingRate")), getCurrencyFrom());
+                    getTo().addCurrency(getAmount(), getCurrencyTo());
+                    ret = "Transfer " + getAmount() + " from "+ getFrom().toString() +" to "+ getTo().toString();
+                    TransactionDao.insertTransaction(this);
+                    AccountDao.updateAccountMoney(getTo(),getCurrencyTo());
+                    AccountDao.updateAccountMoney(getFrom(),getCurrencyFrom());
+                }else{
+                    ret = "Sorry You don't have enough money to pay the transaction fee.";
+                }
+            }else{
+                getFrom().removeCurrency(getAmount(), getCurrencyFrom());
+                getTo().addCurrency(getAmount(), getCurrencyTo());
+                ret = "Transfer " + getAmount() + " from "+ getFrom().toString() +" to "+ getTo().toString();
+                TransactionDao.insertTransaction(this);
+                AccountDao.updateAccountMoney(getTo(),getCurrencyTo());
+                AccountDao.updateAccountMoney(getFrom(),getCurrencyFrom());
+            }
         }
         return ret;
     }

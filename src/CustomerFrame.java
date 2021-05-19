@@ -24,7 +24,7 @@ public class CustomerFrame extends CoreFrame {
 
     private void setTopInfo(){
         infoPanel = new JPanel(new BorderLayout());
-        JLabel jLabel = new JLabel("<html>Hello! <b><em>" + customer.getName() + "!</em></b>");
+        JLabel jLabel = new JLabel("<html><font size=\"20\">  Hello! <b><em>" + customer.getName() + "!</em></b>");
         infoPanel.add(setButton(), BorderLayout.EAST);
         infoPanel.add(jLabel, BorderLayout.CENTER);
     }

@@ -26,9 +26,6 @@ public class Deposit extends AbstractTransaction {
             TransactionDao.insertTransaction(this);
             ret = "Deposit " + getAmount() + ", balance $" + savingAccount.getAmount(getCurrencyTo());
         }else if (getTo() instanceof CheckingAccount){
-//            ret = ((CheckingAccount) getTo()).deposit(getAmount(), currency);
-//            TransactionDao.insertTransaction(this);
-
             CheckingAccount checkingAccount = (CheckingAccount) getTo();
             checkingAccount.addCurrency(getAmount(), getCurrencyTo());
             AccountDao.updateAccountMoney(checkingAccount,getCurrencyTo());

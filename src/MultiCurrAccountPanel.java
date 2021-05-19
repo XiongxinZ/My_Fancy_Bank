@@ -63,7 +63,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
                 "  <b>CNY</b>: " + account.getAmount("CNY") +
                 "  <b>JPY</b>: " + account.getAmount("JPY") , JLabel.CENTER ));
         if (account instanceof SecurityAccount){
-            jp.add(new JLabel("<html>Realized Profit: "+getLabel(((SecurityAccount) account).getProfit()), JLabel.CENTER));
+            jp.add(new JLabel("<html><font color=\"green\">Realized Profit: </font>"+getLabel(((SecurityAccount) account).getProfit()), JLabel.CENTER));
             jp.add(new JLabel("<html>Stock Position"+getLabel(((SecurityAccount) account).getStockAmount()),JLabel.CENTER));
         }
 
@@ -169,14 +169,6 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
         }
 
         if (account instanceof SecurityAccount){
-            JButton stockPool = new JButton("Bank Stock Pool");
-            stockPool.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    List<StockInfo> stockInfos = StockDao.selectStockInfoList();
-                    GuiUtil.getFrame(MultiCurrAccountPanel.this).dispose();
-                }
-            });
 
             JButton buy = new JButton("Buy Stock");
             buy.addActionListener(new ActionListener() {
@@ -215,6 +207,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
                     new TransferInFrame((SecurityAccount) account);
                 }
             });
+            jp.add(transferIn);
 
             JButton transferOut = new JButton("Transfer Out");
             transferOut.addActionListener(new ActionListener() {
@@ -224,6 +217,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
                     new TransferOutFrame((SecurityAccount) account);
                 }
             });
+            jp.add(transferOut);
         }
 
         JButton back = new JButton("Back");

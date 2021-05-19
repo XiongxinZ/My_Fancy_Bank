@@ -18,6 +18,11 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 
+ DROP TABLE IF EXISTS `timer`;
+CREATE TABLE IF NOT EXISTS `timer`  (
+   `u_id` TINYINT NOT NULL COMMENT 'id',
+  `u_date` date NOT NULL COMMENT 'Last Update Time') ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
 -- ----------------------------
 -- Table structure for transaction
 -- ----------------------------
