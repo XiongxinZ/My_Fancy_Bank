@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 
 
-public class TransactionHistoryPanel extends CustomerContentPanel implements MouseListener {
+public class StockTransactionHistoryPanel extends CustomerContentPanel implements MouseListener {
 
     private JTextField jtf_name;
     private JTextField jtf_id;
@@ -37,22 +37,13 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
      * 将客户信息填入表格
      *
      */
-    public void fillTable() {
+
+
+    public void fillTable(String type, String year, String month, String day) {
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        List<Vector<String>> list = TransactionDao.getInstance().getTransactionList(getCustomer());
-
-        for(Vector<String> data : list) {
-            dm.addRow(data);
-        }
-    }
-
-    public void fillTable(String type, String direction,String year, String month, String day,String hide) {
-        dm = (DefaultTableModel) jt_customer.getModel();
-        dm.setRowCount(0);
-
-        List<Vector<String>> list = TransactionDao.getInstance().getTransactionList(getCustomer(), type, direction,year, month, day,hide);
+        List<Vector<String>> list = TransactionDao.getInstance().getStockTransactionList(getCustomer(), type,year, month, day);
 
         for(Vector<String> data : list) {
             dm.addRow(data);
@@ -68,7 +59,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         }
     }
 
-    public TransactionHistoryPanel(Customer customer) {
+    public StockTransactionHistoryPanel(Customer customer) {
         super(customer);
         setPanel();
     }
@@ -116,36 +107,19 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         JLabel jl_type = new JLabel("Type");
         jp_tool.add(jl_type);
 
+
+
         JComboBox<String> jc_type = new JComboBox<>();
-//        jc_type.setBounds(750, 10, 100, 30);
+//        jc_direction.setBounds(750, 10, 100, 30);
         jc_type.addItem("ALL");
-        String[] typeList = SystemDatabase.transType;
-        for(String data : typeList) {
+        String[] directionList = {"Buy", "Sell"};
+        for(String data : directionList) {
             jc_type.addItem(data);
         }
         jp_tool.add(jc_type);
 
-        JLabel jl_to = new JLabel("Direction");
-//        jl_to.setBounds(700, 10, 50, 30);
-        jp_tool.add(jl_to);
 
-        JComboBox<String> jc_direction = new JComboBox<>();
-//        jc_direction.setBounds(750, 10, 100, 30);
-        jc_direction.addItem("ALL");
-        String[] directionList = {"IN", "OUT"};
-        for(String data : directionList) {
-            jc_direction.addItem(data);
-        }
-        jp_tool.add(jc_direction);
-
-        JLabel jl_hide = new JLabel("Interest");
-//        jl_to.setBounds(700, 10, 50, 30);
-        jp_tool.add(jl_hide);
-
-        JComboBox<String> jc_hide = new JComboBox<>(new String[]{"hide","show"});
-        jp_tool.add(jc_hide);
-
-        jt_customer = new JTable(new DefaultTableModel(TableColumns.getTransactionColumns(), 0) {
+        jt_customer = new JTable(new DefaultTableModel(TableColumns.getStockTransactionColumns(), 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -158,14 +132,12 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         TableSetting.makeFace(jt_customer);
 
         String type = ((String) jc_type.getSelectedItem()).trim();
-        String direction = ((String) jc_direction.getSelectedItem()).trim();
         String y = ((String)jc_year.getSelectedItem()).trim();
         String m = ((String)jc_month.getSelectedItem()).trim();
         String d = ((String)jc_day.getSelectedItem()).trim();
-        String hide = ((String)jc_hide.getSelectedItem()).trim();
 
 //                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
-        fillTable(type, direction,y,m,d,hide);
+        fillTable(type,y,m,d);
         JScrollPane js = new JScrollPane(jt_customer);
         this.add(js, BorderLayout.CENTER);
 
@@ -179,14 +151,12 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
             public void actionPerformed(ActionEvent e) {
 
                 String type = ((String) jc_type.getSelectedItem()).trim();
-                String direction = ((String) jc_direction.getSelectedItem()).trim();
                 String year = ((String)jc_year.getSelectedItem()).trim();
                 String month = ((String)jc_month.getSelectedItem()).trim();
                 String day = ((String)jc_day.getSelectedItem()).trim();
-                String hide = ((String)jc_hide.getSelectedItem()).trim();
 
 //                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
-                fillTable(type, direction,year,month,day,hide);
+                fillTable(type,year,month,day);
 
             }
         });
@@ -260,4 +230,3 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
 //        }
     }
 }
-

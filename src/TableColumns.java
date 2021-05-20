@@ -7,6 +7,12 @@ public class TableColumns {
         };
     }
 
+    public static String[] getStockTransactionColumns() {
+        return new String[] {
+                "Date", "Customer", "Stock Name", "Type", "Price", "Quantity", "Amount"
+        };
+    }
+
     public static String[] getStockPoolColumns(){
         return new String[] {
                 "Stock Name", "Currency","Current Price", "Buy Price", "Quantity", "Amount", "Profit"

@@ -1,10 +1,7 @@
-import java.io.Serial;
 
 public class SavingAccount extends Account implements CanDeposit, CanTransferWithin {
 
     public static final String TYPE = "Saving";
-    @Serial
-    private static final long serialVersionUid = -2481826816986733553L;
 
     public SavingAccount(Customer customer, double amount) {
         super(customer, amount, "Saving");

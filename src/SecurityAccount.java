@@ -101,8 +101,4 @@ public class SecurityAccount extends Account{
         return new TransferOut(this, val, curr).execute();
     }
 
-    @Override
-    public boolean isMultiCurr() {
-        return false;
-    }
 }

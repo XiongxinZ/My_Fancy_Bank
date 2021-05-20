@@ -18,10 +18,6 @@ public class LoanAccount extends Account{
         super(customer,"Loan");
     }
 
-//    public String repayment(Loan loan, double amount){
-//        return new Repayment(loan,amount).execute();
-//    }
-
     public String takeLoan(Collateral collateral, String curr){
         return new TakeLoan(this, collateral, curr).execute();
     }

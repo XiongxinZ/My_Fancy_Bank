@@ -305,5 +305,4 @@ public class StockDao {
         }
         return list;
     }
-
 }

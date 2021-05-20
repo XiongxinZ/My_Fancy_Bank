@@ -74,8 +74,4 @@ public class CustomerHomepagePanel extends CustomerContentPanel{
         });
         add(security);
     }
-
-    public static void main(String[] args) {
-        TestPanel.test(new CustomerHomepagePanel(new Customer()));
-    }
 }

@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Collateral implements  Modifiable {
+public class Collateral implements  Valuable {
     private double price;
     private String name;
     private Customer customer;
@@ -90,18 +90,18 @@ public class Collateral implements  Modifiable {
     }
 
     @Override
-    public void markDirty(boolean isDirty) {
-        this.isDirty = isDirty;
-    }
-
-    @Override
-    public boolean isDirty() {
-        return isDirty;
-    }
-
-    @Override
     public String toString() {
         return "price=" + price +
                 "USD, name='" + name;
+    }
+
+    @Override
+    public double getValue() {
+        return price;
+    }
+
+    @Override
+    public String getCurrency() {
+        return "USD";
     }
 }

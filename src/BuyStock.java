@@ -3,7 +3,7 @@ public class BuyStock extends StockTransaction{
 //    private Stock stock;
 
     public BuyStock(SecurityAccount account, CustomerStock stock){
-        super(account, stock);
+        super(account, stock, "Buy");
     }
 
     public String execute() {
@@ -19,6 +19,7 @@ public class BuyStock extends StockTransaction{
                 cs.merge(getStock());
                 StockDao.getInstance().updateStockPosition(cs);
                 AccountDao.getInstance().updateAccountMoney(getAccount(), getStock().getCurrency());
+                TransactionDao.getInstance().insertStockTransaction(this);
                 return "Buy "+ getStock().getQuantity() + getStock().getName();
             }
         }else{
@@ -28,6 +29,7 @@ public class BuyStock extends StockTransaction{
                     getStock().getCurrency());
             getAccount().getStockPool().put(getStock().getName(), getStock());
             StockDao.getInstance().insertCustomerStock(getStock());
+            TransactionDao.getInstance().insertStockTransaction(this);
             return "Buy "+ getStock().getQuantity() + getStock().getName();
         }
     }

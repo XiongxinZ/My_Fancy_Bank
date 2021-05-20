@@ -1,18 +1,13 @@
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Currency;
 import java.util.HashMap;
 
 public class Account implements Modifiable {
-    @Serial
-    private static final long serialVersionUid = 4155194950008766436L;
+
     private HashMap<String, Double> amount = new HashMap<>();
     private Customer customer;
     private String accountType;
     private String id;
 
     private boolean isDirty = false;
-    private boolean isMultiCurr = true;
 
     public Account(Customer customer, String currency, double amount, String accountType) {
         this.customer = customer;
@@ -120,10 +115,6 @@ public class Account implements Modifiable {
     }
     public void setAmount(double amount, String curr) {
         this.amount.put(curr, amount);
-    }
-
-    public boolean isMultiCurr() {
-        return isMultiCurr;
     }
 
     @Override

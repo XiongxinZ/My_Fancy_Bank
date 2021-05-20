@@ -2,7 +2,7 @@
 public class SellStock extends StockTransaction{
 
     public SellStock(SecurityAccount account, CustomerStock stock){
-        super(account, stock);
+        super(account, stock,"Sell");
     }
 
     public String execute() {
@@ -42,6 +42,7 @@ public class SellStock extends StockTransaction{
                     StockDao.getInstance().updateStockPosition(cs);
                 }
                 AccountDao.getInstance().updateAccountMoney(getAccount(), getStock().getCurrency());
+                TransactionDao.getInstance().insertStockTransaction(this);
                 return "Sold "+ getStock().getQuantity() + getStock().getName();
             }
         }else{

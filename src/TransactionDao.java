@@ -310,4 +310,102 @@ public class TransactionDao {
         }
         return list;
     }
+
+    public int insertStockTransaction(StockTransaction transaction){
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int flag = 0;
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            String sql = "insert into stockTransactionLog(t_date, c_id, s_name,t_type, t_price, t_quantity, t_amount) "
+                    + "values(?,?,?,?,?,?,?)";
+
+            ps = conn.prepareStatement(sql);
+            ps.setDate(1, new Date(transaction.getDate().getTime()));
+            ps.setString(2, transaction.getAccount().getCustomer().getId());
+            ps.setString(3, transaction.getStock().getName());
+            ps.setString(4, transaction.getType());
+            ps.setDouble(5, transaction.getPrice());
+            ps.setInt(6, transaction.getStock().getQuantity());
+            ps.setDouble(7, transaction.getPrice() * transaction.getStock().getQuantity());
+            flag = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return flag;
+    }
+
+
+    public List<Vector<String>> getStockTransactionList(Customer customer, String type, String year, String month, String day){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        ArrayList<Vector<String>> list = new ArrayList<>();
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+            String id = customer.getId();
+
+
+            StringBuilder sql = QueryUtil.getPartAll("stockTransactionLog");
+
+            if (!"All".equalsIgnoreCase(type)){
+                sql.append(" and");
+                sql.append(QueryUtil.appendConstrain("t_type",type));
+            }
+
+
+            ps = conn.prepareStatement(String.valueOf(sql));
+
+            rs = ps.executeQuery();
+//            int size = rs.getFetchSize();
+            while(rs.next()) {
+                Vector<String> dataRow = new Vector<>();
+                Date date = rs.getDate("t_date");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                int transYear = calendar.get(Calendar.YEAR);
+                int transMonth = calendar.get(Calendar.MONTH);
+                int transDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+
+                if (!"All".equalsIgnoreCase(year) && transYear != Integer.parseInt(year)){
+                    continue;
+                }
+
+                if (!"All".equalsIgnoreCase(month) && transMonth != SystemDatabase.monthMap.get(month)){
+                    continue;
+                }
+
+                if (!"All".equalsIgnoreCase(day) && transDay != Integer.parseInt(day)){
+                    continue;
+                }
+
+                // t_date, c_id, s_name,t_type, t_price, t_quantity, t_amount
+                dataRow.add(rs.getString("t_date"));
+                dataRow.add(CustomerDao.getInstance().getCustomerName(rs.getString("c_id")));
+                dataRow.add(rs.getString("s_name"));
+                dataRow.add(rs.getString("t_type"));
+                dataRow.add(rs.getString("t_price"));
+                dataRow.add(rs.getString("t_quantity"));
+                dataRow.add(rs.getString("t_amount"));
+                list.add(dataRow);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return list;
+    }
 }

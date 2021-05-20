@@ -34,12 +34,7 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
     @Override
     protected void removeCurrency(double val, String currency) {
         super.removeCurrency(val, currency);
-//        AccountDao.updateCheckingMoney(this,currency);
     }
-
-//    public String depositExe(double val, String currency){
-//        return new Deposit(this,)
-//    }
 
 
     public String deposit(double val){
