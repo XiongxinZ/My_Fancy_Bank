@@ -17,8 +17,8 @@ public class BuyStock extends StockTransaction{
                                 - getStock().getCurrentPrice() * getStock().getQuantity(),
                         getStock().getCurrency());
                 cs.merge(getStock());
-                StockDao.updateStockPosition(cs);
-                AccountDao.updateAccountMoney(getAccount(), getStock().getCurrency());
+                StockDao.getInstance().updateStockPosition(cs);
+                AccountDao.getInstance().updateAccountMoney(getAccount(), getStock().getCurrency());
                 return "Buy "+ getStock().getQuantity() + getStock().getName();
             }
         }else{
@@ -27,7 +27,7 @@ public class BuyStock extends StockTransaction{
                             - getStock().getCurrentPrice() * getStock().getQuantity(),
                     getStock().getCurrency());
             getAccount().getStockPool().put(getStock().getName(), getStock());
-            StockDao.insertCustomerStock(getStock());
+            StockDao.getInstance().insertCustomerStock(getStock());
             return "Buy "+ getStock().getQuantity() + getStock().getName();
         }
     }

@@ -29,7 +29,7 @@ public class CollateralRequestPanel extends CustomerContentPanel implements Mous
         dm.setRowCount(0);
 
         if (valuationList == null){
-            valuationList = CollateralDao.selectCollateralRequestList(getCustomer().getId());
+            valuationList = CollateralDao.getInstance().selectCollateralRequestList(getCustomer().getId());
         }
 
         for (CollateralValuation value : valuationList) {
@@ -51,7 +51,7 @@ public class CollateralRequestPanel extends CustomerContentPanel implements Mous
         dm.setRowCount(0);
 
         if (valuationList == null){
-            valuationList = CollateralDao.selectCollateralRequestList(getCustomer().getId());
+            valuationList = CollateralDao.getInstance().selectCollateralRequestList(getCustomer().getId());
         }
 
         for (CollateralValuation value : valuationList) {

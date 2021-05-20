@@ -22,7 +22,7 @@ public class InterestUpdate {
                 return;
             }
             int day = (int) ((newDate.getTime() - lastDate.getTime())/ (1000 * 60 * 60 * 24));
-            List<String[]> savingList = AccountDao.selectSavingList();
+            List<String[]> savingList = AccountDao.getInstance().selectSavingList();
             for (String[] account : savingList) {
                 for (int i = 0; i < SystemDatabase.currType.length; i++) {
                     String s = SystemDatabase.currType[i];

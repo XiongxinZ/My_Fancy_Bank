@@ -28,7 +28,7 @@ public class RepaymentFrame extends PopupFrame{
         JLabel loanLabel = new JLabel("Loan: ");
         jPanel.add(loanLabel);
 
-        JComboBox<Loan> loan = new JComboBox<>(LoanDao.selectCustomerLoanList(account.getCustomer()).values().toArray(new Loan[0]));
+        JComboBox<Loan> loan = new JComboBox<>(LoanDao.getInstance().selectCustomerLoanList(account.getCustomer()).values().toArray(new Loan[0]));
         jPanel.add(loan);
 
         JLabel balanceLabel = new JLabel("Loan Balance: ");

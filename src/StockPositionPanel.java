@@ -32,7 +32,7 @@ public class StockPositionPanel extends TablePanel {
         dm.setRowCount(0);
 
         if (stockList == null){
-            stockList = StockDao.selectCustomerStockList(getCustomer());
+            stockList = StockDao.getInstance().selectCustomerStockList(getCustomer());
         }
 
         for (CustomerStock value : stockList.values()) {
@@ -54,7 +54,7 @@ public class StockPositionPanel extends TablePanel {
         dm.setRowCount(0);
 
         if (stockList == null){
-            stockList = StockDao.selectCustomerStockList(getCustomer());
+            stockList = StockDao.getInstance().selectCustomerStockList(getCustomer());
         }
 
         for (CustomerStock value : stockList.values()) {

@@ -16,7 +16,7 @@ public class StockProfitPanel extends TablePanel {
         dm.setRowCount(0);
 
         if (profitList == null){
-            profitList = StockDao.selectProfitList(getCustomer());
+            profitList = StockDao.getInstance().selectProfitList(getCustomer());
         }
 
         for (StockProfit value : profitList.values()) {
@@ -33,7 +33,7 @@ public class StockProfitPanel extends TablePanel {
         dm.setRowCount(0);
 
         if (profitList == null){
-            profitList = StockDao.selectProfitList(getCustomer());
+            profitList = StockDao.getInstance().selectProfitList(getCustomer());
         }
 
         for (StockProfit value : profitList.values()) {

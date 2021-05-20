@@ -33,8 +33,8 @@ public class LoanAccount extends Account{
             LoanAccount loan = new LoanAccount(customer);
             customer.addAccount(TYPE, loan);
             customer.markDirty(true);
-            AccountDao.insertAccount(loan);
-            AccountDao.updateAccountMoney(customer.getAccount("Saving"),"USD");
+            AccountDao.getInstance().insertAccount(loan);
+            AccountDao.getInstance().updateAccountMoney(customer.getAccount("Saving"),"USD");
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
         }else{
             return "You can't create Loan Account if you don't have $" + temp + " in your Saving Account";

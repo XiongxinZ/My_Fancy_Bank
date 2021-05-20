@@ -23,11 +23,11 @@ public class TakeLoan extends AbstractTransaction {
         collateral.setUsed(true);
         Loan newLoan = new Loan(getFrom().getCustomer(), collateral, getAmount(), getCurrencyFrom());
         ((LoanAccount)getFrom()).getLoanPool().put(newLoan.getId(), newLoan);
-        AccountDao.updateAccountMoney(getFrom(),getCurrencyFrom());
-        AccountDao.updateAccountMoney(getTo(),getCurrencyTo());
-        LoanDao.insertLoan(newLoan);
-        CollateralDao.updateUsed(collateral);
-        TransactionDao.insertTransaction(this);
+        AccountDao.getInstance().updateAccountMoney(getFrom(),getCurrencyFrom());
+        AccountDao.getInstance().updateAccountMoney(getTo(),getCurrencyTo());
+        LoanDao.getInstance().insertLoan(newLoan);
+        CollateralDao.getInstance().updateUsed(collateral);
+        TransactionDao.getInstance().insertTransaction(this);
         return "Success! " + ConfigUtil.getConfig("LoanTarget") + "Account add " + getAmount() + getCurrencyTo();
     }
 }

@@ -22,14 +22,14 @@ public class Deposit extends AbstractTransaction {
         if (getTo() instanceof SavingAccount){
             SavingAccount savingAccount = (SavingAccount) getTo();
             savingAccount.addCurrency(getAmount(), getCurrencyTo());
-            AccountDao.updateAccountMoney(savingAccount,getCurrencyTo());
-            TransactionDao.insertTransaction(this);
+            AccountDao.getInstance().updateAccountMoney(savingAccount,getCurrencyTo());
+            TransactionDao.getInstance().insertTransaction(this);
             ret = "Deposit " + getAmount() + ", balance $" + savingAccount.getAmount(getCurrencyTo());
         }else if (getTo() instanceof CheckingAccount){
             CheckingAccount checkingAccount = (CheckingAccount) getTo();
             checkingAccount.addCurrency(getAmount(), getCurrencyTo());
-            AccountDao.updateAccountMoney(checkingAccount,getCurrencyTo());
-            TransactionDao.insertTransaction(this);
+            AccountDao.getInstance().updateAccountMoney(checkingAccount,getCurrencyTo());
+            TransactionDao.getInstance().insertTransaction(this);
             ret = "Deposit " + getAmount() + ", balance $" + checkingAccount.getAmount(getCurrencyTo());
         }else{
             ret = getTo().toString() + " can't deposit.";

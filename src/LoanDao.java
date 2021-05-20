@@ -2,11 +2,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
 
 public class LoanDao {
 
-    public static int updateLoanBalance(Loan loan) {
+    private static LoanDao loanDao = new LoanDao();
+
+    public static LoanDao getInstance(){
+        return loanDao;
+    }
+
+    public int updateLoanBalance(Loan loan) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -34,7 +39,7 @@ public class LoanDao {
     }
 
 
-    public static int insertLoan(Loan loan){
+    public int insertLoan(Loan loan){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -63,7 +68,7 @@ public class LoanDao {
         return flag;
     }
 
-    public static ValuePool<Loan> selectCustomerLoanList(Customer customer){
+    public ValuePool<Loan> selectCustomerLoanList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -82,7 +87,7 @@ public class LoanDao {
             while(rs.next()){
                 String id = rs.getString("l_id");
                 String coID = rs.getString("co_id");
-                Collateral collateral = CollateralDao.selectCollateralWithId(coID, customer);
+                Collateral collateral = CollateralDao.getInstance().selectCollateralWithId(coID, customer);
                 String currency = rs.getString("l_currency");
                 double balance = rs.getDouble("l_balance");
 
@@ -97,7 +102,7 @@ public class LoanDao {
         return list;
     }
 
-    public static int removeLoan(Loan loan) {
+    public int removeLoan(Loan loan) {
 
         Connection conn = null;
         PreparedStatement ps = null;

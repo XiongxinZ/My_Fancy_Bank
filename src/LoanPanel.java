@@ -25,7 +25,7 @@ public class LoanPanel extends TablePanel {
         dm.setRowCount(0);
 
         if (loanList == null){
-            loanList = LoanDao.selectCustomerLoanList(getCustomer());
+            loanList = LoanDao.getInstance().selectCustomerLoanList(getCustomer());
         }
 
         for (Loan value : loanList.values()) {
@@ -45,7 +45,7 @@ public class LoanPanel extends TablePanel {
         dm.setRowCount(0);
 
         if (loanList == null){
-            loanList = LoanDao.selectCustomerLoanList(getCustomer());
+            loanList = LoanDao.getInstance().selectCustomerLoanList(getCustomer());
         }
 
         for (Loan value : loanList.values()) {

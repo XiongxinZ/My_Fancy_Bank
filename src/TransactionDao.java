@@ -7,7 +7,13 @@ import java.util.Vector;
 public class TransactionDao {
     private static String dbName = "transactionLog";
 
-    public static int  insertTransaction(AbstractTransaction transaction){
+    private static TransactionDao transactionDao = new TransactionDao();
+
+    public static TransactionDao getInstance(){
+        return transactionDao;
+    }
+
+    public int  insertTransaction(AbstractTransaction transaction){
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -42,7 +48,7 @@ public class TransactionDao {
         return flag;
     }
 
-    public static List<Vector<String>> getTransactionList(Customer customer){
+    public List<Vector<String>> getTransactionList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -76,9 +82,9 @@ public class TransactionDao {
                 Vector<String> dataRow = new Vector<>();
                 dataRow.add(rs.getString("t_date"));
                 dataRow.add(rs.getString("t_type"));
-                dataRow.add(CustomerDao.getCustomerName(rs.getString("f_id")));
+                dataRow.add(CustomerDao.getInstance().getCustomerName(rs.getString("f_id")));
                 dataRow.add(rs.getString("f_account"));
-                dataRow.add(CustomerDao.getCustomerName(rs.getString("t_id")));
+                dataRow.add(CustomerDao.getInstance().getCustomerName(rs.getString("t_id")));
                 dataRow.add(rs.getString("t_account"));
                 dataRow.add(rs.getString("t_money"));
                 dataRow.add(rs.getString("f_balance"));
@@ -96,7 +102,7 @@ public class TransactionDao {
         return list;
     }
 
-    public static List<Vector<String>> getTransactionList(Customer customer, String type){
+    public List<Vector<String>> getTransactionList(Customer customer, String type){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -134,9 +140,9 @@ public class TransactionDao {
                 Vector<String> dataRow = new Vector<>();
                 dataRow.add(rs.getString("t_date"));
                 dataRow.add(rs.getString("t_type"));
-                dataRow.add(CustomerDao.getCustomerName(rs.getString("f_id")));
+                dataRow.add(CustomerDao.getInstance().getCustomerName(rs.getString("f_id")));
                 dataRow.add(rs.getString("f_account"));
-                dataRow.add(CustomerDao.getCustomerName(rs.getString("t_id")));
+                dataRow.add(CustomerDao.getInstance().getCustomerName(rs.getString("t_id")));
                 dataRow.add(rs.getString("t_account"));
                 dataRow.add(rs.getString("t_money"));
                 dataRow.add(rs.getString("f_balance"));
@@ -154,7 +160,7 @@ public class TransactionDao {
         return list;
     }
 
-    public static List<Vector<String>> getTransactionList(Customer customer, String type, String direction){
+    public List<Vector<String>> getTransactionList(Customer customer, String type, String direction){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -197,9 +203,9 @@ public class TransactionDao {
                 Vector<String> dataRow = new Vector<>();
                 dataRow.add(rs.getString("t_date"));
                 dataRow.add(rs.getString("t_type"));
-                dataRow.add(CustomerDao.getCustomerName(rs.getString("f_id")));
+                dataRow.add(CustomerDao.getInstance().getCustomerName(rs.getString("f_id")));
                 dataRow.add(rs.getString("f_account"));
-                dataRow.add(CustomerDao.getCustomerName(rs.getString("t_id")));
+                dataRow.add(CustomerDao.getInstance().getCustomerName(rs.getString("t_id")));
                 dataRow.add(rs.getString("t_account"));
                 dataRow.add(rs.getString("t_money"));
                 dataRow.add(rs.getString("f_balance"));
@@ -217,7 +223,7 @@ public class TransactionDao {
         return list;
     }
 
-    public static List<Vector<String>> getTransactionList(Customer customer, String type, String direction, String year, String month, String day, String hide){
+    public List<Vector<String>> getTransactionList(Customer customer, String type, String direction, String year, String month, String day, String hide){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -285,9 +291,9 @@ public class TransactionDao {
 
                 dataRow.add(rs.getString("t_date"));
                 dataRow.add(rs.getString("t_type"));
-                dataRow.add(CustomerDao.getCustomerName(rs.getString("f_id")));
+                dataRow.add(CustomerDao.getInstance().getCustomerName(rs.getString("f_id")));
                 dataRow.add(rs.getString("f_account"));
-                dataRow.add(CustomerDao.getCustomerName(rs.getString("t_id")));
+                dataRow.add(CustomerDao.getInstance().getCustomerName(rs.getString("t_id")));
                 dataRow.add(rs.getString("t_account"));
                 dataRow.add(rs.getString("t_money"));
                 dataRow.add(rs.getString("f_balance"));

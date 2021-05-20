@@ -22,26 +22,26 @@ public class SellStock extends StockTransaction{
                     if (getAccount().getProfitPool().containsKey(profit.getName())){
                         StockProfit val =getAccount().getProfitPool().get(profit.getName());
                         val.setProfit(val.getProfit() + profit.getProfit());
-                        StockDao.updateProfit(val);
+                        StockDao.getInstance().updateProfit(val);
                     }else{
                         getAccount().getProfitPool().put(profit.getName(), profit);
-                        StockDao.insertProfit(profit);
+                        StockDao.getInstance().insertProfit(profit);
                     }
                     getAccount().getStockPool().remove(cs.getName());
-                    StockDao.removeCustomerStock(cs);
+                    StockDao.getInstance().removeCustomerStock(cs);
                 }else{
                     StockProfit profit = new StockProfit(getStock());
                     if (getAccount().getProfitPool().containsKey(profit.getName())){
                         StockProfit val =getAccount().getProfitPool().get(profit.getName());
                         val.setProfit(val.getProfit() + profit.getProfit());
-                        StockDao.updateProfit(val);
+                        StockDao.getInstance().updateProfit(val);
                     }else{
                         getAccount().getProfitPool().put(profit.getName(), profit);
-                        StockDao.insertProfit(profit);
+                        StockDao.getInstance().insertProfit(profit);
                     }
-                    StockDao.updateStockPosition(cs);
+                    StockDao.getInstance().updateStockPosition(cs);
                 }
-                AccountDao.updateAccountMoney(getAccount(), getStock().getCurrency());
+                AccountDao.getInstance().updateAccountMoney(getAccount(), getStock().getCurrency());
                 return "Sold "+ getStock().getQuantity() + getStock().getName();
             }
         }else{

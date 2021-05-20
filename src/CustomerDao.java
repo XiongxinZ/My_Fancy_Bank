@@ -7,9 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDao {
-	
 
-	public static int insertCustomer(Customer customer) {
+	private static CustomerDao customerDao = new CustomerDao();
+
+	public static CustomerDao getInstance(){
+		return customerDao;
+	}
+
+	public int insertCustomer(Customer customer) {
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -44,7 +49,7 @@ public class CustomerDao {
 	}
 
 
-	public static int updateCustomerPSW(String id, String pwd) {
+	public int updateCustomerPSW(String id, String pwd) {
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -72,11 +77,11 @@ public class CustomerDao {
 	}
 
 
-	public static int updateCustomerPSW(Customer customer) {
+	public int updateCustomerPSW(Customer customer) {
 		return updateCustomerPSW(customer.getId(), customer.getPassword());
 	}
 
-	public static int delCustomer(String id) {
+	public int delCustomer(String id) {
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -103,12 +108,12 @@ public class CustomerDao {
 		}
 	}
 
-	public static int delCustomer(Customer customer) {
+	public int delCustomer(Customer customer) {
 
 		return delCustomer(customer.getId());
 	}
 
-	public static String getCustomerName(String id){
+	public String getCustomerName(String id){
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -142,7 +147,7 @@ public class CustomerDao {
 		return userName;
 	}
 
-	public static Customer selectCustomer(String email, String pswd) {
+	public Customer selectCustomer(String email, String pswd) {
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -169,7 +174,7 @@ public class CustomerDao {
 				user.setName(rs.getString("c_Name"));
 				user.setPassword(rs.getString("c_PSWD"));
 				user.setEmail(rs.getString("c_email"));
-				user.setAccountList(AccountDao.selectAccountList(user));
+				user.setAccountList(AccountDao.getInstance().selectAccountList(user));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -179,12 +184,12 @@ public class CustomerDao {
 		return user;
 	}
 
-	public static Customer selectCustomer(Customer customer) {
+	public Customer selectCustomer(Customer customer) {
 		return selectCustomer(customer.getEmail(), customer.getPassword());
 	}
 
 
-	public static Customer selectCustomerWithCid(String id) {
+	public Customer selectCustomerWithCid(String id) {
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -220,7 +225,7 @@ public class CustomerDao {
 	}
 	
 
-	public static List<Customer> selectCustomerList(Customer customer){
+	public List<Customer> selectCustomerList(Customer customer){
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;

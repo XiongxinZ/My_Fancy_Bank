@@ -26,7 +26,7 @@ public class CollateralPanel extends CustomerContentPanel implements MouseListen
         dm.setRowCount(0);
 
         if (collList == null){
-            collList = CollateralDao.selectCollateralList(getCustomer());
+            collList = CollateralDao.getInstance().selectCollateralList(getCustomer());
         }
 
         for (Collateral value : collList) {

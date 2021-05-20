@@ -89,7 +89,7 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
 
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertAccount(newly);
+        AccountDao.getInstance().insertAccount(newly);
         return "Create " + TYPE + " account successfully. Deposit "+deposit +
                 "USD, account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
                 "USD. Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"USD into the account. ";
@@ -101,8 +101,8 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
         CheckingAccount newly = new CheckingAccount(customer);
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertAccount(newly);
-        AccountDao.updateAccountMoney(account, "USD");
+        AccountDao.getInstance().insertAccount(newly);
+        AccountDao.getInstance().updateAccountMoney(account, "USD");
         return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
     }
 }

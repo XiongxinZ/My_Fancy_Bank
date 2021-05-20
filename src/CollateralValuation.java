@@ -47,7 +47,7 @@ public class CollateralValuation implements Order{
             FileChannel fos = new FileOutputStream(filePath).getChannel();
             fos.transferFrom(fis, 0, fis.size());
             file = out;
-            CollateralDao.insertCollateralRequest(this);
+            CollateralDao.getInstance().insertCollateralRequest(this);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -63,13 +63,13 @@ public class CollateralValuation implements Order{
         Date solveDate = new Date();
         if (status.equals("Reject")){
             this.solveDate = solveDate;
-            CollateralDao.updateCollateralRequest(this);
+            CollateralDao.getInstance().updateCollateralRequest(this);
             return "Reject Request!";
         }else if (status.equals("Approve")){
             this.solveDate = solveDate;
             String coId = Long.toString(customerId.hashCode() * 31L + new Date().hashCode());
-            CollateralDao.insertCollateral(customerId, name, price, 0, coId);
-            CollateralDao.updateCollateralRequest(this);
+            CollateralDao.getInstance().insertCollateral(customerId, name, price, 0, coId);
+            CollateralDao.getInstance().updateCollateralRequest(this);
             return "Approve and set Price successfully!";
         }else{
             return "No operation";
@@ -133,9 +133,9 @@ public class CollateralValuation implements Order{
     }
 
     public static void main(String[] args) {
-        List<CollateralValuation> list = CollateralDao.selectCollateralRequestList(null);
-        List<CollateralValuation> list2 = CollateralDao.selectCollateralRequestList("670820845");
-        List<CollateralValuation> list3 = CollateralDao.selectCollateralRequestList("670845");
+        List<CollateralValuation> list = CollateralDao.getInstance().selectCollateralRequestList(null);
+        List<CollateralValuation> list2 = CollateralDao.getInstance().selectCollateralRequestList("670820845");
+        List<CollateralValuation> list3 = CollateralDao.getInstance().selectCollateralRequestList("670845");
         for (CollateralValuation collateralValuation : list) {
             collateralValuation.setReject();
             collateralValuation.execute();

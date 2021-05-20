@@ -9,8 +9,13 @@ import java.util.List;
 
 public class AccountDao {
 
+    private static AccountDao accountDao = new AccountDao();
 
-    public static int insertAccount(Account account) {
+    public static AccountDao getInstance(){
+        return accountDao;
+    }
+
+    public int insertAccount(Account account) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -47,7 +52,7 @@ public class AccountDao {
         return flag;
     }
 
-    public static int updateAccountMoney(Account account, String curr) {
+    public int updateAccountMoney(Account account, String curr) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -78,7 +83,7 @@ public class AccountDao {
         return flag;
     }
 
-    public static int updateAccountMoney(String id, String accountType, double val, String curr) {
+    public int updateAccountMoney(String id, String accountType, double val, String curr) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -146,7 +151,7 @@ public class AccountDao {
     }
 
 
-    public static Account selectAccount(Customer customer, String type) {
+    public Account selectAccount(Customer customer, String type) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -184,12 +189,12 @@ public class AccountDao {
                 account.setAmount(Double.parseDouble(rs.getString("c_Balance_JPY")),"JPY");
 
                 if (account instanceof SecurityAccount){
-                    ((SecurityAccount) account).setProfitPool(StockDao.selectProfitList(customer));
-                    ((SecurityAccount) account).setStockPool(StockDao.selectCustomerStockList(customer));
+                    ((SecurityAccount) account).setProfitPool(StockDao.getInstance().selectProfitList(customer));
+                    ((SecurityAccount) account).setStockPool(StockDao.getInstance().selectCustomerStockList(customer));
                 }
 
                 if (account instanceof LoanAccount){
-                    ((LoanAccount) account).setLoanPool(LoanDao.selectCustomerLoanList(customer));
+                    ((LoanAccount) account).setLoanPool(LoanDao.getInstance().selectCustomerLoanList(customer));
                 }
             }
         } catch (SQLException e) {
@@ -200,7 +205,7 @@ public class AccountDao {
         return account;
     }
 
-    public static List<String[]> selectSavingList() {
+    public List<String[]> selectSavingList() {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -236,7 +241,7 @@ public class AccountDao {
 
 
 
-    public static HashMap<String, Account> selectAccountList(Customer customer){
+    public HashMap<String, Account> selectAccountList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

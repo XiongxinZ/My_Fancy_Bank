@@ -22,9 +22,9 @@ public class TransferIn extends Transfer {
             getFrom().removeCurrency(getAmount(), getCurrencyFrom());
             getTo().addCurrency(getAmount(), getCurrencyTo());
             ret = "Transfer " + getAmount() + " from "+ getFrom().toString() +" to "+ getTo().toString();
-            TransactionDao.insertTransaction(this);
-            AccountDao.updateAccountMoney(getTo(),getCurrencyTo());
-            AccountDao.updateAccountMoney(getFrom(),getCurrencyFrom());
+            TransactionDao.getInstance().insertTransaction(this);
+            AccountDao.getInstance().updateAccountMoney(getTo(),getCurrencyTo());
+            AccountDao.getInstance().updateAccountMoney(getFrom(),getCurrencyFrom());
         }
         return ret;
     }

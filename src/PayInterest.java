@@ -12,8 +12,8 @@ public class PayInterest extends AbstractTransaction {
     @Override
     public String execute() {
         String ret;
-        AccountDao.updateAccountMoney(getToWhom(), getToAccount(), getAmount() + originAmount, getCurrencyTo());
-        TransactionDao.insertTransaction(this);
+        AccountDao.getInstance().updateAccountMoney(getToWhom(), getToAccount(), getAmount() + originAmount, getCurrencyTo());
+        TransactionDao.getInstance().insertTransaction(this);
         ret = "Pay Interest " + getAmount() + getCurrencyTo();
         return ret;
     }

@@ -70,8 +70,8 @@ public class SecurityAccount extends Account{
             SecurityAccount newly = new SecurityAccount(customer);
             customer.addAccount(TYPE, newly);
             customer.markDirty(true);
-            AccountDao.insertAccount(newly);
-            AccountDao.updateAccountMoney(customer.getAccount("Saving"),"USD");
+            AccountDao.getInstance().insertAccount(newly);
+            AccountDao.getInstance().updateAccountMoney(customer.getAccount("Saving"),"USD");
             return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully. ";
         }else{
             return "Your Saving Account should have at least $5000";

@@ -41,7 +41,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        List<Vector<String>> list = TransactionDao.getTransactionList(getCustomer());
+        List<Vector<String>> list = TransactionDao.getInstance().getTransactionList(getCustomer());
 
         for(Vector<String> data : list) {
             dm.addRow(data);
@@ -52,7 +52,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
-        List<Vector<String>> list = TransactionDao.getTransactionList(getCustomer(), type, direction,year, month, day,hide);
+        List<Vector<String>> list = TransactionDao.getInstance().getTransactionList(getCustomer(), type, direction,year, month, day,hide);
 
         for(Vector<String> data : list) {
             dm.addRow(data);

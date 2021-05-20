@@ -7,9 +7,9 @@ public class Exchange extends AbstractTransaction {
     public String execute() {
         getFrom().setAmount(getFrom().getAmount(getCurrencyFrom()) - getAmount(), getCurrencyFrom());
         getFrom().setAmount(getFrom().getAmount(getCurrencyTo()) + getAmount() * ConfigUtil.getConfigDouble(getCurrencyFrom()+"To"+getCurrencyTo()), getCurrencyTo());
-        AccountDao.updateAccountMoney(getFrom(), getCurrencyFrom());
-        AccountDao.updateAccountMoney(getFrom(),getCurrencyTo());
-        TransactionDao.insertTransaction(this);
+        AccountDao.getInstance().updateAccountMoney(getFrom(), getCurrencyFrom());
+        AccountDao.getInstance().updateAccountMoney(getFrom(),getCurrencyTo());
+        TransactionDao.getInstance().insertTransaction(this);
         return "Successful! " + getCurrencyFrom() + getAmount() +" to " + getCurrencyTo() + getAmount() * ConfigUtil.getConfigDouble(getCurrencyFrom()+"To"+getCurrencyTo());
     }
 }

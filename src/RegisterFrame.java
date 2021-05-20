@@ -113,7 +113,7 @@ public class RegisterFrame extends CoreFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Customer newCustomer = new Customer(username.getText().trim(), password.getText().trim(), email.getText());
-                int flag = CustomerDao.insertCustomer(newCustomer);
+                int flag = CustomerDao.getInstance().insertCustomer(newCustomer);
                 if (flag == 1){
                     dispose();
                     new LoginFrame();

@@ -99,7 +99,7 @@ public class LoginFrame extends CoreFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Customer customer = CustomerDao.selectCustomer(username.getText(), String.valueOf(password.getPassword()));
+                Customer customer = CustomerDao.getInstance().selectCustomer(username.getText(), String.valueOf(password.getPassword()));
                 if (customer == null){
                     new MessageFrame("Login Error", "No user or password error");
                 }else{

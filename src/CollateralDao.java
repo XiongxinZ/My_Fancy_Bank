@@ -5,7 +5,13 @@ import java.util.List;
 
 public class CollateralDao {
 
-    public static List<Collateral> selectCollateralList(Customer customer) {
+    private static CollateralDao collateralDao = new CollateralDao();
+
+    public static CollateralDao getInstance(){
+        return collateralDao;
+    }
+
+    public List<Collateral> selectCollateralList(Customer customer) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -45,7 +51,7 @@ public class CollateralDao {
         return list;
     }
 
-    public static void insertCollateral(String id, String name, double price, int used, String coId){
+    public void insertCollateral(String id, String name, double price, int used, String coId){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -71,7 +77,7 @@ public class CollateralDao {
         }
     }
 
-    public static List<Collateral> selectUnusedCollateralList(Customer customer) {
+    public List<Collateral> selectUnusedCollateralList(Customer customer) {
         List<Collateral> all = selectCollateralList(customer);
         List<Collateral> unused = new ArrayList<>();
         for (Collateral collateral : all) {
@@ -82,7 +88,7 @@ public class CollateralDao {
         return unused;
     }
 
-    public static int updateUsed(Collateral collateral) {
+    public int updateUsed(Collateral collateral) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -105,7 +111,7 @@ public class CollateralDao {
         return flag;
     }
 
-    public static void insertCollateralRequest(CollateralValuation collateralValuation){
+    public void insertCollateralRequest(CollateralValuation collateralValuation){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -135,7 +141,7 @@ public class CollateralDao {
         }
     }
 
-    public static void updateCollateralRequest(CollateralValuation collateralValuation){
+    public void updateCollateralRequest(CollateralValuation collateralValuation){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -165,7 +171,7 @@ public class CollateralDao {
 
 
 
-    public static Collateral selectCollateralWithId(String id, Customer customer){
+    public Collateral selectCollateralWithId(String id, Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -200,7 +206,7 @@ public class CollateralDao {
         return collateral;
     }
 
-    public static List<CollateralValuation> selectUnsolvedCollateralRequestList(){
+    public List<CollateralValuation> selectUnsolvedCollateralRequestList(){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -247,7 +253,7 @@ public class CollateralDao {
         return list;
     }
 
-    public static List<CollateralValuation> selectCollateralRequestList(String c_id){
+    public List<CollateralValuation> selectCollateralRequestList(String c_id){
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

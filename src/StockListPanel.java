@@ -33,7 +33,7 @@ public class StockListPanel extends TablePanel {
         dm.setRowCount(0);
 
         if (stockList == null){
-            stockList = StockDao.selectStockInfoList();
+            stockList = StockDao.getInstance().selectStockInfoList();
         }
 
         for (StockInfo value : stockList) {
@@ -51,7 +51,7 @@ public class StockListPanel extends TablePanel {
         dm.setRowCount(0);
 
         if (stockList == null){
-            stockList = StockDao.selectStockInfoList();
+            stockList = StockDao.getInstance().selectStockInfoList();
         }
 
         for (StockInfo value : stockList) {

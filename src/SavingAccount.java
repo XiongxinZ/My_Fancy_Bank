@@ -20,7 +20,7 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
 
     public String deposit(double val,String currency){
         addCurrency(val, currency);
-        AccountDao.updateAccountMoney(this,currency);
+        AccountDao.getInstance().updateAccountMoney(this,currency);
         return "Deposit $" + val + ", amount $" + getAmount();
     }
 
@@ -41,7 +41,7 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
 
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertAccount(newly);
+        AccountDao.getInstance().insertAccount(newly);
         return "Create " + TYPE + " account successfully. Deposit "+deposit +
                 "USD, account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
                 "USD. Put the remaining "+(deposit - ConfigUtil.getConfigInt("AccountFee"))+"USD nto the account. ";    }
@@ -51,8 +51,8 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
         SavingAccount newly = new SavingAccount(customer);
         customer.addAccount(TYPE, newly);
         customer.markDirty(true);
-        AccountDao.insertAccount(newly);
-        AccountDao.updateAccountMoney((CheckingAccount) customer.getAccount("Checking"), "USD");
+        AccountDao.getInstance().insertAccount(newly);
+        AccountDao.getInstance().updateAccountMoney((CheckingAccount) customer.getAccount("Checking"), "USD");
         return "Pay the fee from Checking Account automatically. Create " + TYPE + " account successfully";
     }
 
