@@ -43,7 +43,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -97,7 +97,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
@@ -155,7 +155,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
@@ -218,7 +218,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
@@ -306,7 +306,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
@@ -337,7 +337,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -404,7 +404,7 @@ public class TransactionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }

@@ -16,10 +16,7 @@ public class LoanPanel extends TablePanel {
 
     private ValuePool<Loan> loanList = null;
 
-    /**
-     * 将客户信息填入表格
-     *
-     */
+
     public void fillTable() {
         dm = (DefaultTableModel) getJt_customer().getModel();
         dm.setRowCount(0);

@@ -37,10 +37,9 @@ public class UploadCollateralFrame extends PopupFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
-                fc.setCurrentDirectory(new File(System.getProperty("user.dir")));//设置默认显示为当前文件夹
-                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);//设置选择模式（只选文件、只选文件夹、文件和文件均可选）
-                fc.setMultiSelectionEnabled(false);//是否允许多选
-//        fc.addChoosableFileFilter(new FileNameExtensionFilter("zip(*.zip, *.rar)", "zip", "rar"));//文件过滤器
+                fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fc.setMultiSelectionEnabled(false);//single choice
                 fc.setFileFilter(new FileNameExtensionFilter("image(*.jpg,*.jpeg, *.png, *.gif)", "jpg","jpeg", "png", "gif"));
                 fc.showDialog(new JLabel(),"choose");
 //                fc.showOpenDialog(null);

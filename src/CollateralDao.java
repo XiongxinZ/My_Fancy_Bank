@@ -46,7 +46,7 @@ public class CollateralDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
@@ -73,7 +73,7 @@ public class CollateralDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
     }
 
@@ -106,7 +106,7 @@ public class CollateralDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -137,7 +137,7 @@ public class CollateralDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
     }
 
@@ -165,7 +165,7 @@ public class CollateralDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
     }
 
@@ -201,7 +201,7 @@ public class CollateralDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return collateral;
     }
@@ -248,7 +248,7 @@ public class CollateralDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
@@ -295,7 +295,7 @@ public class CollateralDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }

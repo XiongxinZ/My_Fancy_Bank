@@ -47,7 +47,7 @@ public class AccountDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -78,7 +78,7 @@ public class AccountDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -103,7 +103,7 @@ public class AccountDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -142,7 +142,7 @@ public class AccountDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return flag;
     }
@@ -170,7 +170,7 @@ public class AccountDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
             return flag;
         }
     }
@@ -225,7 +225,7 @@ public class AccountDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return account;
     }
@@ -259,7 +259,7 @@ public class AccountDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }
@@ -285,7 +285,7 @@ public class AccountDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps, rs);
+            JDBCUtil.closeResource(ps, rs);
         }
         return list;
     }

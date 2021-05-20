@@ -2,12 +2,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 /**
- * 
- * @author NaiveKyo
- * JDBC 工具类
+ *
+ * JDBC Util
  */
 public class JDBCUtil {
 	
@@ -32,19 +30,7 @@ public class JDBCUtil {
 		URL = properties.getProperty("url");
 		USERNAME = properties.getProperty("username");
 		PASSWORD = properties.getProperty("password");
-//		DRIVERCLASS = ConfigUtil.getConfig("driverClass");
-//		URL = ConfigUtil.getConfig("url");
-//		USERNAME = ConfigUtil.getConfig("username");
-//		PASSWORD = ConfigUtil.getConfig("password");
 	}
-
-	public static void main(String[] args) {
-
-	}
-	// test
-//	public static void main(String[] args) {
-//		System.out.println(DRIVERCLASS + "<br>" + URL + "<br>" + USERNAME + "<br>" + PASSWORD);
-//	}
 	
 	static {
 		try {
@@ -59,12 +45,11 @@ public class JDBCUtil {
 	}
 	
 	/**
-	 * 获取数据库连接
+	 * get database connection
 	 * @return
 	 * @throws SQLException
 	 */
 	public static Connection getConnection() throws SQLException {
-		// return DriverManager.getConnection(URL, USERNAME, PASSWORD);
 		return getInstance().conn;
 	}
 
@@ -74,21 +59,15 @@ public class JDBCUtil {
 		}
 		return instance;
 	}
-
-	public static Connection getConn() throws SQLException {
-		return getInstance().conn;
-	}
 	
 	/**
-	 * 释放数据库资源
-	 * @param conn
+	 * release database resources, do not close connection.
 	 * @param stm
 	 * @param rs
 	 */
-	public static void closeResource(Connection conn, Statement stm, ResultSet rs) {
+	public static void closeResource(Statement stm, ResultSet rs) {
 		closeResultSet(rs);
 		closeStatement(stm);
-//		closeConnection(conn);
 	}
 	
 	public static void closeResultSet(ResultSet rs) {

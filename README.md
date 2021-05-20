@@ -20,7 +20,11 @@
    source /filePath/mybank.sql;
    ```
 3. change `username` and `password` to your mysql username and password in `jdbc.properties` file
-4. play Main
+4. run Main in IDE or run following commands in terminal:
+   ```
+   javac *.class
+   java Main
+   ```
 
 ## Classes of the project
 * **Main**: Main class. Then entrance of the program.<br><br>
@@ -57,77 +61,71 @@
          * **TransferIn extends Transfer**: Transfer In transaction. For Security account
          * **TransferOut extends Transfer**: Transfer Out transaction. For Security account
    * **StockTransaction implements Transaction**: Stock Transaction. For stock trade.
-      * **BuyStock extends StockTransaction**: 
-      * **SellStock extends StockTransaction**
+      * **BuyStock extends StockTransaction**: Buy Stock Transaction.
+      * **SellStock extends StockTransaction**: Sell Stock Transaction.
   * ***order extends Transaction**: order interface. Transaction that need manager to solve*
       * **CollateralValuation implements order**: CollateralValuation. upload certificate and ask manager to valuate, using `apply()` method. Manager will solve the request, using `setPrice(double)` `setApprove()` `setReject()` method<br><br>
    
 
 * ***ValCounter<T extends Valuable>**: ValCounter interface. Strategy Pattern, strategy interface*
 * ***Valuable**: Valuable interface. Object that has value.*
-* **ValuePool<T extends Valuable> extends HashMap<String, T>**<br><br>
+* **ValuePool<T extends Valuable> extends HashMap<String, T>**: An hashmap that store valuable object<br><br>
 
-* **Loan implements Valuable**: 
-* **Collateral**: Collateral class, 
+* **Loan implements Valuable**:  Loan class. store balance and collateral.
+* **Collateral implements Valuable**: Collateral class, store collateral value.
 * **StockInfo**: StockInfo class, store stock name, current price and currency type.
    * **CustomerStock extends StockInfo implements Valuable**: stock that customer has. store in security account's stockPool.
    * **StockProfit extends StockInfo implements Valuable**: stock profit. store realized profit of one stock<br><br>
 
-* **ConfigUtil**
-* **StringUtil**
-* **FileUtil**
-* **QueryUtil**
-* **StringUtil**
-* **GuiUtil**
-* **TableUtil**<br><br>
+* **ConfigUtil**: ConfigUtil class. Get all properties from `config.properties` file.
+* **JDBCUtil**: JDBCUtil class. Get mysql properties from `jdbc.properties` file and connect to mysql.
+* **QueryUtil**: QueryUtil class. Help concat string for mysql query.
+* **GuiUtil**: GuiUtil class, help find the frame of one component.<br><br>
 
-* **MyFrame extends JFrame**
-   * **CoreFrame extends MyFrame**
-      * **CustomerFrame extends CoreFrame**
-      * **LoginFrame extends CoreFrame**
-      * **RegisterFrame extends CoreFrame**
-   * **PopupFrame extends MyFrame**
-      * **BuyStockFrame extends PopupFrame**
-      * **SellStockFrame extends PopupFrame**
-      * **CreateAccountFrame extends PopupFrame**
-      * **DepositFrame extends PopupFrame**
-      * **WithdrawFrame extends PopupFrame**
-      * **ExchangeFrame extends PopupFrame**
-      * **DepositTempFrame extends PopupFrame**
-      * **RepaymentFrame extends PopupFrame**
-      * **TakeLoanFrame extends PopupFrame**
-      * **TransferFrame extends PopupFrame**
-      * **TransferInFrame extends PopupFrame**
-      * **TransferOutFrame extends PopupFrame**
-      * **UploadCollateralFrame extends PopupFrame**
-      * **MessageFrame extends PopupFrame**<br><br>
+* **MyFrame extends JFrame**: MyFrame class, set window position.
+   * **CoreFrame extends MyFrame**: Core Frame class. The main frame.
+      * **CustomerFrame extends CoreFrame**: The frame that shown after customer login
+      * **LoginFrame extends CoreFrame**: The login frame for both customer and banker
+      * **RegisterFrame extends CoreFrame**: The register frame for customer
+   * **PopupFrame extends MyFrame**: Popup Frame class. 
+      * **BuyStockFrame extends PopupFrame**: Buy Stock frame. Can choose 10, 20,50,100 percent.
+      * **SellStockFrame extends PopupFrame**: Sell stock frame.Can choose 10, 20,50,100 percent.
+      * **CreateAccountFrame extends PopupFrame**: Create account frame. Can choose pay the fee from another account or cash
+      * **DepositFrame extends PopupFrame**: Deposit frame.
+      * **WithdrawFrame extends PopupFrame**: Withdraw frame
+      * **ExchangeFrame extends PopupFrame**: Exchange frame
+      * **DepositTempFrame extends PopupFrame**: Deposit temp frame. Only for the deposit when creating account.
+      * **RepaymentFrame extends PopupFrame**: Repayment frame
+      * **TakeLoanFrame extends PopupFrame**: Take Loan fram. Can choose collateral and currency.
+      * **TransferFrame extends PopupFrame**: Transfer frame. can transfer to other account or another customer.
+      * **TransferInFrame extends PopupFrame**: Transfer In frame. only for security account. transfer in from saving account
+      * **TransferOutFrame extends PopupFrame**: Transfer Out frame. only for security account. transfer out to saving account
+      * **UploadCollateralFrame extends PopupFrame**: upload collateral frame. request collateral valuation and upload corresponding certificate
+      * **MessageFrame extends PopupFrame**: Message frame. Show message after operation. success or fail.<br><br>
 
-* **CustomerContentPanel extends JPanel**
-   * **CollateralPanel extends CustomerContentPanel**
-   * **CollateralRequestPanel extends CustomerContentPanel**
-   * **CustomerHomepagePanel extends CustomerContentPanel**
-   * **CustomerLoanPanel extends CustomerContentPanel**
-   * **TransactionHistoryPanel extends CustomerContentPanel**
-   * **TablePanel extends CustomerContentPanel**
-      * **LoanPanel extends TablePanel**
-      * **StockListPanel extends TablePanel**
-      * **StockPositionPanel extends TablePanel**
-      * **StockProfitPanel extends TablePanel**
-      * **StockProfitPanel extends TablePanel**
-      * **StockProfitPanel extends TablePanel**<br><br>
+* **CustomerContentPanel extends JPanel**: CustomerContentPanel class. main panel of customer frame, which will change based on the operation.
+   * **CollateralPanel extends CustomerContentPanel**: List Collateral info of the customer
+   * **CollateralRequestPanel extends CustomerContentPanel**: List Collateral request info of the customer, including request status.
+   * **CustomerHomepagePanel extends CustomerContentPanel**: HomePage panel. Show basic info of 4 accounts.
+   * **TransactionHistoryPanel extends CustomerContentPanel**: Transaction history panel. List history transactions of one customer. 
+   * **TablePanel extends CustomerContentPanel**: Abstract class. Show info in a table. Has a Currency Filter.
+      * **LoanPanel extends TablePanel**: Loan info Table, show customer's loan info in the table
+      * **StockListPanel extends TablePanel**: Available stock info Table, show stocks that be traded
+      * **StockPositionPanel extends TablePanel**: Stock position info Table, show customer's current positions.
+      * **StockProfitPanel extends TablePanel**: Stock profit info Table, show realized profit of the customer from each stock.
 
-* **MyMenuButton extends JToggleButton**
-   
+* **MyMenuButton extends JToggleButton**: MyMenuButton class. Implemented a toggle menu button.   
 
 
 
 
 
 
-# Design Patten
-1. MVC Pattern
+# Design Pattern
+1. MVC Pattern: 
 2. Singleton Pattern: JDBCUtil is a singleton. There is only one Connection, and this connection is open once the program starts and will close if the program ends.
 3. DAO Pattern: 6 xxxDao class
+4. Strategy Pattern:
 
 
 

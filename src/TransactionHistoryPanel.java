@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 
 
-public class TransactionHistoryPanel extends CustomerContentPanel implements MouseListener {
+public class TransactionHistoryPanel extends CustomerContentPanel{
 
     private JTextField jtf_name;
     private JTextField jtf_id;
@@ -24,10 +24,6 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
     private DefaultTableColumnModel dcm;
 
 
-    /**
-     * 将客户信息填入表格
-     *
-     */
     public void fillTable() {
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
@@ -198,74 +194,6 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
 
             }
         });
-    }
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-        int row = jt_customer.getSelectedRow();
-//        if(e.getSource() == jl_del && row >= 0) {
-//            Customer cs = new Customer();
-//            cs.setId((String) jt_customer.getValueAt(row, 0));
-//            Customer c = new CustomerDao().selectCustomerWithCid(cs.getId());
-////            new CustomerInformationDialog(c, 1);
-//        } else if(e.getSource() == jl_update && row >= 0) {
-//            Customer cs = new Customer();
-//            cs.setId((String) jt_customer.getValueAt(row, 0));
-//            Customer c = new CustomerDao().selectCustomerWithCid(cs.getId());
-////            new CustomerInformationDialog(c, 2);
-//        } else if(e.getSource() == jl_refresh) {
-//            fillTable();
-//        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
-//        if (e.getSource() == jl_add) {
-//            jl_add.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//            jl_add.setText("<html><font color='#336699' style='font-weight:bold'>" + "添加" + "</font></html>");
-//        } else if (e.getSource() == jl_del) {
-//            jl_del.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//            jl_del.setText("<html><font color='#336699' style='font-weight:bold'>" + "删除" + "</font></html>");
-//        } else if (e.getSource() == jl_update) {
-//            jl_update.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//            jl_update.setText("<html><font color='#336699' style='font-weight:bold'>" + "修改" + "</font></html>");
-//        } else if (e.getSource() == jl_refresh) {
-//            jl_refresh.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//            jl_refresh.setText("<html><font color='#336699' style='font-weight:bold'>" + "刷新" + "</font></html>");
-//        } else {
-//
-//        }
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-//        // TODO Auto-generated method stub
-//        if (e.getSource() == jl_add) {
-//            jl_add.setText("添加");
-//        } else if (e.getSource() == jl_del) {
-//            jl_del.setText("删除");
-//        } else if (e.getSource() == jl_update) {
-//            jl_update.setText("修改");
-//        } else if (e.getSource() == jl_refresh) {
-//            jl_refresh.setText("刷新");
-//        } else {
-//
-//        }
     }
 }
 

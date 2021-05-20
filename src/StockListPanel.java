@@ -24,10 +24,7 @@ public class StockListPanel extends TablePanel {
 
     private List<StockInfo> stockList = null;
 
-    /**
-     * 将客户信息填入表格
-     *
-     */
+
     public void fillTable() {
         dm = (DefaultTableModel) getJt_customer().getModel();
         dm.setRowCount(0);

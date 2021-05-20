@@ -43,7 +43,7 @@ public class CustomerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
+			JDBCUtil.closeResource(ps, rs);
 		}
 		return flag;
 	}
@@ -70,7 +70,7 @@ public class CustomerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
+			JDBCUtil.closeResource(ps, rs);
 
 		}
 		return flag;
@@ -103,7 +103,7 @@ public class CustomerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
+			JDBCUtil.closeResource(ps, rs);
 			return flag;
 		}
 	}
@@ -142,7 +142,7 @@ public class CustomerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
+			JDBCUtil.closeResource(ps, rs);
 		}
 		return userName;
 	}
@@ -179,7 +179,7 @@ public class CustomerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
+			JDBCUtil.closeResource(ps, rs);
 		}
 		return user;
 	}
@@ -219,7 +219,7 @@ public class CustomerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
+			JDBCUtil.closeResource(ps, rs);
 			return user;
 		}
 	}
@@ -269,7 +269,7 @@ public class CustomerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.closeResource(conn, ps, rs);
+			JDBCUtil.closeResource(ps, rs);
 		}
 		return list;
 	}
