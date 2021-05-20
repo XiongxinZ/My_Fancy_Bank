@@ -8,16 +8,16 @@ public class MyMenuButton extends JToggleButton{
     private static int i=0;
     public MyMenuButton(){
         super();
-        this.setText("¡ø");
+        this.setText("^^");
         this.setHorizontalTextPosition(SwingConstants.RIGHT );
         addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(isSelected()){
-                    setText("¨‹");
+                    setText("ww");
                     menu.show(MyMenuButton.this, 0, MyMenuButton.this.getHeight());
                 }else{
-                    setText("¡ø");
+                    setText("^^");
                     menu.setVisible(false);
                 }
 
@@ -26,16 +26,16 @@ public class MyMenuButton extends JToggleButton{
     }
     public MyMenuButton(final String label){
         super(label);
-        this.setText("¡ø "+label);
+        this.setText("^^"+label);
         this.setHorizontalTextPosition(SwingConstants.RIGHT );
         addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(isSelected()){
-                    setText("¨‹"+label);
+                    setText("ww"+label);
                     menu.show(MyMenuButton.this, 0, MyMenuButton.this.getHeight());
                 }else{
-                    setText("¡ø"+label);
+                    setText("^^"+label);
                     menu.setVisible(false);
                 }
             }
@@ -44,4 +44,5 @@ public class MyMenuButton extends JToggleButton{
     public void addMenu(JPopupMenu menu){
         this.menu=menu;
     }
+
 }
