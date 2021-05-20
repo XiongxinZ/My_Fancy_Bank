@@ -18,9 +18,27 @@ public class SellStock extends StockTransaction{
                         getStock().getCurrency());
                 cs.remove(getStock());
                 if (cs.getQuantity() == 0){
-                    getAccount().getProfitPool().remove(cs.getName());
+                    StockProfit profit = new StockProfit(getStock());
+                    if (getAccount().getProfitPool().containsKey(profit.getName())){
+                        StockProfit val =getAccount().getProfitPool().get(profit.getName());
+                        val.setProfit(val.getProfit() + profit.getProfit());
+                        StockDao.updateProfit(val);
+                    }else{
+                        getAccount().getProfitPool().put(profit.getName(), profit);
+                        StockDao.insertProfit(profit);
+                    }
+                    getAccount().getStockPool().remove(cs.getName());
                     StockDao.removeCustomerStock(cs);
                 }else{
+                    StockProfit profit = new StockProfit(getStock());
+                    if (getAccount().getProfitPool().containsKey(profit.getName())){
+                        StockProfit val =getAccount().getProfitPool().get(profit.getName());
+                        val.setProfit(val.getProfit() + profit.getProfit());
+                        StockDao.updateProfit(val);
+                    }else{
+                        getAccount().getProfitPool().put(profit.getName(), profit);
+                        StockDao.insertProfit(profit);
+                    }
                     StockDao.updateStockPosition(cs);
                 }
                 AccountDao.updateAccountMoney(getAccount(), getStock().getCurrency());

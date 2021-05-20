@@ -39,6 +39,7 @@ public class StockPositionPanel extends TablePanel {
 //             "Stock Name", "Current Price", "Buy Price", "Quantity", "Amount", "Profit"
             Vector<Object> v = new Vector<>();
             v.add(value.getName());
+            v.add(value.getCurrency());
             v.add(value.getCurrentPrice());
             v.add(value.getBuyPrice());
             v.add(value.getQuantity());

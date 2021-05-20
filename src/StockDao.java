@@ -224,6 +224,52 @@ public class StockDao {
         return list;
     }
 
+    public static int updateProfit(StockProfit profit){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        int flag = 0;
+
+        try{
+            conn = JDBCUtil.getConnection();
+
+            String sql = "update realizedStock set r_profit = ? where c_id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setDouble(1, profit.getProfit());
+            ps.setString(2, profit.getCustomer().getId());
+
+            flag = ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return flag;
+    }
+
+    public static int insertProfit(StockProfit profit){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        int flag = 0;
+
+        try{
+            conn = JDBCUtil.getConnection();
+
+            String sql = "insert into realizedStock(c_id,s_name,s_curr,r_profit) values(?,?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,profit.getCustomer().getId());
+            ps.setString(2,profit.getName());
+            ps.setString(3, profit.getCurrency());
+            ps.setDouble(4, profit.getProfit());
+
+            flag = ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return flag;
+    }
+
     public static ValuePool<StockProfit> selectProfitList(Customer customer){
         Connection conn = null;
         PreparedStatement ps = null;
@@ -252,4 +298,5 @@ public class StockDao {
         }
         return list;
     }
+
 }

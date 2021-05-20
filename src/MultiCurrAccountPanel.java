@@ -34,6 +34,9 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
             jTabbedPane.addTab("Bank Stock Pool", new StockListPanel(getCustomer()));
             jTabbedPane.setMnemonicAt(1, KeyEvent.VK_0);
 
+            jTabbedPane.addTab("My Stock Profit", new StockProfitPanel(getCustomer()));
+            jTabbedPane.setMnemonicAt(2, KeyEvent.VK_0);
+
             add(jTabbedPane);
         }
 

@@ -36,4 +36,10 @@ public class TableColumns {
                 "Request Date", "ID","Customer", "Name", "Status","Value","Solve Date"
         };
     }
+
+    public static String[] getStockProfitColumns(){
+        return new String[]{
+                "Stock Name", "Currency", "Profit"
+        };
+    }
 }

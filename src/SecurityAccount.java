@@ -24,7 +24,7 @@ public class SecurityAccount extends Account{
     }
 
     public String sellStock(CustomerStock customerStock, int num){
-        CustomerStock stock = new CustomerStock(customerStock, getCustomer(), num);
+        CustomerStock stock = new CustomerStock(customerStock, getCustomer(), num, customerStock.getBuyPrice());
         return new SellStock(this,stock).execute();
     }
 

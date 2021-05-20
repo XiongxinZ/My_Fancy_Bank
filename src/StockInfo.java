@@ -10,8 +10,8 @@ public class StockInfo {
         this.currency = currency;
     }
 
-    public StockInfo(String name, String currency) {
-        this.name = name;
+    public StockInfo(String stockName, String currency) {
+        this.name = stockName;
         this.currency = currency;
     }
 
