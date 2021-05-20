@@ -1,8 +1,8 @@
 import java.util.HashMap;
 
-public class Account implements Modifiable {
+public abstract class Account{
 
-    private HashMap<String, Double> amount = new HashMap<>();
+    private HashMap<String, Double> amountTotal = new HashMap<>();
     private Customer customer;
     private String accountType;
     private String id;
@@ -12,9 +12,9 @@ public class Account implements Modifiable {
     public Account(Customer customer, String currency, double amount, String accountType) {
         this.customer = customer;
         this.accountType = accountType;
-        this.amount.put("USD",0.0);
-        this.amount.put("CNY",0.0);
-        this.amount.put("JPY",0.0);
+        this.amountTotal.put("USD",0.0);
+        this.amountTotal.put("CNY",0.0);
+        this.amountTotal.put("JPY",0.0);
         addCurrency(amount, currency);
         id = Long.toString(Long.parseLong(customer.getId()) * 31L + accountType.hashCode());
     }
@@ -22,9 +22,9 @@ public class Account implements Modifiable {
     public Account(Customer customer, double amount, String accountType) {
         this.customer = customer;
         this.accountType = accountType;
-        this.amount.put("USD",0.0);
-        this.amount.put("CNY",0.0);
-        this.amount.put("JPY",0.0);
+        this.amountTotal.put("USD",0.0);
+        this.amountTotal.put("CNY",0.0);
+        this.amountTotal.put("JPY",0.0);
         addCurrency(amount);
         id = Long.toString(Long.parseLong(customer.getId()) * 31L + accountType.hashCode());
     }
@@ -61,9 +61,19 @@ public class Account implements Modifiable {
 
     }
 
+    public String close(){
+        AccountDao.getInstance().delAccount(this);
+        getCustomer().getAccount("Saving").removeCurrency(10);
+        AccountDao.getInstance().updateAccountMoney(getCustomer().getAccount("Saving"), "USD");
+        getCustomer().getAccountList().remove(getAccountType());
+        return "Close "+ getAccountType()+ "Account successfully!";
+    }
+
+    public abstract boolean canClose();
+
     public void consume(double val){
-        assert  amount.containsKey("USD") && amount.get("USD") >= val;
-        amount.put("USD", amount.get("USD")- val);
+        assert  amountTotal.containsKey("USD") && amountTotal.get("USD") >= val;
+        amountTotal.put("USD", amountTotal.get("USD")- val);
     }
 
     protected void addCurrency(double val){
@@ -71,10 +81,10 @@ public class Account implements Modifiable {
     }
 
     protected void addCurrency(double val, String currency){
-        if (amount.containsKey(currency)){
-            amount.put(currency, amount.get(currency) + val);
+        if (amountTotal.containsKey(currency)){
+            amountTotal.put(currency, amountTotal.get(currency) + val);
         }else{
-            amount.put(currency, val);
+            amountTotal.put(currency, val);
         }
     }
 
@@ -83,10 +93,10 @@ public class Account implements Modifiable {
     }
 
     protected void removeCurrency(double val, String currency){
-        assert amount.containsKey(currency);
-        assert  amount.get(currency) - val >= 0;
-        if (amount.containsKey(currency)){
-            amount.put(currency, amount.get(currency) - val);
+        assert amountTotal.containsKey(currency);
+        assert  amountTotal.get(currency) - val >= 0;
+        if (amountTotal.containsKey(currency)){
+            amountTotal.put(currency, amountTotal.get(currency) - val);
         }
     }
 
@@ -99,7 +109,7 @@ public class Account implements Modifiable {
     }
 
     public double getAmount() {
-        return amount.get("USD");
+        return amountTotal.get("USD");
     }
 
     public String getId() {
@@ -107,14 +117,14 @@ public class Account implements Modifiable {
     }
 
     public double getAmount(String currency) {
-        return amount.get(currency) == null ? 0:amount.get(currency);
+        return amountTotal.get(currency) == null ? 0: amountTotal.get(currency);
     }
 
-    public void setAmount(double amount) {
-        this.amount.put("USD", this.amount.get("USD")+amount);
+    public void setAmount(double amountTotal) {
+        this.amountTotal.put("USD", this.amountTotal.get("USD")+ amountTotal);
     }
     public void setAmount(double amount, String curr) {
-        this.amount.put(curr, amount);
+        this.amountTotal.put(curr, amount);
     }
 
     @Override
@@ -122,13 +132,17 @@ public class Account implements Modifiable {
         return customer.getName() + "'s " + accountType + " Account";
     }
 
-    @Override
-    public void markDirty(boolean isDirty) {
-        this.isDirty = isDirty;
+    public HashMap<String, Double> getAmountTotal() {
+        return amountTotal;
     }
 
-    @Override
-    public boolean isDirty() {
-        return isDirty;
-    }
+    //    @Override
+//    public void markDirty(boolean isDirty) {
+//        this.isDirty = isDirty;
+//    }
+//
+//    @Override
+//    public boolean isDirty() {
+//        return isDirty;
+//    }
 }

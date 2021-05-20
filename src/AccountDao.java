@@ -83,6 +83,31 @@ public class AccountDao {
         return flag;
     }
 
+    public int delAccount(Account account){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int flag = 0;
+
+        try {
+            conn = JDBCUtil.getConnection();
+
+
+            String sql = "delete from account where a_id = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, account.getId());
+
+            flag = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeResource(conn, ps, rs);
+        }
+        return flag;
+    }
+
     public int updateAccountMoney(String id, String accountType, double val, String curr) {
 
         Connection conn = null;

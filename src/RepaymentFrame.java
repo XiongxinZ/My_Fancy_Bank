@@ -22,7 +22,7 @@ public class RepaymentFrame extends PopupFrame{
         JLabel targetLabel = new JLabel(Repayment.target+" Balance: ");
         jPanel.add(targetLabel);
 
-        JLabel target = new JLabel(Double.toString(account.getCustomer().getAccount(Repayment.target).getAmount()));
+        JLabel target = new JLabel();
         jPanel.add(target);
 
         JLabel loanLabel = new JLabel("Loan: ");
@@ -34,7 +34,16 @@ public class RepaymentFrame extends PopupFrame{
         JLabel balanceLabel = new JLabel("Loan Balance: ");
         jPanel.add(balanceLabel);
 
-        JLabel balance = new JLabel(Double.toString(account.getAmount()));
+        Loan selected = (Loan) loan.getSelectedItem();
+        double balanceVal;
+        if (selected == null){
+            balanceVal = 0;
+            target.setText(Double.toString(account.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")).getAmount())+"USD");
+        }else {
+            balanceVal = selected.getBalance();
+            target.setText(Double.toString(account.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")).getAmount(selected.getCurrency()))+selected.getCurrency());
+        }
+        JLabel balance = new JLabel(Double.toString(balanceVal));
         jPanel.add(balance);
 
         loan.addItemListener(new ItemListener() {
@@ -42,7 +51,7 @@ public class RepaymentFrame extends PopupFrame{
             public void itemStateChanged(ItemEvent e) {
                 Loan selected = (Loan) loan.getSelectedItem();
                 target.setText(Double.toString(
-                        account.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")).getAmount(selected.getCurrency())));
+                        account.getCustomer().getAccount(ConfigUtil.getConfig("LoanTarget")).getAmount(selected.getCurrency()))+selected.getCurrency());
                 balance.setText(Double.toString(selected.getBalance()));
             }
         });

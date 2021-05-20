@@ -10,8 +10,8 @@ public class Exchange extends AbstractTransaction {
         AccountDao.getInstance().updateAccountMoney(getFrom(), getCurrencyFrom());
         AccountDao.getInstance().updateAccountMoney(getFrom(),getCurrencyTo());
         TransactionDao.getInstance().insertTransaction(this);
-        return "Successful! " + getCurrencyFrom() + getAmount() +" to " + getCurrencyTo() +
-                getAmount() * ConfigUtil.getConfigDouble(getCurrencyFrom()+"To"+getCurrencyTo())*(1-ConfigUtil.getConfigDouble("Checking")) +
-                "\nFee " + getAmount() * ConfigUtil.getConfigDouble("Checking") + getCurrencyFrom();
+        return "Successful! " + getCurrencyFrom() + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" +" to " + getCurrencyTo() +
+                "<font color=\"red\">"+PrintUtil.printDouble((getAmount()) * ConfigUtil.getConfigDouble(getCurrencyFrom()+"To"+getCurrencyTo())*(1-ConfigUtil.getConfigDouble("CheckingRate")) )+"</font>"+
+                "<br>Fee " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount() * ConfigUtil.getConfigDouble("CheckingRate"))+"</font>" + getCurrencyFrom();
     }
 }

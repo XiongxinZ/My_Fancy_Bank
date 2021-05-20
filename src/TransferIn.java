@@ -17,11 +17,11 @@ public class TransferIn extends Transfer {
         }else if (getAmount() < amountBar){
             ret = "Your should transfer in at least " + amountBar + getCurrencyFrom();
         }else if (getAmount() > getFrom().getAmount(getCurrencyFrom())){
-            ret =  "Sorry you only have $" + getFrom().getAmount("USD") + " in your " + getFrom().getAccountType() + "account";
+            ret =  "Sorry you only have $" + "<font color=\"red\">"+PrintUtil.printDouble(getFrom().getAmount("USD"))+"</font>" + " in your " + getFrom().getAccountType() + " account";
         }else{
             getFrom().removeCurrency(getAmount(), getCurrencyFrom());
             getTo().addCurrency(getAmount(), getCurrencyTo());
-            ret = "Transfer " + getAmount() + " from "+ getFrom().toString() +" to "+ getTo().toString();
+            ret = "Transfer " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" + " from "+ getFrom().toString() +" to "+ getTo().toString();
             TransactionDao.getInstance().insertTransaction(this);
             AccountDao.getInstance().updateAccountMoney(getTo(),getCurrencyTo());
             AccountDao.getInstance().updateAccountMoney(getFrom(),getCurrencyFrom());

@@ -26,6 +26,24 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
         return new Transfer(this, getCustomer().getAccount(account),val , curr).execute();
     }
 
+    @Override
+    public boolean canClose() {
+        if (getCustomer().hasAccount("Security")){
+            return false;
+        } else if (getCustomer().hasAccount("Loan")){
+            return false;
+        } else if (!getCustomer().hasAccount("Checking")){
+            return false;
+        } else{
+            for (Double value : getAmountTotal().values()) {
+                if (value > 0){
+                    return false;
+                }
+            }
+        }
+        return getCustomer().getAccount("Checking").getAmount() >= 10;
+    }
+
 //    @Override
 //    public String transfer(Account account, double val, String curr) {
 //        return new Transfer(this,account,val,curr).execute();
@@ -37,7 +55,6 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
         newly.consume(ConfigUtil.getConfigInt("AccountFee"));
 
         customer.addAccount(TYPE, newly);
-        customer.markDirty(true);
         AccountDao.getInstance().insertAccount(newly);
         return "Create " + TYPE + " account successfully. Deposit "+deposit +
                 "USD, account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
@@ -47,7 +64,6 @@ public class SavingAccount extends Account implements CanDeposit, CanTransferWit
         customer.getAccount("Checking").removeCurrency(ConfigUtil.getConfigInt("AccountFee"));
         SavingAccount newly = new SavingAccount(customer);
         customer.addAccount(TYPE, newly);
-        customer.markDirty(true);
         AccountDao.getInstance().insertAccount(newly);
         AccountDao.getInstance().updateAccountMoney((CheckingAccount) customer.getAccount("Checking"), "USD");
         return "Pay the fee from Checking Account automatically. Create " + TYPE + " account successfully";

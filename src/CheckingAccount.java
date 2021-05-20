@@ -1,4 +1,5 @@
 import java.io.Serial;
+import java.util.Map;
 
 public class CheckingAccount extends Account implements CanDeposit, CanWithdraw, CanExchange, CanTransferWithin, CanTransferToOthers {
 
@@ -67,6 +68,52 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
     }
 
     @Override
+    public String close(){
+        StringBuilder ret = new StringBuilder("Close " + getAccountType() + "Account successfully!<br>");
+        if (!getCustomer().hasAccount("Saving")){
+            ret.append("Give you back:<br>");
+
+            int mark = 0;
+            for (Map.Entry<String, Double> value : getAmountTotal().entrySet()) {
+                if (mark == 0 && value.getValue() >= 10 * ConfigUtil.getConfigDouble("USDTo"+value.getKey())){
+                    ret.append("<font color=\"red\">"+PrintUtil.printDouble(value.getValue() - 10 * ConfigUtil.getConfigDouble("USDTo" + value.getKey()))+"</font>").append(value.getKey()).append("<br>");
+                    mark = 1;
+                }else{
+                    ret.append("<font color=\"red\">"+PrintUtil.printDouble(value.getValue())+"</font>").append(value.getKey()).append("<br>");
+                }
+            }
+            AccountDao.getInstance().delAccount(this);
+            getCustomer().getAccountList().remove(getAccountType());
+            return ret.toString();
+        }else{
+            AccountDao.getInstance().delAccount(this);
+            getCustomer().getAccount("Saving").removeCurrency(10);
+            AccountDao.getInstance().updateAccountMoney(getCustomer().getAccount("Saving"), "USD");
+            getCustomer().getAccountList().remove(getAccountType());
+            return ret.toString();
+        }
+    }
+
+    @Override
+    public boolean canClose() {
+        if (!getCustomer().hasAccount("Saving")){
+            for (Map.Entry<String, Double> value : getAmountTotal().entrySet()) {
+                if (value.getValue() >= 10 * ConfigUtil.getConfigDouble("USDTo"+value.getKey())){
+                    return true;
+                }
+            }
+            return false;
+        }else{
+            for (Double value : getAmountTotal().values()) {
+                if (value > 0){
+                    return false;
+                }
+            }
+            return getCustomer().getAccount("Saving").getAmount() >= 10;
+        }
+    }
+
+    @Override
     public String transfer(Account account, double val, String curr) {
         return new Transfer(this,account,val,curr).execute();
     }
@@ -83,7 +130,6 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
         newly.consume(temp);
 
         customer.addAccount(TYPE, newly);
-        customer.markDirty(true);
         AccountDao.getInstance().insertAccount(newly);
         return "Create " + TYPE + " account successfully. Deposit "+deposit +
                 "USD, account fee cost "+ConfigUtil.getConfigInt("AccountFee")+
@@ -95,9 +141,9 @@ public class CheckingAccount extends Account implements CanDeposit, CanWithdraw,
         account.consume(temp);
         CheckingAccount newly = new CheckingAccount(customer);
         customer.addAccount(TYPE, newly);
-        customer.markDirty(true);
         AccountDao.getInstance().insertAccount(newly);
         AccountDao.getInstance().updateAccountMoney(account, "USD");
         return "Pay the fee from Saving Account automatically. Create " + TYPE + " account successfully";
     }
+
 }

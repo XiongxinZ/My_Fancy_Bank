@@ -25,17 +25,17 @@ public class Withdraw extends AbstractTransaction {
             savingAccount.removeCurrency(getAmount(), getCurrencyFrom());
             AccountDao.getInstance().updateAccountMoney(savingAccount, getCurrencyFrom());
             TransactionDao.getInstance().insertTransaction(this);
-            ret =  "Withdraw " + getAmount() +getCurrencyFrom()+
-                    "\nBalance " + savingAccount.getAmount(getCurrencyFrom())+getCurrencyFrom();
+            ret =  "Withdraw " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" +getCurrencyFrom()+
+                    "<br>Balance " + "<font color=\"red\">"+PrintUtil.printDouble(savingAccount.getAmount(getCurrencyFrom()))+"</font>"+getCurrencyFrom();
         }else if (getFrom() instanceof CheckingAccount){
             CheckingAccount checkingAccount = (CheckingAccount) getFrom();
             setAmount(Math.min(getAmount(), getFrom().getAmount(getCurrencyFrom())/(1+ConfigUtil.getConfigDouble("CheckingRate"))));
             checkingAccount.removeCurrency(getAmount()*(1+ConfigUtil.getConfigDouble("CheckingRate")), getCurrencyFrom());
             AccountDao.getInstance().updateAccountMoney(checkingAccount,getCurrencyFrom());
             TransactionDao.getInstance().insertTransaction(this);
-            ret = "Withdraw " + getAmount() +getCurrencyFrom()+
-                    "\nBalance " + checkingAccount.getAmount(getCurrencyFrom())+getCurrencyFrom()+
-                    "\nFee "+getAmount()*ConfigUtil.getConfigDouble("CheckingRate") + getCurrencyFrom();
+            ret = "Withdraw " + "<font color=\"red\">"+PrintUtil.printDouble(getAmount())+"</font>" +getCurrencyFrom()+
+                    "<br>Balance " + "<font color=\"red\">"+PrintUtil.printDouble(checkingAccount.getAmount(getCurrencyFrom()))+"</font>"+getCurrencyFrom()+
+                    "<br>Fee "+"<font color=\"red\">"+PrintUtil.printDouble(getAmount()*ConfigUtil.getConfigDouble("CheckingRate"))+"</font>" + getCurrencyFrom();
         }else{
             ret = getFrom().toString() + " can't withdraw.";
         }

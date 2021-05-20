@@ -43,7 +43,7 @@ public class JDBCUtil {
 	}
 	// test
 //	public static void main(String[] args) {
-//		System.out.println(DRIVERCLASS + "\n" + URL + "\n" + USERNAME + "\n" + PASSWORD);
+//		System.out.println(DRIVERCLASS + "<br>" + URL + "<br>" + USERNAME + "<br>" + PASSWORD);
 //	}
 	
 	static {
