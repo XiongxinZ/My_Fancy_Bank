@@ -9,16 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
@@ -48,7 +39,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         }
     }
 
-    public void fillTable(String type, String direction,String year, String month, String day,String hide) {
+    public void fillTable(String type, String direction,String year, String month, String day,boolean hide) {
         dm = (DefaultTableModel) jt_customer.getModel();
         dm.setRowCount(0);
 
@@ -138,12 +129,29 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         }
         jp_tool.add(jc_direction);
 
-        JLabel jl_hide = new JLabel("Interest");
-//        jl_to.setBounds(700, 10, 50, 30);
-        jp_tool.add(jl_hide);
+//        JLabel jl_hide = new JLabel("Interest");
+////        jl_to.setBounds(700, 10, 50, 30);
+//        jp_tool.add(jl_hide);
+//
+//        JComboBox<String> jc_hide = new JComboBox<>(new String[]{"hide","show"});
+//        jp_tool.add(jc_hide);
 
-        JComboBox<String> jc_hide = new JComboBox<>(new String[]{"hide","show"});
-        jp_tool.add(jc_hide);
+        JCheckBox jCheckBox = new JCheckBox("hide interest", true);
+        jCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String type = ((String) jc_type.getSelectedItem()).trim();
+                String direction = ((String) jc_direction.getSelectedItem()).trim();
+                String y = ((String)jc_year.getSelectedItem()).trim();
+                String m = ((String)jc_month.getSelectedItem()).trim();
+                String d = ((String)jc_day.getSelectedItem()).trim();
+                boolean hide = jCheckBox.isSelected();
+
+//                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
+                fillTable(type, direction,y,m,d,hide);
+            }
+        });
+        jp_tool.add(jCheckBox);
 
         jt_customer = new JTable(new DefaultTableModel(TableColumns.getTransactionColumns(), 0) {
             public boolean isCellEditable(int row, int column) {
@@ -162,7 +170,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
         String y = ((String)jc_year.getSelectedItem()).trim();
         String m = ((String)jc_month.getSelectedItem()).trim();
         String d = ((String)jc_day.getSelectedItem()).trim();
-        String hide = ((String)jc_hide.getSelectedItem()).trim();
+        boolean hide = jCheckBox.isSelected();
 
 //                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
         fillTable(type, direction,y,m,d,hide);
@@ -183,7 +191,7 @@ public class TransactionHistoryPanel extends CustomerContentPanel implements Mou
                 String year = ((String)jc_year.getSelectedItem()).trim();
                 String month = ((String)jc_month.getSelectedItem()).trim();
                 String day = ((String)jc_day.getSelectedItem()).trim();
-                String hide = ((String)jc_hide.getSelectedItem()).trim();
+                boolean hide = jCheckBox.isSelected();
 
 //                StringBuilder query = QueryUtil.getAllQuery("transactionLog");
                 fillTable(type, direction,year,month,day,hide);

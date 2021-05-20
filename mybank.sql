@@ -167,6 +167,19 @@ CREATE TABLE IF NOT EXISTS `loan`  (
   PRIMARY KEY (`l_id`) USING BTREE,
   CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`c_ID`) REFERENCES `customer` (`c_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+ DROP TABLE IF EXISTS `stockTransactionLog`;
+CREATE TABLE IF NOT EXISTS `stockTransactionLog`  (
+  `t_date` date NOT NULL COMMENT 'Transaction Time',
+  `c_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Customer ID',
+  `s_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Stock Name',
+  `t_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Trade Type',
+  `t_price` decimal(8,2) NOT NULL COMMENT 'Trade Price',
+  `t_quantity` INT(16) NOT NULL COMMENT 'Trade Quantity',
+  `t_amount` decimal(8,2) NOT NULL COMMENT 'Trade Amount',
+  INDEX `c_id`(`c_id`) USING BTREE,
+  INDEX `s_name`(`s_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Table structure for collateralValuation
 -- ----------------------------

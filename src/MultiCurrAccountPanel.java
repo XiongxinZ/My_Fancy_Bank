@@ -60,7 +60,7 @@ public class MultiCurrAccountPanel extends CustomerContentPanel{
 
     private JPanel infoPanel(){
         JPanel jp = new JPanel(new GridLayout(0,1,0,0));
-        jp.add(new JLabel(new ImageIcon("img/back"+ new Random().nextInt(3) +".jpeg")));
+        jp.add(new JLabel(new ImageIcon("img/back"+ new Random().nextInt(5) +".jpeg")));
         jp.add(new JLabel("<html><b><em>"+account.toString()+"</em></b>", JLabel.CENTER ));
         jp.add(new JLabel("<html>Balance: <b>USD:</b> " + account.getAmount("USD") +
                 "  <b>CNY</b>: " + account.getAmount("CNY") +

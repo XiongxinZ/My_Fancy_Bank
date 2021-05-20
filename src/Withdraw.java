@@ -26,7 +26,7 @@ public class Withdraw extends AbstractTransaction {
             AccountDao.getInstance().updateAccountMoney(savingAccount, getCurrencyFrom());
             TransactionDao.getInstance().insertTransaction(this);
             ret =  "Withdraw " + getAmount() +getCurrencyFrom()+
-                    ", balance " + savingAccount.getAmount(getCurrencyFrom())+getCurrencyFrom();
+                    "\nBalance " + savingAccount.getAmount(getCurrencyFrom())+getCurrencyFrom();
         }else if (getFrom() instanceof CheckingAccount){
             CheckingAccount checkingAccount = (CheckingAccount) getFrom();
             setAmount(Math.min(getAmount(), getFrom().getAmount(getCurrencyFrom())/(1+ConfigUtil.getConfigDouble("CheckingRate"))));
@@ -34,8 +34,8 @@ public class Withdraw extends AbstractTransaction {
             AccountDao.getInstance().updateAccountMoney(checkingAccount,getCurrencyFrom());
             TransactionDao.getInstance().insertTransaction(this);
             ret = "Withdraw " + getAmount() +getCurrencyFrom()+
-                    "Fee "+getAmount()*ConfigUtil.getConfigDouble("CheckingRate") + getCurrencyFrom()+
-                    ", balance " + checkingAccount.getAmount(getCurrencyFrom())+getCurrencyFrom();
+                    "\nBalance " + checkingAccount.getAmount(getCurrencyFrom())+getCurrencyFrom()+
+                    "\nFee "+getAmount()*ConfigUtil.getConfigDouble("CheckingRate") + getCurrencyFrom();
         }else{
             ret = getFrom().toString() + " can't withdraw.";
         }
