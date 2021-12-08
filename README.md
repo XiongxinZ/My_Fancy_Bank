@@ -4,7 +4,7 @@
 
 > # Description
 >
-> 
+> BU CS611 Course Project.
 >
 > Project Developers: **Yuqiu Lin** and **Xiongxin Zeng**.
 
